@@ -3,8 +3,11 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Outhebox\NovaHiddenField\HiddenField;
 
 class Building extends Resource
 {
@@ -28,7 +31,7 @@ class Building extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -37,7 +40,28 @@ class Building extends Resource
      */
     public static $search = [
         'id',
+        'name',
+        'location'
     ];
+
+
+    /**
+     * Search With Relastion
+     *
+     * @var array
+     */
+    public static $with = [
+        'admin'
+    ];
+
+
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if ($request->user()->isSuperAdmin()) {
+            return $query;
+        }
+        return $query->where('admin_id', $request->user()->id);
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -49,6 +73,21 @@ class Building extends Resource
     {
         return [
             ID::make()->sortable(),
+
+            HiddenField::make('Admin', 'admin_id')
+                ->defaultValue($request->user()->id)
+                ->onlyOnForms(),
+
+            Text::make('name', 'name')
+                ->rules('required')
+                ->sortable(),
+
+            Text::make('location', 'location')
+                ->rules('required')
+                ->sortable(),
+
+            BelongsTo::make('Admin', 'admin', User::class)
+
         ];
     }
 

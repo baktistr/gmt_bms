@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\Text;
 // Extenr Packages
 use KABBOUCHI\NovaImpersonate\Impersonate;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
+use Laravel\Nova\Fields\HasOne;
 
 class User extends Resource
 {
@@ -89,6 +90,8 @@ class User extends Resource
 
             Boolean::make('helpdesk', 'is_helpdesk')
                 ->sortable(),
+
+            HasOne::make('Building', 'building', Building::class),
 
 
         ];
