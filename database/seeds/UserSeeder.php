@@ -25,8 +25,5 @@ class UserSeeder extends Seeder
                 'email' => $admin['email'],
             ])
         );
-
-        factory(User::class, 5)->state('manager')->create();
-        factory(User::class, 5)->state('viewer')->create();
     }
 }

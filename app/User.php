@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -98,6 +99,19 @@ class User extends Authenticatable implements HasMedia
         return $query->where($role, true)->get();
     }
 
+
+    public function building(): HasOne
+    {
+        return $this->hasOne(Building::class, 'admin_id');
+    }
+
+
+    /**
+     * @return void
+     * @param Spatie\Image\Manipulations;
+     * @param Spatie\MediaLibrary\HasMedia;
+     * @param Spatie\MediaLibrary\InteractsWithMedia;
+     */
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('avatar')
