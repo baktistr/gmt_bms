@@ -73,10 +73,10 @@ class User extends Resource
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
 
-            Boolean::make('Is Super Admin')
+            Boolean::make('Super Admin')
                 ->sortable(),
 
-            Boolean::make('Is Admin')
+            Boolean::make('Admin')
                 ->sortable(),
 
         ];
