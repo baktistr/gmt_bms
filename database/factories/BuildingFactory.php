@@ -10,6 +10,8 @@ $factory->define(Building::class, function (Faker $faker) {
     return [
         'name' => $faker->streetName,
         'location' => $faker->locale,
-        'admin_id' => fn () => factory(User::class)->state('manager')->create()->id
+        'admin_id' => function () {
+            return factory(User::class)->state('manager')->create()->id;
+        }
     ];
 });

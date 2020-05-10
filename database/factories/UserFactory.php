@@ -35,6 +35,6 @@ $factory->state(User::class, 'viewer', ['is_viewer' => true]);
 
 $factory->afterCreating(User::class, function (User $user) {
     // Add avatar image to factory.
-    $user->addMedia(File::image("asset-{$user->id}-image.png"))
+    $user->addMedia(File::image("user-{$user->id}-avatar.png"))
         ->toMediaCollection('avatar');
 });
