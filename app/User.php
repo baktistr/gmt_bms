@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Nova\Actions\Actionable;
+// Extern pacakges
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use Notifiable, Actionable, SoftDeletes;
+    use Notifiable, Actionable, SoftDeletes, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -83,5 +87,33 @@ class User extends Authenticatable
     public function scopeRole($query, $role)
     {
         return $query->where($role, true)->get();
+    }
+
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('avatar')
+            ->singleFile()
+            ->registerMediaConversions(function () {
+                $this->addMediaConversion('tiny')
+                    ->fit(Manipulations::FIT_CROP, 75, 75)
+                    ->performOnCollections('avatar')
+                    ->nonQueued();
+
+                $this->addMediaConversion('small')
+                    ->fit(Manipulations::FIT_CROP, 150, 150)
+                    ->performOnCollections('avatar')
+                    ->nonQueued();
+
+                $this->addMediaConversion('medium')
+                    ->fit(Manipulations::FIT_CROP, 300, 300)
+                    ->performOnCollections('avatar')
+                    ->nonQueued();
+
+                $this->addMediaConversion('large')
+                    ->fit(Manipulations::FIT_CROP, 600, 600)
+                    ->performOnCollections('avatar')
+                    ->nonQueued();
+            });
     }
 }
