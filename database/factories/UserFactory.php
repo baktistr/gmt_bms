@@ -5,6 +5,7 @@
 use App\User;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
+use App\Testing\File;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +31,10 @@ $factory->define(User::class, function (Faker $faker) {
 $factory->state(User::class, 'super_admin', ['is_super_admin' => true]);
 $factory->state(User::class, 'manager', ['is_manager' => true]);
 $factory->state(User::class, 'viewer', ['is_viewer' => true]);
+
+
+$factory->afterCreating(User::class, function (User $user) {
+    // Add avatar image to factory.
+    $user->addMedia(File::image("asset-{$user->id}-image.png"))
+        ->toMediaCollection('avatar');
+});
