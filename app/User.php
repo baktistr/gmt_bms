@@ -98,7 +98,20 @@ class User extends Authenticatable implements HasMedia
         return $query->where($role, true)->get();
     }
 
+    /**
+     * check if user is super admin can impersonet all user
+     */
+    public function canImpersonete(): bool
+    {
+        return $this->is_super_admin == 1;
+    }
 
+    /**
+     * Add Media Collection
+     * @return Spatie\Image\Manipulations
+     * @return Spatie\MediaLibrary\HasMedia
+     * @return Spatie\MediaLibrary\InteractsWithMedia
+     */
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('avatar')
