@@ -9,8 +9,8 @@ use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 
 // Extenr Packages
-use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use KABBOUCHI\NovaImpersonate\Impersonate;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 
 class User extends Resource
 {
@@ -48,6 +48,11 @@ class User extends Resource
         return [
             ID::make()->sortable(),
 
+            Images::make('Avatar')
+                ->conversionOnIndexView('small')
+                ->conversionOnDetailView('large')
+                ->rules('required'),
+
             Text::make('Name')
                 ->sortable()
                 ->rules('required', 'max:255'),
@@ -67,6 +72,13 @@ class User extends Resource
                 ->onlyOnForms()
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
+
+            Boolean::make('Is Super Admin')
+                ->sortable(),
+
+            Boolean::make('Is Admin')
+                ->sortable(),
+
         ];
     }
 

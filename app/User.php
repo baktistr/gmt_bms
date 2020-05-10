@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Nova\Actions\Actionable;
+// Extern pacakges
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use Notifiable, Actionable, SoftDeletes;
+    use Notifiable, Actionable, SoftDeletes, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -37,8 +41,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'is_super_admin' => 'boolean',
-        'is_admin' => 'boolean',
         'is_manager' => 'boolean',
+        'is_helpdesk' => 'boolean',
         'is_viewer' => 'boolean',
     ];
 
@@ -47,7 +51,6 @@ class User extends Authenticatable
      */
     protected $attributes = [
         'is_super_admin' => false,
-        'is_admin'       => false
     ];
 
 
@@ -58,14 +61,6 @@ class User extends Authenticatable
     public function isSuperAdmin()
     {
         return $this->is_super_admin;
-    }
-    /**
-     * Check if admin Role
-     * @return bool
-     */
-    public function isAdmin()
-    {
-        return $this->is_admin;
     }
 
     /**
@@ -84,6 +79,14 @@ class User extends Authenticatable
     {
         return $this->is_viewer;
     }
+    /**
+     * check if is Viewer Role
+     * @return bool
+     */
+    public function isHelpDesk()
+    {
+        return $this->is_viewer;
+    }
 
     /**
      * Scope the query get role of user
@@ -95,20 +98,6 @@ class User extends Authenticatable
         return $query->where($role, true)->get();
     }
 
-    /**
-     * check if user is super admin can impersonet all user
-     */
-    public function canImpersonate(): bool
-    {
-        return $this->is_super_admin == 1;
-    }
-
-    /**
-     * Add Media Collection
-     * @return Spatie\Image\Manipulations
-     * @return Spatie\MediaLibrary\HasMedia
-     * @return Spatie\MediaLibrary\InteractsWithMedia
-     */
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('avatar')
@@ -135,5 +124,4 @@ class User extends Authenticatable
                     ->nonQueued();
             });
     }
-
 }
