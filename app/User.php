@@ -101,7 +101,7 @@ class User extends Authenticatable implements HasMedia
     /**
      * check if user is super admin can impersonet all user
      */
-    public function canImpersonete(): bool
+    public function canImpersonate(): bool
     {
         return $this->is_super_admin == 1;
     }
