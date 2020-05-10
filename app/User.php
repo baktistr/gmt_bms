@@ -42,6 +42,7 @@ class User extends Authenticatable implements HasMedia
         'email_verified_at' => 'datetime',
         'is_super_admin' => 'boolean',
         'is_manager' => 'boolean',
+        'is_helpdesk' => 'boolean',
         'is_viewer' => 'boolean',
     ];
 
@@ -75,6 +76,14 @@ class User extends Authenticatable implements HasMedia
      * @return bool
      */
     public function isViewer()
+    {
+        return $this->is_viewer;
+    }
+    /**
+     * check if is Viewer Role
+     * @return bool
+     */
+    public function isHelpDesk()
     {
         return $this->is_viewer;
     }
