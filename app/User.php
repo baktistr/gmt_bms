@@ -6,13 +6,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Nova\Actions\Actionable;
-use Spatie\Image\Manipulations;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable implements HasMedia
+class User extends Authenticatable
 {
-    use Notifiable, Actionable, SoftDeletes, InteractsWithMedia;
+    use Notifiable, Actionable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -91,7 +88,7 @@ class User extends Authenticatable implements HasMedia
     /**
      * Scope the query get role of user
      * @param $query , $role
-     * @return mixed
+     * @return bool
      */
     public function scopeRole($query, $role)
     {
@@ -138,4 +135,5 @@ class User extends Authenticatable implements HasMedia
                     ->nonQueued();
             });
     }
+
 }
