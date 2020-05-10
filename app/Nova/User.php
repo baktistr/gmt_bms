@@ -3,13 +3,13 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Gravatar;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Boolean;
 
-// Extenr Pacakges
+// Extenr Packages
+use KABBOUCHI\NovaImpersonate\Impersonate;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 
 class User extends Resource
@@ -56,6 +56,11 @@ class User extends Resource
             Text::make('Name')
                 ->sortable()
                 ->rules('required', 'max:255'),
+
+
+            Impersonate::make($this)->withMeta([
+                'redirect_to' => config('nova.path')
+            ]),
 
             Text::make('Email')
                 ->sortable()

@@ -42,6 +42,7 @@ class User extends Authenticatable implements HasMedia
         'email_verified_at' => 'datetime',
         'is_super_admin' => 'boolean',
         'is_manager' => 'boolean',
+        'is_helpdesk' => 'boolean',
         'is_viewer' => 'boolean',
     ];
 
@@ -78,6 +79,14 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->is_viewer;
     }
+    /**
+     * check if is Viewer Role
+     * @return bool
+     */
+    public function isHelpDesk()
+    {
+        return $this->is_viewer;
+    }
 
     /**
      * Scope the query get role of user
@@ -88,7 +97,6 @@ class User extends Authenticatable implements HasMedia
     {
         return $query->where($role, true)->get();
     }
-
 
     public function registerMediaCollections(): void
     {
