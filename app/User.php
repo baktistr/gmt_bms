@@ -37,7 +37,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'is_super_admin' => 'boolean',
-        'is_admin' => 'boolean',
         'is_manager' => 'boolean',
         'is_viewer' => 'boolean',
     ];
@@ -47,7 +46,6 @@ class User extends Authenticatable
      */
     protected $attributes = [
         'is_super_admin' => false,
-        'is_admin'       => false
     ];
 
 
@@ -58,14 +56,6 @@ class User extends Authenticatable
     public function isSuperAdmin()
     {
         return $this->is_super_admin;
-    }
-    /**
-     * Check if admin Role
-     * @return bool
-     */
-    public function isAdmin()
-    {
-        return $this->is_admin;
     }
 
     /**
