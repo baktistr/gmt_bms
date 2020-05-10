@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ede0c872d7fc5306a844bc8bd7ee4f3c",
+    "content-hash": "84f499e9fc9149f1df795265b7143a18",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -57,39 +57,6 @@
                 "stack"
             ],
             "time": "2019-12-24T22:41:47+00:00"
-        },
-        {
-            "name": "bms/nova-theme-css",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "./nova-components/NovaThemeCss",
-                "reference": "6850b5f02bf4756b9153fef910fa44cc8d25df4a"
-            },
-            "require": {
-                "php": ">=7.1.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Bms\\NovaThemeCss\\ThemeServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Bms\\NovaThemeCss\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "A Laravel Nova theme.",
-            "keywords": [
-                "laravel",
-                "nova"
-            ]
         },
         {
             "name": "brick/math",
@@ -953,6 +920,96 @@
                 "laravel"
             ],
             "time": "2020-04-28T08:47:37+00:00"
+        },
+        {
+            "name": "gmt/nova-theme",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gmt-property-management/nova-theme.git",
+                "reference": "1dab0b6c9d36c2af651db373b8acdba902f2f10a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gmt-property-management/nova-theme/zipball/1dab0b6c9d36c2af651db373b8acdba902f2f10a",
+                "reference": "1dab0b6c9d36c2af651db373b8acdba902f2f10a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Gmt\\NovaTheme\\ThemeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Gmt\\NovaTheme\\": "src/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "Laravel nova theme for GMT projects",
+            "support": {
+                "source": "https://github.com/gmt-property-management/nova-theme/tree/1.0.0",
+                "issues": "https://github.com/gmt-property-management/nova-theme/issues"
+            },
+            "time": "2020-05-10T04:12:08+00:00"
+        },
+        {
+            "name": "gregoriohc/laravel-nova-theme-responsive",
+            "version": "v0.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gregoriohc/laravel-nova-theme-responsive.git",
+                "reference": "a37f8162872ea7483d2dec7091d29e49376df273"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gregoriohc/laravel-nova-theme-responsive/zipball/a37f8162872ea7483d2dec7091d29e49376df273",
+                "reference": "a37f8162872ea7483d2dec7091d29e49376df273",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Gregoriohc\\LaravelNovaThemeResponsive\\ThemeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Gregoriohc\\LaravelNovaThemeResponsive\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gregorio Hernández Caso",
+                    "email": "gregoriohc@gmail.com",
+                    "homepage": "https://github.com/gregoriohc",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A Laravel Nova responsive theme.",
+            "homepage": "https://github.com/gregoriohc/laravel-nova-theme-responsive",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "time": "2020-03-08T16:15:03+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

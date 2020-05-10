@@ -7,18 +7,13 @@
         "laravel"
     ],
     "license": "MIT",
-    "repositories": [
-        {
+    "repositories": [{
             "type": "path",
             "url": "./nova"
         },
         {
-            "type": "path",
-            "url": "./nova-components/NovaCmsTheme"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/NovaThemeCss"
+            "type": "github",
+            "url": "https://github.com/gmt-property-management/nova-theme.git"
         }
     ],
     "require": {
@@ -30,7 +25,8 @@
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "laravel/nova": "*",
-        "bms/nova-theme-css": "*"
+        "gmt/nova-theme": "^1.0",
+        "gregoriohc/laravel-nova-theme-responsive": "^0.8.1"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
