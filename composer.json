@@ -14,14 +14,6 @@
         {
             "type": "github",
             "url": "https://github.com/gmt-property-management/nova-theme.git"
-        },
-        {
-            "type": "github",
-            "url": "https://github.com/muhghazaliakbar/advanced-nova-media-library.git"
-        },
-        {
-            "type": "github",
-            "url": "git@github.com:muhghazaliakbar/nova-hidden-field.git"
         }
     ],
     "require": {
@@ -34,9 +26,6 @@
         "laravel/tinker": "^2.0",
         "laravel/nova": "*",
         "gmt/nova-theme": "^1.0",
-        "kabbouchi/nova-impersonate": "^1.2",
-        "ebess/advanced-nova-media-library": "^3.2.0",
-        "spatie/laravel-medialibrary": "^8.0.0",
         "gregoriohc/laravel-nova-theme-responsive": "^0.8.1"
     },
     "require-dev": {
