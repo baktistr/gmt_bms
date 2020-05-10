@@ -82,13 +82,13 @@ class User extends Resource
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
 
-            Boolean::make('manager', 'is_manager')
+            Boolean::make('is_manager', 'is_manager')
                 ->sortable(),
 
-            Boolean::make('viewer', 'is_viewer')
+            Boolean::make('is_viewer', 'is_viewer')
                 ->sortable(),
 
-            Boolean::make('helpdesk', 'is_helpdesk')
+            Boolean::make('is_helpdesk', 'is_helpdesk')
                 ->sortable(),
 
             HasOne::make('Building', 'building', Building::class),
