@@ -36,7 +36,8 @@
         "gmt/nova-theme": "^1.0",
         "gregoriohc/laravel-nova-theme-responsive": "^0.8.1",
         "ebess/advanced-nova-media-library": "^3.2.0",
-        "spatie/laravel-medialibrary": "^8.0.0"
+        "spatie/laravel-medialibrary": "^8.0.0",
+        "outhebox/nova-hidden-field": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

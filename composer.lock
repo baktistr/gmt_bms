@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9b3188d3e3fae7dc689562edf7b9f677",
+    "content-hash": "d3797da11d923a84e371fbdac59a31a9",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2297,6 +2297,59 @@
                 "serialize"
             ],
             "time": "2019-11-29T22:36:02+00:00"
+        },
+        {
+            "name": "outhebox/nova-hidden-field",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/muhghazaliakbar/nova-hidden-field.git",
+                "reference": "a7d552561bd23a629a25f5d4a29aa20f9d64faff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/muhghazaliakbar/nova-hidden-field/zipball/a7d552561bd23a629a25f5d4a29aa20f9d64faff",
+                "reference": "a7d552561bd23a629a25f5d4a29aa20f9d64faff",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Outhebox\\NovaHiddenField\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Outhebox\\NovaHiddenField\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mohamed Ashraf",
+                    "email": "cupo.ashraf@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A Laravel Nova Hidden field.",
+            "keywords": [
+                "field",
+                "laravel",
+                "nova",
+                "nova default value",
+                "nova hidden field"
+            ],
+            "support": {
+                "source": "https://github.com/muhghazaliakbar/nova-hidden-field/tree/1.1.0"
+            },
+            "time": "2020-05-10T01:45:19+00:00"
         },
         {
             "name": "phpoption/phpoption",
