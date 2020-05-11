@@ -18,9 +18,7 @@ class BuildingPolicy
      */
     public function viewAny(User $user)
     {
-        return
-            $user->isSuperAdmin() ||
-            $user->isManager();
+        return true;
     }
 
     /**
