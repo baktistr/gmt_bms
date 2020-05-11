@@ -104,7 +104,7 @@ class User extends Authenticatable implements HasMedia
 
     public function building(): HasOne
     {
-        return $this->hasOne(Building::class, 'admin_id');
+        return $this->hasOne(Building::class, 'manager_id');
     }
 
 

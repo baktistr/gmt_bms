@@ -51,17 +51,8 @@ class Building extends Resource
      * @var array
      */
     public static $with = [
-        'admin'
+        'manager'
     ];
-
-
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        if ($request->user()->isSuperAdmin()) {
-            return $query;
-        }
-        return $query->where('admin_id', $request->user()->id);
-    }
 
     /**
      * Get the fields displayed by the resource.
@@ -74,7 +65,7 @@ class Building extends Resource
         return [
             ID::make()->sortable(),
 
-            HiddenField::make('Admin', 'admin_id')
+            HiddenField::make('Admin', 'manager_id')
                 ->defaultValue($request->user()->id)
                 ->onlyOnForms(),
 
@@ -86,7 +77,7 @@ class Building extends Resource
                 ->rules('required')
                 ->sortable(),
 
-            BelongsTo::make('Admin', 'admin', User::class)
+            BelongsTo::make('Building Manager', 'manager', User::class)
 
         ];
     }
