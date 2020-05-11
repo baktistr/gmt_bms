@@ -2,10 +2,11 @@
 
 namespace App\Policies;
 
+use App\Building;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserPolicy
+class BuildingPolicy
 {
     use HandlesAuthorization;
 
@@ -17,19 +18,21 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->isSuperAdmin();
+        return
+            $user->isSuperAdmin() ||
+            $user->isManager();
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
-     * @param  \App\User  $model
+     * @param  \App\Building  $building
      * @return mixed
      */
-    public function view(User $user, User $model)
+    public function view(User $user, Building $building)
     {
-        return $user->isSuperAdmin() || $user->id == $model->id;
+        return $user->isSuperAdmin() || $user->isViewer() || $user->id === $building->manager_id;
     }
 
     /**
@@ -40,54 +43,54 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $user->isSuperAdmin();
+        return $user->isSuperAdmin() || $user->isManager();
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\User  $model
+     * @param  \App\Building  $building
      * @return mixed
      */
-    public function update(User $user, User $model)
+    public function update(User $user, Building $building)
     {
-        return $user->isSuperAdmin();
+        return $user->isSuperAdmin() || $user->id == $building->manager_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\User  $model
+     * @param  \App\Building  $building
      * @return mixed
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user, Building $building)
     {
-        return  $user->isSuperAdmin();
+        return  $user->isSuperAdmin() || $user->id == $building->manager_id;
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\User  $model
+     * @param  \App\Building  $building
      * @return mixed
      */
-    public function restore(User $user, User $model)
+    public function restore(User $user, Building $building)
     {
-        return $user->isSuperAdmin();
+        //
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\User  $model
+     * @param  \App\Building  $building
      * @return mixed
      */
-    public function forceDelete(User $user, User $model)
+    public function forceDelete(User $user, Building $building)
     {
-        return $user->isSuperAdmin();
+        return $user->isSuperAdmin() || $user->id == $building->manager_id;
     }
 }

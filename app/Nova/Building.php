@@ -44,6 +44,20 @@ class Building extends Resource
         'location'
     ];
 
+    /**
+     * Build an "index" query for the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if ($request->user()->isSuperAdmin()) {
+            return $query;
+        }
+        return $query->where('manager_id', $request->user()->id);
+    }
 
     /**
      * Search With Relastion
