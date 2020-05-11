@@ -18,6 +18,7 @@ class CreateBuildingsTable extends Migration
             $table->unsignedBigInteger('manager_id');
             $table->string('name')->index();
             $table->string('location');
+            $table->string('phone');
             $table->timestamps();
             $table->softDeletes();
         });
