@@ -32,7 +32,7 @@ class BuildingPolicy
      */
     public function view(User $user, Building $building)
     {
-        return $user->isSuperAdmin() || $user->isViewer() || $user->id === $building->manager_id;
+        return $user->isSuperAdmin() || $user->id === $building->manager_id;
     }
 
     /**
