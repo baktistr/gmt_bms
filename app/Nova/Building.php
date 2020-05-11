@@ -53,15 +53,7 @@ class Building extends Resource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        if ($request->user()->isSuperAdmin()) {
-            return $query;
-        } else if ($request->user()->isViewer()) {
-            return $query;
-        } else if ($request->user()->isHelpdesk()) {
-            return $query;
-        } else {
-            return $query->where('manager_id', $request->user()->id);
-        }
+        return $query;
     }
 
     /**
