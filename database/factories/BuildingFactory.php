@@ -8,10 +8,10 @@ use Faker\Generator as Faker;
 
 $factory->define(Building::class, function (Faker $faker) {
     return [
-        'name'       => $faker->streetName,
-        'location'   => $faker->locale,
         'manager_id' => function () {
             return factory(User::class)->state('manager')->create()->id;
         },
+        'name'       => $faker->streetName,
+        'location'   => $faker->locale,
     ];
 });

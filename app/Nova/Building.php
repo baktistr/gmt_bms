@@ -55,8 +55,13 @@ class Building extends Resource
     {
         if ($request->user()->isSuperAdmin()) {
             return $query;
+        } else if ($request->user()->isViewer()) {
+            return $query;
+        } else if ($request->user()->isHelpdesk()) {
+            return $query;
+        } else {
+            return $query->where('manager_id', $request->user()->id);
         }
-        return $query->where('manager_id', $request->user()->id);
     }
 
     /**
@@ -83,6 +88,8 @@ class Building extends Resource
                 ->defaultValue($request->user()->id)
                 ->onlyOnForms(),
 
+            BelongsTo::make('Manager', 'manager', User::class),
+
             Text::make('name', 'name')
                 ->rules('required')
                 ->sortable(),
@@ -90,8 +97,6 @@ class Building extends Resource
             Text::make('location', 'location')
                 ->rules('required')
                 ->sortable(),
-
-            BelongsTo::make('Building Manager', 'manager', User::class)
 
         ];
     }
