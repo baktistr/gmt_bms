@@ -20,13 +20,25 @@ class UserSeeder extends Seeder
         ]);
 
         $superAdmin->each(
-            fn ($admin) => factory(User::class)->state('super_admin')->create([
-                'name' => $admin['name'],
-                'email' => $admin['email']
-            ])
+            function ($admin) {
+                return factory(User::class)->state('super_admin')->create([
+                    'name'  => $admin['name'],
+                    'email' => $admin['email'],
+                ]);
+            }
         );
 
-        factory(User::class, 5)->state('manager')->create();
-        factory(User::class, 5)->state('viewer')->create();
+        factory(User::class)->state('manager')->create([
+            'name'  => 'Manager',
+            'email' => 'manager@example.com',
+        ]);
+        factory(User::class)->state('viewer')->create([
+            'name'  => 'Viewer',
+            'email' => 'viewer@example.com',
+        ]);
+        factory(User::class)->state('help_desk')->create([
+            'name'  => 'Help Desk',
+            'email' => 'helpdesk@example.com',
+        ]);
     }
 }

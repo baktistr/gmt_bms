@@ -76,9 +76,14 @@ class User extends Resource
             Boolean::make('Is Super Admin')
                 ->sortable(),
 
-            Boolean::make('Is Admin')
+            Boolean::make('Is Manager')
                 ->sortable(),
 
+            Boolean::make('Is Viewer')
+                ->sortable(),
+
+            Boolean::make('Is Help Desk')
+                ->sortable(),
         ];
     }
 

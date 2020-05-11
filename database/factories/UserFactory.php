@@ -5,6 +5,7 @@
 use App\User;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
+use App\Testing\File;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,14 +20,22 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
+        'name'              => $faker->name,
+        'email'             => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        'remember_token' => Str::random(10),
+        'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        'remember_token'    => Str::random(10),
     ];
 });
 
 $factory->state(User::class, 'super_admin', ['is_super_admin' => true]);
 $factory->state(User::class, 'manager', ['is_manager' => true]);
+$factory->state(User::class, 'help_desk', ['is_help_desk' => true]);
 $factory->state(User::class, 'viewer', ['is_viewer' => true]);
+
+
+$factory->afterCreating(User::class, function (User $user) {
+    // Add avatar image to factory.
+    $user->addMedia(File::image("user-{$user->id}-avatar.png"))
+        ->toMediaCollection('avatar');
+});
