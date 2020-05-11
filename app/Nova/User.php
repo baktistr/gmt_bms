@@ -11,18 +11,9 @@ use Laravel\Nova\Fields\Text;
 // Extenr Packages
 use KABBOUCHI\NovaImpersonate\Impersonate;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
-use Laravel\Nova\Fields\HasOne;
 
 class User extends Resource
 {
-
-    /**
-     * The logical group associated with the resource.
-     *
-     * @var string
-     */
-    public static $group = 'Admin';
-
     /**
      * The model the resource corresponds to.
      *
@@ -82,18 +73,17 @@ class User extends Resource
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
 
-            Boolean::make('is_manager', 'is_manager')
+            Boolean::make('Is Super Admin')
                 ->sortable(),
 
-            Boolean::make('is_viewer', 'is_viewer')
+            Boolean::make('Is Manager')
                 ->sortable(),
 
-            Boolean::make('is_helpdesk', 'is_helpdesk')
+            Boolean::make('Is Viewer')
                 ->sortable(),
 
-            HasOne::make('Building', 'building', Building::class),
-
-
+            Boolean::make('Is Helpdesk')
+                ->sortable(),
         ];
     }
 

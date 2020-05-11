@@ -27,5 +27,8 @@ class UserSeeder extends Seeder
                 ]);
             }
         );
+
+        factory(User::class, 5)->state('manager')->create();
+        factory(User::class, 5)->state('viewer')->create();
     }
 }
