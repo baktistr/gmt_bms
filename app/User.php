@@ -2,11 +2,11 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Nova\Actions\Actionable;
-// Extern pacakges
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -40,10 +40,10 @@ class User extends Authenticatable implements HasMedia
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'is_super_admin' => 'boolean',
-        'is_manager' => 'boolean',
-        'is_helpdesk' => 'boolean',
-        'is_viewer' => 'boolean',
+        'is_super_admin'    => 'boolean',
+        'is_manager'        => 'boolean',
+        'is_helpdesk'       => 'boolean',
+        'is_viewer'         => 'boolean',
     ];
 
     /**
@@ -71,6 +71,7 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->is_manager;
     }
+
     /**
      * check if is Viewer Role
      * @return bool
@@ -79,6 +80,7 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->is_viewer;
     }
+
     /**
      * check if is Viewer Role
      * @return bool
@@ -90,7 +92,8 @@ class User extends Authenticatable implements HasMedia
 
     /**
      * Scope the query get role of user
-     * @param $query , $role
+     * @param $query
+     * @param $role
      * @return bool
      */
     public function scopeRole($query, $role)
@@ -98,6 +101,16 @@ class User extends Authenticatable implements HasMedia
         return $query->where($role, true)->get();
     }
 
+
+    public function building(): HasOne
+    {
+        return $this->hasOne(Building::class, 'admin_id');
+    }
+
+
+    /**
+     * Register the media collections.
+     */
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('avatar')

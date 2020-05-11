@@ -3,15 +3,13 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
-use KABBOUCHI\NovaImpersonate\Impersonate;
-use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
-use Laravel\Nova\Fields\HasOne;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Outhebox\NovaHiddenField\HiddenField;
 
-class User extends Resource
+class Building extends Resource
 {
 
     /**
@@ -19,14 +17,14 @@ class User extends Resource
      *
      * @var string
      */
-    public static $group = 'Admin';
+    public static $group = 'Manage';
 
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\User::class;
+    public static $model = \App\Building::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -41,8 +39,29 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'id',
+        'name',
+        'location'
     ];
+
+
+    /**
+     * Search With Relastion
+     *
+     * @var array
+     */
+    public static $with = [
+        'admin'
+    ];
+
+
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if ($request->user()->isSuperAdmin()) {
+            return $query;
+        }
+        return $query->where('admin_id', $request->user()->id);
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -55,44 +74,20 @@ class User extends Resource
         return [
             ID::make()->sortable(),
 
-            Images::make('Avatar')
-                ->conversionOnIndexView('small')
-                ->conversionOnDetailView('large')
-                ->rules('required'),
+            HiddenField::make('Admin', 'admin_id')
+                ->defaultValue($request->user()->id)
+                ->onlyOnForms(),
 
-            Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255'),
-
-
-            Impersonate::make($this)->withMeta([
-                'redirect_to' => config('nova.path')
-            ]),
-
-            Text::make('Email')
-                ->sortable()
-                ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
-
-            Password::make('Password')
-                ->onlyOnForms()
-                ->creationRules('required', 'string', 'min:8')
-                ->updateRules('nullable', 'string', 'min:8'),
-
-            Boolean::make('Is Super Admin')
+            Text::make('name', 'name')
+                ->rules('required')
                 ->sortable(),
 
-            Boolean::make('Is Manager')
+            Text::make('location', 'location')
+                ->rules('required')
                 ->sortable(),
 
-            Boolean::make('Is Viewer')
-                ->sortable(),
+            BelongsTo::make('Admin', 'admin', User::class)
 
-            Boolean::make('Is Help Desk')
-                ->sortable(),
-
-            HasOne::make('Building', 'building', Building::class),
         ];
     }
 
