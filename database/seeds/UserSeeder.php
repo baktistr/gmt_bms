@@ -28,7 +28,17 @@ class UserSeeder extends Seeder
             }
         );
 
-        factory(User::class, 5)->state('manager')->create();
-        factory(User::class, 5)->state('viewer')->create();
+        factory(User::class)->state('manager')->create([
+            'name'  => 'Manager',
+            'email' => 'manager@example.com',
+        ]);
+        factory(User::class)->state('viewer')->create([
+            'name'  => 'Viewer',
+            'email' => 'viewer@example.com',
+        ]);
+        factory(User::class)->state('help_desk')->create([
+            'name'  => 'Help Desk',
+            'email' => 'helpdesk@example.com',
+        ]);
     }
 }

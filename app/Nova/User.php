@@ -82,7 +82,7 @@ class User extends Resource
             Boolean::make('Is Viewer')
                 ->sortable(),
 
-            Boolean::make('Is Helpdesk')
+            Boolean::make('Is Help Desk')
                 ->sortable(),
         ];
     }
