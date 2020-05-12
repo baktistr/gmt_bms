@@ -20,10 +20,10 @@ class BuildingSeeder extends Seeder
         factory(Building::class, rand(3, 5))->create()
             ->each(function ($building) {
                 factory(User::class)->state('viewer')->create([
-                    'building_id' => $building['id'],
+                    'building_id' => $building->id,
                 ]);
                 factory(User::class)->state('help_desk')->create([
-                    'building_id' => $building['id'],
+                    'building_id' => $building->id,
                 ]);
             });
     }
