@@ -54,6 +54,12 @@ class Building extends Resource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
+        $user = $request->user();
+
+        if ($user->hasRole('Help Desk') || $user->hasRole('Viewer')) {
+            return $query->find($user->building_id);
+        }
+
         return $query;
     }
 
