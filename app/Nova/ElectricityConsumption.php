@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\ElectricityConsumption as AppElectricity;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
@@ -88,6 +89,14 @@ class ElectricityConsumption extends Resource
 
             FormattedNumber::make('KVAR (kvar)', 'kvar')
                 ->rules(['required', 'numeric']),
+
+            Images::make('LWBP Payment Receipt', 'lwbp')
+                ->rules(['required'])
+                ->hideFromIndex(),
+
+            Images::make('WBP Payment Receipt', 'wbp')
+                ->rules(['required'])
+                ->hideFromIndex(),
 
             Markdown::make('Description')
                 ->nullable(),
