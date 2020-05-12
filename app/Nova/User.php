@@ -10,6 +10,7 @@ use Laravel\Nova\Fields\Text;
 use KABBOUCHI\NovaImpersonate\Impersonate;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Laravel\Nova\Fields\HasOne;
+use Vyuldashev\NovaPermission\RoleSelect;
 
 class User extends Resource
 {
@@ -64,11 +65,6 @@ class User extends Resource
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-
-            Impersonate::make($this)->withMeta([
-                'redirect_to' => config('nova.path')
-            ]),
-
             Text::make('Email')
                 ->sortable()
                 ->rules('required', 'email', 'max:254')
@@ -80,19 +76,14 @@ class User extends Resource
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
 
-            Boolean::make('Is Super Admin')
-                ->sortable(),
-
-            Boolean::make('Is Manager')
-                ->sortable(),
-
-            Boolean::make('Is Viewer')
-                ->sortable(),
-
-            Boolean::make('Is Help Desk')
+            RoleSelect::make('Role', 'roles')
                 ->sortable(),
 
             HasOne::make('Building', 'building', Building::class),
+
+            Impersonate::make($this)->withMeta([
+                'redirect_to' => config('nova.path')
+            ]),
         ];
     }
 

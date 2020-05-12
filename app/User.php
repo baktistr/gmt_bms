@@ -10,10 +10,11 @@ use Laravel\Nova\Actions\Actionable;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasMedia
 {
-    use Notifiable, Actionable, SoftDeletes, InteractsWithMedia;
+    use Notifiable, Actionable, SoftDeletes, InteractsWithMedia, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -40,19 +41,7 @@ class User extends Authenticatable implements HasMedia
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'is_super_admin'    => 'boolean',
-        'is_manager'        => 'boolean',
-        'is_helpdesk'       => 'boolean',
-        'is_viewer'         => 'boolean',
     ];
-
-    /**
-     * {@inheritDoc}
-     */
-    protected $attributes = [
-        'is_super_admin' => false,
-    ];
-
 
     /**
      * Check if Super Admin Role
