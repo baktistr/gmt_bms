@@ -30,7 +30,7 @@ class BuildingPolicy
      */
     public function view(User $user, Building $building)
     {
-        return $user->hasPermissionTo('View Building') && $user->id === $building->manager_id;
+        return $user->hasPermissionTo('View Building') && $user->id == $building->manager_id;
     }
 
     /**
@@ -53,7 +53,7 @@ class BuildingPolicy
      */
     public function update(User $user, Building $building)
     {
-        return $user->hasPermissionTo('Update Building') && $user->id === $building->manager_id;
+        return $user->hasPermissionTo('Update Building') && $user->id == $building->manager_id;
     }
 
     /**
