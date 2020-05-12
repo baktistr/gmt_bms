@@ -54,6 +54,12 @@ class Building extends Resource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
+        $user = $request->user();
+
+        if ($user->hasRole('Help Desk') || $user->hasRole('Viewer')) {
+            return $query->find($user->building_id);
+        }
+
         return $query;
     }
 
@@ -91,8 +97,11 @@ class Building extends Resource
                 ->rules('required')
                 ->sortable(),
 
-            HasMany::make('Electricity', 'electricity', Electricity::class)
+            HasMany::make('Help Desks', 'helpDesks', User::class),
 
+            HasMany::make('Viewers', 'viewers', User::class),
+
+            HasMany::make('Electricity', 'electricity', Electricity::class),
         ];
     }
 
