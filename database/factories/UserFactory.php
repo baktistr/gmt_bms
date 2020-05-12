@@ -23,9 +23,6 @@ use App\Testing\File;
 $factory->define(User::class, function (Faker $faker) {
     return [
         'name'              => $faker->name,
-        'building_id'       => function () {
-            return factory(Building::class)->create()->id;
-        },
         'email'             => $faker->unique()->safeEmail,
         'phone_number'      => $faker->phoneNumber,
         'email_verified_at' => now(),
@@ -39,6 +36,9 @@ $factory->state(User::class, 'building_manager', []);
 $factory->state(User::class, 'help_desk', []);
 $factory->state(User::class, 'viewer', []);
 
+$factory->state(User::class, 'with_assigned_building', ['building_id' => function () {
+    return factory(Building::class)->create()->id;
+}]);
 
 $factory->afterCreatingState(User::class, 'super_admin', function (User $user) {
     $user->assignRole('Super Admin');
