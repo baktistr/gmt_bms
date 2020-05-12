@@ -12,6 +12,13 @@ class BuildingSeeder extends Seeder
      */
     public function run()
     {
-        factory(Building::class , 5)->create();
+        // Create buildings with unassigned viewers and help-desks
+        factory(Building::class , 2)->create();
+
+        // Create buildings with assigned viewers and help-desks
+        factory(Building::class , rand(3, 5))->create()
+            ->each(function ($building) {
+                // Seed the viewers and help-desks here.
+            });
     }
 }
