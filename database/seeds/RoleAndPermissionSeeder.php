@@ -62,13 +62,16 @@ class RoleAndPermissionSeeder extends Seeder
         // Create the building permissions for each roles
         $buildingRolePermissions = [
             'Building Manager' => [
+                'View All Buildings',
                 'View Building',
                 'Update Building',
             ],
             'Help Desk'        => [
+                'View All Buildings',
                 'View Building',
             ],
             'Viewer'           => [
+                'View All Buildings',
                 'View Building',
             ],
         ];
