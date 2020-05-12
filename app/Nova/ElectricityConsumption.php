@@ -2,17 +2,19 @@
 
 namespace App\Nova;
 
-use App\Electricity as AppElectricity;
+use App\ElectricityConsumption as AppElectricity;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Rimu\FormattedNumber\FormattedNumber;
 
-class Electricity extends Resource
+class ElectricityConsumption extends Resource
 {
 
     /**
@@ -27,7 +29,7 @@ class Electricity extends Resource
      *
      * @var string
      */
-    public static $model = \App\Electricity::class;
+    public static $model = \App\ElectricityConsumption::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -46,39 +48,52 @@ class Electricity extends Resource
     ];
 
     /**
-     * Search With Relastion
+     * Search With relations
      *
      * @var array
      */
     public static $with = [
-        'building'
+        'building',
     ];
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function fields(Request $request)
     {
         return [
+            ID::make()->sortable(),
 
-            DateTime::make('date')
-                ->format('DD/MM/YYYY')
-                ->firstDayOfWeek(1),
+            BelongsTo::make('Building', 'building', Building::class)
+                ->rules(['required', 'exists:buildings,id'])
+                ->withoutTrashed(),
 
-            Number::make('LWBP')->sortable(),
+            Date::make('Date')
+                ->rules(['required', 'date_format:Y-m-d'])
+                ->withMeta([
+                    'value' => now()->format('Y-m-d'),
+                ]),
 
-            Number::make('LWBP_RATE')
-                ->sortable(),
+            FormattedNumber::make('LWBP Gauge (kwh)', 'lwbp')
+                ->rules(['required', 'numeric']),
 
-            Number::make('WBP')->sortable(),
+            FormattedNumber::make('LWBP Rate (Rp)', 'lwbp_rate')
+                ->rules(['required', 'numeric']),
 
-            Number::make('WBP_RATE')
-                ->sortable(),
+            FormattedNumber::make('WBP Gauge (kwh)', 'wbp')
+                ->rules(['required', 'numeric']),
 
-            Number::make('KVR')->sortable(),
+            FormattedNumber::make('WBP Rate (Rp)', 'wbp_rate')
+                ->rules(['required', 'numeric']),
+
+            FormattedNumber::make('KVAR (kvar)', 'kvar')
+                ->rules(['required', 'numeric']),
+
+            Markdown::make('Description')
+                ->nullable(),
 
             Number::make('Today Used', function (AppElectricity $electricity) {
                 return $electricity->electricityUsed();
@@ -87,20 +102,13 @@ class Electricity extends Resource
             Number::make('Total Cost', function (AppElectricity $electricity) {
                 return $electricity->totalCost();
             })->onlyOnIndex(),
-
-            Textarea::make('desc')
-                ->sortable()
-                ->hideFromIndex(),
-
-            BelongsTo::make('Building', 'building', Building::class)
-                ->onlyOnForms()
         ];
     }
 
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function cards(Request $request)
@@ -111,7 +119,7 @@ class Electricity extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function filters(Request $request)
@@ -122,7 +130,7 @@ class Electricity extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function lenses(Request $request)
@@ -133,7 +141,7 @@ class Electricity extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function actions(Request $request)

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateElectricitiesTable extends Migration
+class CreateElectricityConsumptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateElectricitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('electricities', function (Blueprint $table) {
+        Schema::create('electricity_consumptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('building_id');
-            $table->bigInteger('lwbp');
-            $table->bigInteger('lwbp_rate');
-            $table->bigInteger('wbp');
-            $table->bigInteger('wbp_rate');
-            $table->bigInteger('kvr')->default(0);
-            $table->string('desc')->nullable();
+            $table->unsignedBigInteger('building_id');
             $table->date('date');
+            $table->integer('lwbp');
+            $table->float('lwbp_rate');
+            $table->integer('wbp');
+            $table->float('wbp_rate');
+            $table->integer('kvar');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

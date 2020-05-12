@@ -38,6 +38,7 @@
         "laravel/nova": "*",
         "laravel/tinker": "^2.4",
         "outhebox/nova-hidden-field": "^1.0",
+        "rimu/formatted-number": "^0.2.0",
         "spatie/laravel-medialibrary": "^8.0.0",
         "spatie/laravel-permission": "^3.11",
         "vyuldashev/nova-permission": "^2.9"

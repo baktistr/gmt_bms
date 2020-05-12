@@ -21,13 +21,13 @@ class Building extends Model
     }
 
     /**
-     * A Building can Have Many electricity .
+     * A Building can Have Many electricity consumptions.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function electricity(): HasMany
+    public function electricityConsumptions(): HasMany
     {
-        return $this->hasMany(Electricity::class, 'building_id');
+        return $this->hasMany(ElectricityConsumption::class, 'building_id');
     }
 
     /**
