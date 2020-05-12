@@ -2,6 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Building;
 use App\User;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
@@ -21,7 +22,7 @@ use App\Testing\File;
 $factory->define(User::class, function (Faker $faker) {
     return [
         'name'              => $faker->name,
-        'building_id'       => rand(3,5),
+        'building_id'       => factory(Building::class)->create()->id,
         'email'             => $faker->unique()->safeEmail,
         'phone_number'      => $faker->phoneNumber,
         'email_verified_at' => now(),
