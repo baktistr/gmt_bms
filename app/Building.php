@@ -9,6 +9,11 @@ class Building extends Model
 {
     use SoftDeletes;
 
+    /**
+     * A building belongs to manager.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function manager()
     {
         return $this->belongsTo(User::class, 'manager_id');
