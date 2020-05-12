@@ -82,5 +82,7 @@ class RoleAndPermissionSeeder extends Seeder
             $role->syncPermissions($permissions);
         }
 
+        // Assign all permissions to super admin role
+        $superAdminRole->syncPermissions(Permission::all());
     }
 }
