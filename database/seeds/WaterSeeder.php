@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Water;
 
 class WaterSeeder extends Seeder
 {
@@ -11,6 +12,6 @@ class WaterSeeder extends Seeder
      */
     public function run()
     {
-        //
+        factory(Water::class, 5)->create();
     }
 }
