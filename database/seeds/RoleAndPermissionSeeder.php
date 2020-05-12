@@ -32,6 +32,7 @@ class RoleAndPermissionSeeder extends Seeder
         /**
          * Create the role permissions for building and assign to the given roles:
          *   1. Super Admin
+         *     - View All Buildings
          *     - Create Building
          *     - View Building (Show the building detail)
          *     - update Building
@@ -49,6 +50,7 @@ class RoleAndPermissionSeeder extends Seeder
 
         // Create the building permissions
         $buildingPermissions = [
+            'View All Buildings',
             'Create Building',
             'View Building',
             'Update Building',
