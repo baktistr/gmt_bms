@@ -20,7 +20,7 @@ class CreateElectricitiesTable extends Migration
             $table->bigInteger('lwbp_rate');
             $table->bigInteger('wbp');
             $table->bigInteger('wbp_rate');
-            $table->bigInteger('kvr');
+            $table->bigInteger('kvr')->default(0);
             $table->string('desc')->nullable();
             $table->date('date');
             $table->timestamps();

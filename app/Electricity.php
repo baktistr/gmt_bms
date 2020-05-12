@@ -7,6 +7,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Electricity extends Model
 {
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'date' => 'datetime',
+        'email_verified_at' => 'datetime',
+    ];
+
     /**
      * A electricity belongTo building.
      *

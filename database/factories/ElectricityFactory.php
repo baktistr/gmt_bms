@@ -9,12 +9,12 @@ use Faker\Generator as Faker;
 $factory->define(Electricity::class, function (Faker $faker) {
     return [
         'building_id' => fn () => factory(Building::class)->create()->id,
-        'lwbp'        => $faker->randomDigitNotNull,
-        'lwbp_rate'   => $faker->randomDigitNotNull,
-        'wbp'   => $faker->randomDigitNotNull,
-        'wbp_rate'   => $faker->randomDigitNotNull,
-        'kvr'   => $faker->randomDigitNotNull,
-        'desc' => $faker->paragraph,
-        'date' => now()
+        'lwbp'        => rand(100 , 500),
+        'lwbp_rate'   => rand(100 , 500),
+        'wbp'         => rand(100 , 500),
+        'wbp_rate'    => rand(100 , 500),
+        'kvr'         => rand(100 , 500),
+        'desc'        => $faker->paragraph,
+        'date'        => now()
     ];
 });

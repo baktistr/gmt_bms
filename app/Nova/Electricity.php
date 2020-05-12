@@ -4,13 +4,13 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Outhebox\NovaHiddenField\HiddenField;
 
-class Building extends Resource
+class Electricity extends Resource
 {
 
     /**
@@ -25,14 +25,14 @@ class Building extends Resource
      *
      * @var string
      */
-    public static $model = \App\Building::class;
+    public static $model = \App\Electricity::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -41,21 +41,7 @@ class Building extends Resource
      */
     public static $search = [
         'id',
-        'name',
-        'location'
     ];
-
-    /**
-     * Build an "index" query for the given resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return $query;
-    }
 
     /**
      * Search With Relastion
@@ -63,7 +49,7 @@ class Building extends Resource
      * @var array
      */
     public static $with = [
-        'manager'
+        'building'
     ];
 
     /**
@@ -77,22 +63,25 @@ class Building extends Resource
         return [
             ID::make()->sortable(),
 
-            HiddenField::make('Admin', 'manager_id')
-                ->defaultValue($request->user()->id)
-                ->onlyOnForms(),
+            Number::make('LWBP')->sortable(),
 
-            BelongsTo::make('Manager', 'manager', User::class),
+            Number::make('LWBP_RATE')->sortable(),
 
-            Text::make('name', 'name')
-                ->rules('required')
-                ->sortable(),
+            Number::make('WBP')->sortable(),
 
-            Text::make('location', 'location')
-                ->rules('required')
-                ->sortable(),
+            Number::make('WBP_RATE')->sortable(),
 
-            HasMany::make('Electricity', 'electricity', Electricity::class)
+            Number::make('KVR')->sortable(),
 
+            Textarea::make('desc')
+                ->sortable()
+                ->hideFromIndex(),
+
+            Date::make('date')
+                ->hideFromIndex()
+                ->format('DD - MM - YYYY'),
+
+            BelongsTo::make('Building', 'building', Building::class),
         ];
     }
 
