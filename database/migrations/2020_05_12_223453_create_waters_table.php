@@ -15,6 +15,11 @@ class CreateWatersTable extends Migration
     {
         Schema::create('waters', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('building_id');
+            $table->float('water_usage', 8, 2);
+            $table->float('water_rate', 8, 2);
+            $table->string('desc');
+            $table->date('date');
             $table->timestamps();
         });
     }
