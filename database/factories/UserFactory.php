@@ -28,11 +28,26 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(User::class, 'super_admin', ['is_super_admin' => true]);
-$factory->state(User::class, 'manager', ['is_manager' => true]);
-$factory->state(User::class, 'help_desk', ['is_help_desk' => true]);
-$factory->state(User::class, 'viewer', ['is_viewer' => true]);
+$factory->state(User::class, 'super_admin', []);
+$factory->state(User::class, 'building_manager', []);
+$factory->state(User::class, 'help_desk', []);
+$factory->state(User::class, 'viewer', []);
 
+$factory->afterCreatingState(User::class, 'super_admin', function (User $user) {
+    $user->assignRole('Super Admin');
+});
+
+$factory->afterCreatingState(User::class, 'building_manager', function (User $user) {
+    $user->assignRole('Building Manager');
+});
+
+$factory->afterCreatingState(User::class, 'help_desk', function (User $user) {
+    $user->assignRole('Help Desk');
+});
+
+$factory->afterCreatingState(User::class, 'viewer', function (User $user) {
+    $user->assignRole('Viewer');
+});
 
 $factory->afterCreating(User::class, function (User $user) {
     // Add avatar image to factory.

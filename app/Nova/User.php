@@ -7,10 +7,9 @@ use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
-
-// Extenr Packages
 use KABBOUCHI\NovaImpersonate\Impersonate;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
+use Vyuldashev\NovaPermission\RoleSelect;
 
 class User extends Resource
 {
@@ -57,11 +56,6 @@ class User extends Resource
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-
-            Impersonate::make($this)->withMeta([
-                'redirect_to' => config('nova.path')
-            ]),
-
             Text::make('Email')
                 ->sortable()
                 ->rules('required', 'email', 'max:254')
@@ -73,17 +67,12 @@ class User extends Resource
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
 
-            Boolean::make('Is Super Admin')
+            RoleSelect::make('Role', 'roles')
                 ->sortable(),
 
-            Boolean::make('Is Manager')
-                ->sortable(),
-
-            Boolean::make('Is Viewer')
-                ->sortable(),
-
-            Boolean::make('Is Help Desk')
-                ->sortable(),
+            Impersonate::make($this)->withMeta([
+                'redirect_to' => config('nova.path')
+            ]),
         ];
     }
 
