@@ -2,6 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Building;
 use App\User;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
@@ -18,6 +19,7 @@ use App\Testing\File;
 |
 */
 
+
 $factory->define(User::class, function (Faker $faker) {
     return [
         'name'              => $faker->name,
@@ -33,6 +35,10 @@ $factory->state(User::class, 'super_admin', []);
 $factory->state(User::class, 'building_manager', []);
 $factory->state(User::class, 'help_desk', []);
 $factory->state(User::class, 'viewer', []);
+
+$factory->state(User::class, 'with_assigned_building', ['building_id' => function () {
+    return factory(Building::class)->create()->id;
+}]);
 
 $factory->afterCreatingState(User::class, 'super_admin', function (User $user) {
     $user->assignRole('Super Admin');

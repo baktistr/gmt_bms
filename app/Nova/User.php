@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
@@ -76,8 +77,9 @@ class User extends Resource
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
 
-            RoleSelect::make('Role', 'roles')
-                ->sortable(),
+            RoleSelect::make('Role', 'roles'),
+
+            BelongsTo::make('Assigned Building', 'assignedBuilding', Building::class),
 
             HasOne::make('Building', 'building', Building::class),
 
