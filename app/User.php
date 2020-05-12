@@ -85,7 +85,7 @@ class User extends Authenticatable implements HasMedia
      * @param $role
      * @return bool
      */
-    public function scopeRole($query, $role)
+    public function scopeRole(String $query, String $role)
     {
         return $query->where($role, true)->get();
     }

@@ -27,4 +27,15 @@ class Electricity extends Model
     {
         return $this->belongsTo(Building::class, 'building_id');
     }
+
+    public function electricityUsed(): int
+    {
+        return $this->lwbp + $this->wbp + $this->kvr;
+    }
+
+
+    public function totalCost(): int
+    {
+        return $this->lwbp_rate + $this->wbp_rate;
+    }
 }

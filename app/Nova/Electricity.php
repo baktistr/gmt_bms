@@ -2,11 +2,13 @@
 
 namespace App\Nova;
 
+use App\Electricity as AppElectricity;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -61,27 +63,37 @@ class Electricity extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
+
+            DateTime::make('date')
+                ->format('DD/MM/YYYY')
+                ->firstDayOfWeek(1),
 
             Number::make('LWBP')->sortable(),
 
-            Number::make('LWBP_RATE')->sortable(),
+            Number::make('LWBP_RATE')
+                ->sortable(),
 
             Number::make('WBP')->sortable(),
 
-            Number::make('WBP_RATE')->sortable(),
+            Number::make('WBP_RATE')
+                ->sortable(),
 
             Number::make('KVR')->sortable(),
+
+            Number::make('Today Used', function (AppElectricity $electricity) {
+                return $electricity->electricityUsed();
+            })->onlyOnIndex(),
+
+            Number::make('Total Cost', function (AppElectricity $electricity) {
+                return $electricity->totalCost();
+            })->onlyOnIndex(),
 
             Textarea::make('desc')
                 ->sortable()
                 ->hideFromIndex(),
 
-            Date::make('date')
-                ->hideFromIndex()
-                ->format('DD - MM - YYYY'),
-
-            BelongsTo::make('Building', 'building', Building::class),
+            BelongsTo::make('Building', 'building', Building::class)
+                ->onlyOnForms()
         ];
     }
 
