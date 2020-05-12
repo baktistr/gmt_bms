@@ -21,6 +21,7 @@ use App\Testing\File;
 $factory->define(User::class, function (Faker $faker) {
     return [
         'name'              => $faker->name,
+        'building_id'       => rand(4,5),
         'email'             => $faker->unique()->safeEmail,
         'phone_number'      => $faker->phoneNumber,
         'email_verified_at' => now(),
