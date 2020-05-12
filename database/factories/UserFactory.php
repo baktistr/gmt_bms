@@ -19,6 +19,7 @@ use App\Testing\File;
 |
 */
 
+
 $factory->define(User::class, function (Faker $faker) {
     return [
         'name'              => $faker->name,
@@ -37,6 +38,7 @@ $factory->state(User::class, 'super_admin', []);
 $factory->state(User::class, 'building_manager', []);
 $factory->state(User::class, 'help_desk', []);
 $factory->state(User::class, 'viewer', []);
+
 
 $factory->afterCreatingState(User::class, 'super_admin', function (User $user) {
     $user->assignRole('Super Admin');
