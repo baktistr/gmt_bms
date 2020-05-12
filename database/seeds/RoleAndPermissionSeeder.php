@@ -32,6 +32,7 @@ class RoleAndPermissionSeeder extends Seeder
         /**
          * Create the role permissions for building and assign to the given roles:
          *   1. Super Admin
+         *     - View All Buildings
          *     - Create Building
          *     - View Building (Show the building detail)
          *     - update Building
@@ -49,6 +50,7 @@ class RoleAndPermissionSeeder extends Seeder
 
         // Create the building permissions
         $buildingPermissions = [
+            'View All Buildings',
             'Create Building',
             'View Building',
             'Update Building',
@@ -60,13 +62,16 @@ class RoleAndPermissionSeeder extends Seeder
         // Create the building permissions for each roles
         $buildingRolePermissions = [
             'Building Manager' => [
+                'View All Buildings',
                 'View Building',
                 'Update Building',
             ],
             'Help Desk'        => [
+                'View All Buildings',
                 'View Building',
             ],
             'Viewer'           => [
+                'View All Buildings',
                 'View Building',
             ],
         ];
@@ -82,5 +87,7 @@ class RoleAndPermissionSeeder extends Seeder
             $role->syncPermissions($permissions);
         }
 
+        // Assign all permissions to super admin role
+        $superAdminRole->syncPermissions(Permission::all());
     }
 }
