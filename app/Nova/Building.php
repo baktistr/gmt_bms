@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -90,6 +91,9 @@ class Building extends Resource
                 ->rules('required')
                 ->sortable(),
 
+            HasMany::make('Help Desks', 'helpDesks', User::class),
+
+            HasMany::make('Viewers', 'viewers', User::class),
         ];
     }
 
