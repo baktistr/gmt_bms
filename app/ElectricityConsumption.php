@@ -17,8 +17,7 @@ class ElectricityConsumption extends Model implements HasMedia
      * @var array
      */
     protected $casts = [
-        'date' => 'datetime',
-        'email_verified_at' => 'datetime',
+        'date' => 'date',
     ];
 
     /**
