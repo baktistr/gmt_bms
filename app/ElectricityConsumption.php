@@ -32,6 +32,46 @@ class ElectricityConsumption extends Model implements HasMedia
     }
 
     /**
+     * Get formatted LWBP gauge
+     *
+     * @return mixed
+     */
+    public function getFormattedLwbpGaugeAttribute()
+    {
+        return number_format($this->lwbp) . ' kwh';
+    }
+
+    /**
+     * Get formatted WBP gauge
+     *
+     * @return mixed
+     */
+    public function getFormattedWbpGaugeAttribute()
+    {
+        return number_format($this->wbp) . ' kwh';
+    }
+
+    /**
+     * Get formatted LWBP rate
+     *
+     * @return mixed
+     */
+    public function getFormattedLwbpRateAttribute()
+    {
+        return number_format($this->lwbp_rate) . ' kwh';
+    }
+
+    /**
+     * Get formatted WBP rate
+     *
+     * @return mixed
+     */
+    public function getFormattedWbpRateAttribute()
+    {
+        return number_format($this->wbp_rate) . ' kwh';
+    }
+
+    /**
      * Get formatted total usage
      *
      * @return mixed

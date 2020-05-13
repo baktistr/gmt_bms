@@ -77,19 +77,40 @@ class ElectricityConsumption extends Resource
                 ]),
 
             FormattedNumber::make('LWBP Gauge (kwh)', 'lwbp')
-                ->rules(['required', 'numeric']),
+                ->rules(['required', 'numeric'])
+                ->onlyOnForms(),
 
             FormattedNumber::make('LWBP Rate (Rp)', 'lwbp_rate')
-                ->rules(['required', 'numeric']),
+                ->rules(['required', 'numeric'])
+                ->onlyOnForms(),
 
             FormattedNumber::make('WBP Gauge (kwh)', 'wbp')
-                ->rules(['required', 'numeric']),
+                ->rules(['required', 'numeric'])
+                ->onlyOnForms(),
 
             FormattedNumber::make('WBP Rate (Rp)', 'wbp_rate')
-                ->rules(['required', 'numeric']),
+                ->rules(['required', 'numeric'])
+                ->onlyOnForms(),
 
             FormattedNumber::make('KVAR (kvar)', 'kvar')
-                ->rules(['required', 'numeric']),
+                ->rules(['required', 'numeric'])
+                ->onlyOnForms(),
+
+            Text::make('LWBP Gauge', function () {
+                return $this->formatted_lwbp_gauge;
+            })->exceptOnForms(),
+
+            Text::make('LWBP Rate', function () {
+                return $this->formatted_lwbp_rate;
+            })->exceptOnForms(),
+
+            Text::make('WBP Gauge', function () {
+                return $this->formatted_wbp_gauge;
+            })->exceptOnForms(),
+
+            Text::make('WBP Rate', function () {
+                return $this->formatted_wbp_rate;
+            })->exceptOnForms(),
 
             Text::make('Total Usage', function () {
                 return $this->formatted_total_usage;
@@ -97,11 +118,11 @@ class ElectricityConsumption extends Resource
 
             Text::make('Total LWBP Cost', function () {
                 return $this->formatted_lwbp_cost;
-            }),
+            })->hideFromIndex(),
 
             Text::make('Total WBP Cost', function () {
                 return $this->formatted_wbp_cost;
-            }),
+            })->hideFromIndex(),
 
             Text::make('Total Cost', function () {
                 return $this->formatted_total_cost;
