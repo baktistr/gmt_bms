@@ -16,9 +16,12 @@ class WaterConsumptionSeeder extends Seeder
         // Get the generated buildings from other seeder and seed the wate consumptions.
         Building::get()
             ->each(function ($building) {
-                factory(WaterConsumption::class, rand(5, 10))->create([
-                    'building_id' => $building->id,
-                ]);
+                for ($i = 1; $i <= rand(10, 30); $i++) {
+                    factory(WaterConsumption::class)->create([
+                        'building_id' => $building->id,
+                        'date'        => now()->subDays($i),
+                    ]);
+                }
             });
     }
 }

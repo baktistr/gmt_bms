@@ -16,9 +16,12 @@ class ElectricityConsumptionSeeder extends Seeder
         // Get the generated buildings from other seeder and seed the electricity consumptions.
         Building::get()
             ->each(function ($building) {
-                factory(ElectricityConsumption::class, rand(5, 10))->create([
-                    'building_id' => $building->id,
-                ]);
+                for ($i = 1; $i <= rand(10, 30); $i++) {
+                    factory(ElectricityConsumption::class)->create([
+                        'building_id' => $building->id,
+                        'date'        => now()->subDays($i),
+                    ]);
+                }
             });
     }
 }
