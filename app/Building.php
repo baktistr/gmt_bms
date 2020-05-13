@@ -31,6 +31,16 @@ class Building extends Model
     }
 
     /**
+     * A Building can Have Many electricity consumptions.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function waterConsumptions(): HasMany
+    {
+        return $this->hasMany(WaterConsumption::class, 'building_id');
+    }
+
+    /**
      * A building can assign many viewers.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

@@ -73,16 +73,14 @@ class WaterConsumption extends Resource
                     'value' => now()->format('Y-m-d'),
                 ]),
 
-            FormattedNumber::make('Water Usage (m3)', 'lwbp')
+            FormattedNumber::make('Water Usage (m3)', 'water_usage')
                 ->rules(['required', 'numeric']),
 
-            FormattedNumber::make('Water Rate (Rp)', 'lwbp_rate')
+            FormattedNumber::make('Water Rate (Rp)', 'water_rate')
                 ->rules(['required', 'numeric']),
 
-            Markdown::make('Description')
+            Markdown::make('Description', 'desc')
                 ->nullable(),
-
-
 
         ];
     }

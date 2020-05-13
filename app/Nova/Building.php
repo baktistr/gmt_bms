@@ -101,7 +101,9 @@ class Building extends Resource
 
             HasMany::make('Viewers', 'viewers', User::class),
 
-            HasMany::make('Electricity Consumptions'),
+            HasMany::make('Electricity Consumptions', 'electricityConsumptions', ElectricityConsumption::class),
+
+            HasMany::make('Water Consumptions', 'waterConsumptions', WaterConsumption::class),
         ];
     }
 
