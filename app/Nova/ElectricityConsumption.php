@@ -90,17 +90,20 @@ class ElectricityConsumption extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
-
-            BelongsTo::make('Building', 'building', Building::class)
-                ->rules(['required', 'exists:buildings,id'])
-                ->withoutTrashed(),
-
             Date::make('Date')
                 ->rules(['required', 'date_format:Y-m-d'])
                 ->withMeta([
                     'value' => now()->format('Y-m-d'),
-                ]),
+                ])
+                ->onlyOnForms(),
+
+            Date::make('Date')
+                ->sortable()
+                ->exceptOnForms(),
+
+            BelongsTo::make('Building', 'building', Building::class)
+                ->rules(['required', 'exists:buildings,id'])
+                ->withoutTrashed(),
 
             FormattedNumber::make('LWBP Gauge (kwh)', 'lwbp')
                 ->rules(['required', 'numeric'])
