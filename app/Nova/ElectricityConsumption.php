@@ -10,6 +10,7 @@ use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Text;
 use Rimu\FormattedNumber\FormattedNumber;
 
 class ElectricityConsumption extends Resource
@@ -90,6 +91,22 @@ class ElectricityConsumption extends Resource
             FormattedNumber::make('KVAR (kvar)', 'kvar')
                 ->rules(['required', 'numeric']),
 
+            Text::make('Total Usage', function () {
+                return $this->formatted_total_usage;
+            }),
+
+            Text::make('Total LWBP Cost', function () {
+                return $this->formatted_lwbp_cost;
+            }),
+
+            Text::make('Total WBP Cost', function () {
+                return $this->formatted_wbp_cost;
+            }),
+
+            Text::make('Total Cost', function () {
+                return $this->formatted_total_cost;
+            }),
+
             Images::make('LWBP Payment Receipt', 'lwbp')
                 ->rules(['required'])
                 ->hideFromIndex(),
@@ -100,14 +117,6 @@ class ElectricityConsumption extends Resource
 
             Markdown::make('Description')
                 ->nullable(),
-
-            Number::make('Today Used', function (AppElectricity $electricity) {
-                return $electricity->electricityUsed();
-            })->onlyOnIndex(),
-
-            Number::make('Total Cost', function (AppElectricity $electricity) {
-                return $electricity->totalCost();
-            })->onlyOnIndex(),
         ];
     }
 
