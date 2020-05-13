@@ -10,8 +10,8 @@ $factory->define(WaterConsumption::class, function (Faker $faker) {
     return [
         'building_id' => fn () => factory(Building::class)->create()->id,
         'water_usage' => rand(100, 1000),
-        'water_rate'  => rand(100, 800),
-        'desc'        => $faker->paragraph,
+        'water_rate'  => rand(1000, 8000),
+        'desc'        => $faker->sentence,
         'date'        => now(),
     ];
 });

@@ -2,12 +2,17 @@
 
 namespace App\Nova;
 
+use App\WaterConsumption as AppWaterConsumption;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 use Rimu\FormattedNumber\FormattedNumber;
 
 class WaterConsumption extends Resource
@@ -63,8 +68,22 @@ class WaterConsumption extends Resource
         return [
             ID::make()->sortable(),
 
+
+
+            FormattedNumber::make('Water Usage (m3)', 'water_usage')
+                ->rules(['required', 'numeric'])
+                ->onlyOnForms(),
+
+            FormattedNumber::make('Water Rate (Rp)', 'water_rate')
+                ->rules(['required', 'numeric'])
+                ->onlyOnForms(),
+
+
+
+
             BelongsTo::make('Building', 'building', Building::class)
                 ->rules(['required', 'exists:buildings,id'])
+                ->hideFromIndex()
                 ->withoutTrashed(),
 
             Date::make('Date', 'date')
@@ -73,14 +92,28 @@ class WaterConsumption extends Resource
                     'value' => now()->format('Y-m-d'),
                 ]),
 
-            FormattedNumber::make('Water Usage (m3)', 'water_usage')
-                ->rules(['required', 'numeric']),
+            Text::make('Water Rate', function () {
+                return $this->formatted_water_rate;
+            })->exceptOnForms(),
 
-            FormattedNumber::make('Water Rate (Rp)', 'water_rate')
-                ->rules(['required', 'numeric']),
+            Text::make('Water Usage', function () {
+                return $this->formatted_water_usage;
+            })->exceptOnForms(),
+
+            Text::make('Total Usage', function () {
+                return $this->formatted_total_usage;
+            })->exceptOnForms(),
+
 
             Markdown::make('Description', 'desc')
                 ->nullable(),
+
+
+            new Panel('Receipt of Payments', [
+                Images::make('Water Payment Receipt', 'water_usage')
+                    ->rules(['required'])
+                    ->hideFromIndex(),
+            ]),
 
         ];
     }
