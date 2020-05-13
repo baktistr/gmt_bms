@@ -3,15 +3,16 @@
 namespace App\Nova;
 
 use App\ElectricityConsumption as AppElectricity;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 use Rimu\FormattedNumber\FormattedNumber;
 
 class ElectricityConsumption extends Resource
@@ -57,6 +58,24 @@ class ElectricityConsumption extends Resource
     ];
 
     /**
+     * Build an "index" query for the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        $user = $request->user();
+
+        if (($user->hasRole('Help Desk') || $user->hasRole('Viewer')) && $user->building_id) {
+            return $query->where('building_id', $user->building_id);
+        }
+
+        return $query;
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param \Illuminate\Http\Request $request
@@ -78,30 +97,70 @@ class ElectricityConsumption extends Resource
                 ]),
 
             FormattedNumber::make('LWBP Gauge (kwh)', 'lwbp')
-                ->rules(['required', 'numeric']),
+                ->rules(['required', 'numeric'])
+                ->onlyOnForms(),
 
             FormattedNumber::make('LWBP Rate (Rp)', 'lwbp_rate')
-                ->rules(['required', 'numeric']),
+                ->rules(['required', 'numeric'])
+                ->onlyOnForms(),
 
             FormattedNumber::make('WBP Gauge (kwh)', 'wbp')
-                ->rules(['required', 'numeric']),
+                ->rules(['required', 'numeric'])
+                ->onlyOnForms(),
 
             FormattedNumber::make('WBP Rate (Rp)', 'wbp_rate')
-                ->rules(['required', 'numeric']),
+                ->rules(['required', 'numeric'])
+                ->onlyOnForms(),
 
             FormattedNumber::make('KVAR (kvar)', 'kvar')
-                ->rules(['required', 'numeric']),
+                ->rules(['required', 'numeric'])
+                ->onlyOnForms(),
+
+            Text::make('LWBP Gauge', function () {
+                return $this->formatted_lwbp_gauge;
+            })->exceptOnForms(),
+
+            Text::make('LWBP Rate', function () {
+                return $this->formatted_lwbp_rate;
+            })->exceptOnForms(),
+
+            Text::make('WBP Gauge', function () {
+                return $this->formatted_wbp_gauge;
+            })->exceptOnForms(),
+
+            Text::make('WBP Rate', function () {
+                return $this->formatted_wbp_rate;
+            })->exceptOnForms(),
+
+            Text::make('Total Usage', function () {
+                return $this->formatted_total_usage;
+            }),
+
+            Text::make('Total LWBP Cost', function () {
+                return $this->formatted_lwbp_cost;
+            })->hideFromIndex(),
+
+            Text::make('Total WBP Cost', function () {
+                return $this->formatted_wbp_cost;
+            })->hideFromIndex(),
+
+            Text::make('Total Cost', function () {
+                return $this->formatted_total_cost;
+            }),
 
             Markdown::make('Description')
-                ->nullable(),
+                ->nullable()
+                ->alwaysShow(),
 
-            Number::make('Today Used', function (AppElectricity $electricity) {
-                return $electricity->electricityUsed();
-            })->onlyOnIndex(),
+            new Panel('Receipt of Payments', [
+                Images::make('LWBP Payment Receipt', 'lwbp')
+                    ->rules(['required'])
+                    ->hideFromIndex(),
 
-            Number::make('Total Cost', function (AppElectricity $electricity) {
-                return $electricity->totalCost();
-            })->onlyOnIndex(),
+                Images::make('WBP Payment Receipt', 'wbp')
+                    ->rules(['required'])
+                    ->hideFromIndex(),
+            ]),
         ];
     }
 
