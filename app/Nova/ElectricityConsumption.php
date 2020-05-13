@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Panel;
 use Rimu\FormattedNumber\FormattedNumber;
 
 class ElectricityConsumption extends Resource
@@ -128,16 +129,19 @@ class ElectricityConsumption extends Resource
                 return $this->formatted_total_cost;
             }),
 
-            Images::make('LWBP Payment Receipt', 'lwbp')
-                ->rules(['required'])
-                ->hideFromIndex(),
-
-            Images::make('WBP Payment Receipt', 'wbp')
-                ->rules(['required'])
-                ->hideFromIndex(),
-
             Markdown::make('Description')
-                ->nullable(),
+                ->nullable()
+                ->alwaysShow(),
+
+            new Panel('Receipt of Payments', [
+                Images::make('LWBP Payment Receipt', 'lwbp')
+                    ->rules(['required'])
+                    ->hideFromIndex(),
+
+                Images::make('WBP Payment Receipt', 'wbp')
+                    ->rules(['required'])
+                    ->hideFromIndex(),
+            ]),
         ];
     }
 
