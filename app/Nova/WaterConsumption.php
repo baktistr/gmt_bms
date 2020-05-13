@@ -2,7 +2,7 @@
 
 namespace App\Nova;
 
-use App\ElectricityConsumption as AppElectricity;
+use App\WaterConsumption as AppWaterConsumption;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
@@ -15,22 +15,22 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Rimu\FormattedNumber\FormattedNumber;
 
-class ElectricityConsumption extends Resource
+class WaterConsumption extends Resource
 {
-
     /**
-     * The logical group associated with the resource.
+     * The model the resource corresponds to.
      *
      * @var string
      */
     public static $group = 'Manage';
+
 
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\ElectricityConsumption::class;
+    public static $model = \App\WaterConsumption::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -49,7 +49,7 @@ class ElectricityConsumption extends Resource
     ];
 
     /**
-     * Search With relations
+     * Searching With Relation
      *
      * @var array
      */
@@ -84,7 +84,7 @@ class ElectricityConsumption extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function fields(Request $request)
@@ -105,78 +105,39 @@ class ElectricityConsumption extends Resource
                 ->rules(['required', 'exists:buildings,id'])
                 ->withoutTrashed(),
 
-            FormattedNumber::make('LWBP Gauge (kwh)', 'lwbp')
+            FormattedNumber::make('Usage (m3)', 'usage')
                 ->rules(['required', 'numeric'])
                 ->onlyOnForms(),
 
-            FormattedNumber::make('LWBP Rate (Rp)', 'lwbp_rate')
+            FormattedNumber::make('Rate (Rp)', 'rate')
                 ->rules(['required', 'numeric'])
                 ->onlyOnForms(),
 
-            FormattedNumber::make('WBP Gauge (kwh)', 'wbp')
-                ->rules(['required', 'numeric'])
-                ->onlyOnForms(),
-
-            FormattedNumber::make('WBP Rate (Rp)', 'wbp_rate')
-                ->rules(['required', 'numeric'])
-                ->onlyOnForms(),
-
-            FormattedNumber::make('KVAR (kvar)', 'kvar')
-                ->rules(['required', 'numeric'])
-                ->onlyOnForms(),
-
-            Text::make('LWBP Gauge', function () {
-                return $this->formatted_lwbp_gauge;
+            Text::make('Usage', function () {
+                return $this->formatted_usage;
             })->exceptOnForms(),
 
-            Text::make('LWBP Rate', function () {
-                return $this->formatted_lwbp_rate;
-            })->exceptOnForms(),
-
-            Text::make('WBP Gauge', function () {
-                return $this->formatted_wbp_gauge;
-            })->exceptOnForms(),
-
-            Text::make('WBP Rate', function () {
-                return $this->formatted_wbp_rate;
+            Text::make('Rate', function () {
+                return $this->formatted_rate;
             })->exceptOnForms(),
 
             Text::make('Total Usage', function () {
                 return $this->formatted_total_usage;
-            }),
-
-            Text::make('Total LWBP Cost', function () {
-                return $this->formatted_lwbp_cost;
-            })->hideFromIndex(),
-
-            Text::make('Total WBP Cost', function () {
-                return $this->formatted_wbp_cost;
-            })->hideFromIndex(),
-
-            Text::make('Total Cost', function () {
-                return $this->formatted_total_cost;
-            }),
+            })->exceptOnForms(),
 
             Markdown::make('Description')
-                ->nullable()
-                ->alwaysShow(),
+                ->nullable(),
 
-            new Panel('Receipt of Payments', [
-                Images::make('LWBP Payment Receipt', 'lwbp')
-                    ->rules(['required'])
-                    ->hideFromIndex(),
-
-                Images::make('WBP Payment Receipt', 'wbp')
-                    ->rules(['required'])
-                    ->hideFromIndex(),
-            ]),
+            Images::make('Payment Receipt', 'payment_receipt')
+                ->rules(['required'])
+                ->hideFromIndex(),
         ];
     }
 
     /**
      * Get the cards available for the request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function cards(Request $request)
@@ -187,7 +148,7 @@ class ElectricityConsumption extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function filters(Request $request)
@@ -198,7 +159,7 @@ class ElectricityConsumption extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function lenses(Request $request)
@@ -209,7 +170,7 @@ class ElectricityConsumption extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function actions(Request $request)

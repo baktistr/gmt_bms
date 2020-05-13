@@ -42,40 +42,44 @@ class Building extends Resource
     public static $search = [
         'id',
         'name',
-        'location'
+        'location',
     ];
 
     /**
      * Build an "index" query for the given resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder   $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
         $user = $request->user();
 
-        if ($user->hasRole('Help Desk') || $user->hasRole('Viewer')) {
-            return $query->find($user->building_id);
+        if ($user->hasRole('Building Manager')) {
+            return $query->where('manager_id', $user->id);
+        }
+
+        if (($user->hasRole('Help Desk') || $user->hasRole('Viewer')) && $user->building_id) {
+            return $query->where('building_id', $user->building_id);
         }
 
         return $query;
     }
 
     /**
-     * Search With Relastion
+     * Search With Relation
      *
      * @var array
      */
     public static $with = [
-        'manager'
+        'manager',
     ];
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function fields(Request $request)
@@ -97,18 +101,20 @@ class Building extends Resource
                 ->rules('required')
                 ->sortable(),
 
-            HasMany::make('Electricity Consumptions', 'electricityConsumptions', ElectricityConsumption::class),
-
             HasMany::make('Help Desks', 'helpDesks', User::class),
 
             HasMany::make('Viewers', 'viewers', User::class),
+
+            HasMany::make('Electricity Consumptions', 'electricityConsumptions', ElectricityConsumption::class),
+
+            HasMany::make('Water Consumptions', 'waterConsumptions', WaterConsumption::class),
         ];
     }
 
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function cards(Request $request)
@@ -119,7 +125,7 @@ class Building extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function filters(Request $request)
@@ -130,7 +136,7 @@ class Building extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function lenses(Request $request)
@@ -141,7 +147,7 @@ class Building extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function actions(Request $request)

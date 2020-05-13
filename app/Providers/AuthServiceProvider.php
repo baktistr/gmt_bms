@@ -3,9 +3,13 @@
 namespace App\Providers;
 
 use App\Building;
+use App\ElectricityConsumption;
 use App\Policies\BuildingPolicy;
+use App\Policies\ElectricityConsumptionPolicy;
 use App\Policies\UserPolicy;
+use App\Policies\WaterConsumptionPolicy;
 use App\User;
+use App\WaterConsumption;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -17,8 +21,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        User::class     => UserPolicy::class,
-        Building::class => BuildingPolicy::class,
+        User::class                   => UserPolicy::class,
+        Building::class               => BuildingPolicy::class,
+        ElectricityConsumption::class => ElectricityConsumptionPolicy::class,
+        WaterConsumption::class       => WaterConsumptionPolicy::class,
     ];
 
     /**
