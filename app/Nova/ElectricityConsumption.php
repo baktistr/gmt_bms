@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Rimu\FormattedNumber\FormattedNumber;
 
@@ -55,6 +56,24 @@ class ElectricityConsumption extends Resource
     public static $with = [
         'building',
     ];
+
+    /**
+     * Build an "index" query for the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        $user = $request->user();
+
+        if (($user->hasRole('Help Desk') || $user->hasRole('Viewer')) && $user->building_id) {
+            return $query->where('building_id', $user->building_id);
+        }
+
+        return $query;
+    }
 
     /**
      * Get the fields displayed by the resource.
