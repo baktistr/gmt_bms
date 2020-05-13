@@ -68,6 +68,12 @@ class ElectricityConsumption extends Resource
     {
         $user = $request->user();
 
+        if ($user->hasRole('Building Manager')) {
+            return $query->whereHas('building', function ($q) use ($user) {
+                return $q->where('manager_id', $user->id);
+            });
+        }
+
         if (($user->hasRole('Help Desk') || $user->hasRole('Viewer')) && $user->building_id) {
             return $query->where('building_id', $user->building_id);
         }

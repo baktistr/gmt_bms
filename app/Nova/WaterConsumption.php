@@ -51,11 +51,35 @@ class WaterConsumption extends Resource
     /**
      * Searching With Relation
      *
-     * @var Array
+     * @var array
      */
     public static $with = [
         'building',
     ];
+
+    /**
+     * Build an "index" query for the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        $user = $request->user();
+
+        if ($user->hasRole('Building Manager')) {
+            return $query->whereHas('building', function ($q) use ($user) {
+                return $q->where('manager_id', $user->id);
+            });
+        }
+
+        if (($user->hasRole('Help Desk') || $user->hasRole('Viewer')) && $user->building_id) {
+            return $query->where('building_id', $user->building_id);
+        }
+
+        return $query;
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -68,22 +92,8 @@ class WaterConsumption extends Resource
         return [
             ID::make()->sortable(),
 
-
-
-            FormattedNumber::make('Water Usage (m3)', 'water_usage')
-                ->rules(['required', 'numeric'])
-                ->onlyOnForms(),
-
-            FormattedNumber::make('Water Rate (Rp)', 'water_rate')
-                ->rules(['required', 'numeric'])
-                ->onlyOnForms(),
-
-
-
-
             BelongsTo::make('Building', 'building', Building::class)
                 ->rules(['required', 'exists:buildings,id'])
-                ->hideFromIndex()
                 ->withoutTrashed(),
 
             Date::make('Date', 'date')
@@ -92,29 +102,32 @@ class WaterConsumption extends Resource
                     'value' => now()->format('Y-m-d'),
                 ]),
 
-            Text::make('Water Rate', function () {
-                return $this->formatted_water_rate;
+            FormattedNumber::make('Usage (m3)', 'usage')
+                ->rules(['required', 'numeric'])
+                ->onlyOnForms(),
+
+            FormattedNumber::make('Rate (Rp)', 'rate')
+                ->rules(['required', 'numeric'])
+                ->onlyOnForms(),
+
+            Text::make('Usage', function () {
+                return $this->formatted_usage;
             })->exceptOnForms(),
 
-            Text::make('Water Usage', function () {
-                return $this->formatted_water_usage;
+            Text::make('Rate', function () {
+                return $this->formatted_rate;
             })->exceptOnForms(),
 
             Text::make('Total Usage', function () {
                 return $this->formatted_total_usage;
             })->exceptOnForms(),
 
-
-            Markdown::make('Description', 'desc')
+            Markdown::make('Description')
                 ->nullable(),
 
-
-            new Panel('Receipt of Payments', [
-                Images::make('Water Payment Receipt', 'water_usage')
-                    ->rules(['required'])
-                    ->hideFromIndex(),
-            ]),
-
+            Images::make('Payment Receipt', 'payment_receipt')
+                ->rules(['required'])
+                ->hideFromIndex(),
         ];
     }
 
