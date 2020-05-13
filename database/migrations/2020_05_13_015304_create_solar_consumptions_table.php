@@ -20,6 +20,7 @@ class CreateSolarConsumptionsTable extends Migration
             $table->integer('sisa_solar');
             $table->string('informasi')->nullable();
             $table->text('catatan')->nullable();
+            $table->date('date');
             $table->timestamps();
         });
     }
