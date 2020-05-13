@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "414469eda80bb75044d57260f9dde90d",
+    "content-hash": "c9dd92a2d8b63621f8f6d7f7bcc33716",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3216,6 +3216,47 @@
                 "uuid"
             ],
             "time": "2020-03-29T20:13:32+00:00"
+        },
+        {
+            "name": "rimu/formatted-number",
+            "version": "0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/RingierIMU/laravel-nova-formatted-number.git",
+                "reference": "a4f0fdf5c416ee6a97cc75bfc3a6f401aae6ed00"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/RingierIMU/laravel-nova-formatted-number/zipball/a4f0fdf5c416ee6a97cc75bfc3a6f401aae6ed00",
+                "reference": "a4f0fdf5c416ee6a97cc75bfc3a6f401aae6ed00",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Rimu\\FormattedNumber\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Rimu\\FormattedNumber\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova field.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "time": "2019-10-25T12:15:42+00:00"
         },
         {
             "name": "spatie/image",

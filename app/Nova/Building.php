@@ -97,6 +97,8 @@ class Building extends Resource
                 ->rules('required')
                 ->sortable(),
 
+            HasMany::make('Electricity Consumptions', 'electricityConsumptions', ElectricityConsumption::class),
+
             HasMany::make('Help Desks', 'helpDesks', User::class),
 
             HasMany::make('Viewers', 'viewers', User::class),
