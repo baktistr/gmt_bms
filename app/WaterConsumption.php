@@ -37,6 +37,7 @@ class WaterConsumption extends Model implements HasMedia
 
     /**
      * Get Total Cost
+     *
      * @return int
      */
     public function totalUsage(): int
@@ -44,18 +45,31 @@ class WaterConsumption extends Model implements HasMedia
         return $this->water_usage * $this->water_rate;
     }
 
+    /**
+     * formated Attribut water_usage
+     *
+     * @return mixed
+     */
     public function getFormattedWaterUsageAttribute()
     {
         return number_format($this->water_usage) . ' M3';
     }
 
-
+    /**
+     * formated Attribut water_rate
+     *
+     * @return mixed
+     */
     public function getFormattedWaterRateAttribute()
     {
         return 'Rp. ' . number_format($this->water_rate);
     }
 
-
+    /**
+     * formated Attribut totalUsage
+     *
+     * @return mixed
+     */
     public function getFormattedTotalUsageAttribute()
     {
         return 'Rp. ' . number_format($this->totalUsage(), 2);
