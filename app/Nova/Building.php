@@ -100,6 +100,8 @@ class Building extends Resource
             HasMany::make('Help Desks', 'helpDesks', User::class),
 
             HasMany::make('Viewers', 'viewers', User::class),
+
+            HasMany::make('Dieasel', 'solars', Solar::class)
         ];
     }
 

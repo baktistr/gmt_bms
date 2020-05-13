@@ -22,7 +22,7 @@ class Building extends Model
     }
 
 
-    public function solar(): HasMany
+    public function solars(): HasMany
     {
         return $this->hasMany(SolarConsumption::class, 'building_id');
     }

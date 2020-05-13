@@ -8,6 +8,7 @@ use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
 class Solar extends Resource
 {
@@ -45,7 +46,7 @@ class Solar extends Resource
         return [
             ID::make()->sortable(),
 
-            Select::make('select')->options([
+            Select::make('IN')->options([
                 'Incoming Diesel',
                 'remaining Diesel'
             ])->displayUsingLabels(),
@@ -58,11 +59,11 @@ class Solar extends Resource
                 ->sortable()
                 ->onlyOnIndex(),
 
-            Markdown::make('Note', 'catatan')
-                ->sortable(),
-
             Text::make('Informasi', 'informasi')
                 ->sortable(),
+
+            new Panel('Notes', $this->note())
+
         ];
     }
 
@@ -108,5 +109,16 @@ class Solar extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+    /**
+     * Make A new Field
+     * @return Laravel\Nova\Fields\Markdown;
+     */
+    protected function note()
+    {
+        return [
+            Markdown::make('Note', 'catatan')
+                ->sortable(),
+        ];
     }
 }
