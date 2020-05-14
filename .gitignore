@@ -23,6 +23,4 @@ Homestead.yaml
 .env
 .env.backup
 .env.dusk*
-.env.testing
-.sqlite
 .sqlite-journal
