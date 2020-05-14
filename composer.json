@@ -29,6 +29,7 @@
         "cendekia/nova-setting-tool": "^0.0.3",
         "cloudcake/nova-fixed-bars": "^1.1",
         "ebess/advanced-nova-media-library": "^3.2.0",
+        "epartment/nova-dependency-container": "^1.2",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "gmt/nova-theme": "^1.0",
