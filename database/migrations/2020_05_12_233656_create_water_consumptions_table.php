@@ -15,11 +15,11 @@ class CreateWaterConsumptionsTable extends Migration
     {
         Schema::create('water_consumptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('building_id');
-            $table->integer('water_usage');
-            $table->float('water_rate');
-            $table->string('desc')->nullable();
-            $table->date('date');
+            $table->foreignId('building_id')->index();
+            $table->date('date')->index();
+            $table->integer('usage');
+            $table->float('rate');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

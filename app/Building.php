@@ -21,8 +21,12 @@ class Building extends Model
         return $this->belongsTo(User::class, 'manager_id');
     }
 
-
-    public function solars(): HasMany
+    /**
+     * A building can have many diesel fuel consumptions.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function dieselFuelConsumptions(): HasMany
     {
         return $this->hasMany(DieselFuelConsumption::class, 'building_id');
     }

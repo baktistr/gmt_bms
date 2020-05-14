@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\WaterConsumption as AppWaterConsumption;
+use Carbon\Carbon;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
@@ -103,7 +104,8 @@ class WaterConsumption extends Resource
 
             BelongsTo::make('Building', 'building', Building::class)
                 ->rules(['required', 'exists:buildings,id'])
-                ->withoutTrashed(),
+                ->withoutTrashed()
+                ->sortable(),
 
             FormattedNumber::make('Usage (m3)', 'usage')
                 ->rules(['required', 'numeric'])
@@ -128,8 +130,7 @@ class WaterConsumption extends Resource
             Markdown::make('Description')
                 ->nullable(),
 
-            Images::make('Payment Receipt', 'payment_receipt')
-                ->rules(['required'])
+            Images::make('Image', 'image')
                 ->hideFromIndex(),
         ];
     }

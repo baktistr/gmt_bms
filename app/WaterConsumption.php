@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Carbon\Carbon;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
@@ -9,7 +11,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class WaterConsumption extends Model implements HasMedia
 {
-
     use InteractsWithMedia;
 
     /**
@@ -18,8 +19,7 @@ class WaterConsumption extends Model implements HasMedia
      * @var array
      */
     protected $casts = [
-        'date' => 'datetime',
-        'email_verified_at' => 'datetime',
+        'date' => 'date',
     ];
 
     /**
@@ -32,47 +32,53 @@ class WaterConsumption extends Model implements HasMedia
         return $this->belongsTo(Building::class, 'building_id');
     }
 
-
-
-
     /**
      * Get Total Cost
      *
      * @return int
      */
-    public function totalUsage(): int
+    public function totalUsage()
     {
-        return $this->water_usage * $this->water_rate;
+        $usageYesterday = WaterConsumption::query()
+            ->where('building_id', $this->building_id)
+            ->where('date', date('Y-m-d', strtotime('-1 days', strtotime($this->date))))
+            ->first();
+
+        if ($usageYesterday) {
+            return ($this->usage - $usageYesterday->usage) * $this->rate;
+        }
+
+        return $this->usage * $this->rate;
     }
 
     /**
-     * formated Attribut water_usage
+     * Get formatter attribute water_usage
      *
      * @return mixed
      */
-    public function getFormattedWaterUsageAttribute()
+    public function getFormattedUsageAttribute()
     {
-        return number_format($this->water_usage) . ' M3';
+        return number_format($this->usage) . ' m3';
     }
 
     /**
-     * formated Attribut water_rate
+     * Get formatter attribute water_rate
      *
      * @return mixed
      */
-    public function getFormattedWaterRateAttribute()
+    public function getFormattedRateAttribute()
     {
-        return 'Rp. ' . number_format($this->water_rate);
+        return 'Rp. ' . number_format($this->rate);
     }
 
     /**
-     * formated Attribut totalUsage
+     * Get formatter attribute totalUsage
      *
      * @return mixed
      */
     public function getFormattedTotalUsageAttribute()
     {
-        return 'Rp. ' . number_format($this->totalUsage(), 2);
+        return 'Rp. ' . number_format($this->totalUsage());
     }
 
     /**
@@ -80,7 +86,7 @@ class WaterConsumption extends Model implements HasMedia
      */
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('water_usage')
+        $this->addMediaCollection('image')
             ->singleFile();
     }
 }
