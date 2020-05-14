@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c9dd92a2d8b63621f8f6d7f7bcc33716",
+    "content-hash": "d1a9ad2e30eea11323cb3f7b29232f35",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -899,6 +899,47 @@
                 "validator"
             ],
             "time": "2020-02-13T22:36:52+00:00"
+        },
+        {
+            "name": "epartment/nova-dependency-container",
+            "version": "1.2.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/epartment/nova-dependency-container.git",
+                "reference": "d4081499c45b86111d5d95ef3c4457db4dd4bbdf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/epartment/nova-dependency-container/zipball/d4081499c45b86111d5d95ef3c4457db4dd4bbdf",
+                "reference": "d4081499c45b86111d5d95ef3c4457db4dd4bbdf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Epartment\\NovaDependencyContainer\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Epartment\\NovaDependencyContainer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova field container allowing to depend on other fields values",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "time": "2019-12-01T02:45:45+00:00"
         },
         {
             "name": "fideloper/proxy",

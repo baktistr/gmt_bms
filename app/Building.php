@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\SolarConsumption;
+use App\DieselFuelConsumption;
 
 class Building extends Model
 {
@@ -24,7 +24,7 @@ class Building extends Model
 
     public function solars(): HasMany
     {
-        return $this->hasMany(SolarConsumption::class, 'building_id');
+        return $this->hasMany(DieselFuelConsumption::class, 'building_id');
     }
 
     /**
