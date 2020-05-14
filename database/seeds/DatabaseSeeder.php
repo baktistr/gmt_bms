@@ -1,5 +1,6 @@
 <?php
 
+use App\WaterConsumption;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,5 +14,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RoleAndPermissionSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(BuildingSeeder::class);
+        $this->call(ElectricityConsumptionSeeder::class);
+        $this->call(WaterConsumptionSeeder::class);
+        $this->call(DieselFuelConsumptionSeeder::class);
     }
 }

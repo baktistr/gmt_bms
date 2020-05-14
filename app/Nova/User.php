@@ -3,16 +3,26 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use KABBOUCHI\NovaImpersonate\Impersonate;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
+use Laravel\Nova\Fields\HasOne;
 use Vyuldashev\NovaPermission\RoleSelect;
 
 class User extends Resource
 {
+
+    /**
+     * The logical group associated with the resource.
+     *
+     * @var string
+     */
+    public static $group = 'Admin';
+
     /**
      * The model the resource corresponds to.
      *
@@ -67,8 +77,11 @@ class User extends Resource
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
 
-            RoleSelect::make('Role', 'roles')
-                ->sortable(),
+            RoleSelect::make('Role', 'roles'),
+
+            BelongsTo::make('Assigned Building', 'assignedBuilding', Building::class),
+
+            HasOne::make('Building', 'building', Building::class),
 
             Impersonate::make($this)->withMeta([
                 'redirect_to' => config('nova.path')

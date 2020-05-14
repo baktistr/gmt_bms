@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -48,7 +50,7 @@ class User extends Authenticatable implements HasMedia
      */
     public function isSuperAdmin()
     {
-        return $this->is_super_admin;
+        return $this->hasRole('Super Admin');
     }
 
     /**
@@ -57,35 +59,50 @@ class User extends Authenticatable implements HasMedia
      */
     public function isManager()
     {
-        return $this->is_manager;
+        return $this->hasRole('Building Manager');
     }
+
     /**
      * check if is Viewer Role
      * @return bool
      */
     public function isViewer()
     {
-        return $this->is_viewer;
+        return $this->hasRole('Viewer');
     }
+
     /**
      * check if is Viewer Role
      * @return bool
      */
     public function isHelpDesk()
     {
-        return $this->is_viewer;
+        return $this->hasRole('Help Desk');
     }
 
     /**
-     * Scope the query get role of user
-     * @param $query , $role
-     * @return bool
+     * A user manager can be assigned to 1 building.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function scopeRole($query, $role)
+    public function building(): HasOne
     {
-        return $query->where($role, true)->get();
+        return $this->hasOne(Building::class, 'manager_id');
     }
 
+    /**
+     * A user (viewer/help-desks) can be assigned to building.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function assignedBuilding(): BelongsTo
+    {
+        return $this->belongsTo(Building::class, 'building_id');
+    }
+
+    /**
+     * Register the media collections.
+     */
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('avatar')
