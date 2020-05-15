@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\DieselFuelConsumptionCreated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
@@ -27,6 +28,35 @@ class DieselFuelConsumption extends Model implements HasMedia
         'incoming' => 'Incoming Diesel Fuel',
         'remain'   => 'Remain Diesel Fuel',
     ];
+
+    /**
+     * The event map for the model.
+     *
+     * @var array
+     */
+    protected $dispatchesEvents = [
+        'created' => DieselFuelConsumptionCreated::class,
+    ];
+
+    /**
+     * Get formatted date attribute.
+     *
+     * @return mixed
+     */
+    public function getFormattedDateAttribute()
+    {
+        return $this->date->format('d F Y');
+    }
+
+    /**
+     * Get formatted total remain fuel attribute.
+     *
+     * @return string
+     */
+    public function getTotalRemainFuelAttribute()
+    {
+        return "{$this->total_remain} liters";
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

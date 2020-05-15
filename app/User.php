@@ -101,6 +101,16 @@ class User extends Authenticatable implements HasMedia
     }
 
     /**
+     * Determine which user can impersonate other user.
+     *
+     * @return bool
+     */
+    public function canImpersonate()
+    {
+        return $this->hasRole('Super Admin');
+    }
+
+    /**
      * Register the media collections.
      */
     public function registerMediaCollections(): void

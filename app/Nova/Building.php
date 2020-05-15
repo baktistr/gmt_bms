@@ -18,7 +18,7 @@ class Building extends Resource
      *
      * @var string
      */
-    public static $group = 'Manage';
+    public static $group = 'Admin';
 
     /**
      * The model the resource corresponds to.
@@ -61,7 +61,7 @@ class Building extends Resource
         }
 
         if (($user->hasRole('Help Desk') || $user->hasRole('Viewer')) && $user->building_id) {
-            return $query->where('building_id', $user->building_id);
+            return $query->where('id', $user->building_id);
         }
 
         return $query;

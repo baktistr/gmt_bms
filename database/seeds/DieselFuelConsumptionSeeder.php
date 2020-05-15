@@ -19,28 +19,28 @@ class DieselFuelConsumptionSeeder extends Seeder
                 factory(DieselFuelConsumption::class)->create([
                     'building_id' => $building->id,
                     'type'        => 'incoming',
-                    'date'        => now()->subDays(30),
+                    'date'        => now()->addDays(1),
                     'amount'      => 300,
                 ]);
 
                 factory(DieselFuelConsumption::class)->create([
                     'building_id' => $building->id,
                     'type'        => 'remain',
-                    'date'        => now()->subDays(28),
+                    'date'        => now()->addDays(2),
                     'amount'      => 50,
                 ]);
 
                 factory(DieselFuelConsumption::class)->create([
                     'building_id' => $building->id,
                     'type'        => 'remain',
-                    'date'        => now()->subDays(27),
+                    'date'        => now()->addDays(3),
                     'amount'      => 120,
                 ]);
 
                 factory(DieselFuelConsumption::class)->create([
                     'building_id' => $building->id,
                     'type'        => 'incoming',
-                    'date'        => now()->subDays(25),
+                    'date'        => now()->addDays(4),
                     'amount'      => 100,
                 ]);
             });
