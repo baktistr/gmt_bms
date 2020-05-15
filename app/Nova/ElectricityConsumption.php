@@ -17,14 +17,6 @@ use Rimu\FormattedNumber\FormattedNumber;
 
 class ElectricityConsumption extends Resource
 {
-
-    /**
-     * The logical group associated with the resource.
-     *
-     * @var string
-     */
-    public static $group = 'Manage';
-
     /**
      * The model the resource corresponds to.
      *
@@ -56,6 +48,13 @@ class ElectricityConsumption extends Resource
     public static $with = [
         'building',
     ];
+
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $group = 'Consumptions';
 
     /**
      * Build an "index" query for the given resource.

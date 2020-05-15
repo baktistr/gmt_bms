@@ -41,11 +41,11 @@ class DieselFuelConsumption extends Resource
     ];
 
     /**
-     * The logical group associated with the resource.
+     * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $group = 'Manage';
+    public static $group = 'Consumptions';
 
     /**
      * Build an "index" query for the given resource.

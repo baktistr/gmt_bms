@@ -18,7 +18,7 @@ class Building extends Resource
      *
      * @var string
      */
-    public static $group = 'Manage';
+    public static $group = 'Admin';
 
     /**
      * The model the resource corresponds to.

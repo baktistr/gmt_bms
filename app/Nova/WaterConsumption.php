@@ -23,14 +23,6 @@ class WaterConsumption extends Resource
      *
      * @var string
      */
-    public static $group = 'Manage';
-
-
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
     public static $model = \App\WaterConsumption::class;
 
     /**
@@ -57,6 +49,13 @@ class WaterConsumption extends Resource
     public static $with = [
         'building',
     ];
+
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $group = 'Consumptions';
 
     /**
      * Build an "index" query for the given resource.
