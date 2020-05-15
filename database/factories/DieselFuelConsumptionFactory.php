@@ -21,6 +21,6 @@ $factory->define(DieselFuelConsumption::class, function (Faker $faker) {
 });
 
 $factory->afterCreating(DieselFuelConsumption::class, function (DieselFuelConsumption $consumption) {
-    $consumption->addMedia(File::image("diesel-fuel-{$consumption->id}.png"))
-        ->toMediaCollection('image');
+//    $consumption->addMedia(File::image("diesel-fuel-{$consumption->id}.png"))
+//        ->toMediaCollection('image');
 });

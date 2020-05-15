@@ -23,9 +23,9 @@ $factory->define(ElectricityConsumption::class, function (Faker $faker) {
 });
 
 $factory->afterCreating(ElectricityConsumption::class, function (ElectricityConsumption $consumption) {
-    $consumption->addMedia(File::image("electricity-consumption-wbp-{$consumption->id}.png"))
-        ->toMediaCollection('wbp');
-
-    $consumption->addMedia(File::image("electricity-consumption-lwbp-{$consumption->id}.png"))
-        ->toMediaCollection('lwbp');
+//    $consumption->addMedia(File::image("electricity-consumption-wbp-{$consumption->id}.png"))
+//        ->toMediaCollection('wbp');
+//
+//    $consumption->addMedia(File::image("electricity-consumption-lwbp-{$consumption->id}.png"))
+//        ->toMediaCollection('lwbp');
 });
