@@ -13,8 +13,19 @@ class BuildingSeeder extends Seeder
      */
     public function run()
     {
+        // Create Building from csv
+        $gedungs = file(database_path('seeds/building/gedung.csv'));
+        foreach ($gedungs as $gedung) {
+            $row = explode(';', $gedung);
+            factory(Building::class)->create([
+                'name' => $row[1],
+                'location' => $row[2],
+                'phone_number' => $row[3]
+            ]);
+        }
+
         // Create buildings with unassigned viewers and help-desks
-        factory(Building::class, 5)->create();
+        factory(Building::class, 2)->create();
 
         // Create buildings with assigned viewers and help-desks
         factory(Building::class, rand(5, 10))->create()
