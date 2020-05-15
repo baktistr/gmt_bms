@@ -48,6 +48,30 @@ class DieselFuelConsumption extends Resource
     public static $group = 'Manage';
 
     /**
+     * Build an "index" query for the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        $user = $request->user();
+
+        if ($user->hasRole('Building Manager')) {
+            return $query->whereHas('building', function ($q) use ($user) {
+                return $q->where('manager_id', $user->id);
+            });
+        }
+
+        if (($user->hasRole('Help Desk') || $user->hasRole('Viewer')) && $user->building_id) {
+            return $query->where('building_id', $user->building_id);
+        }
+
+        return $query;
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param \Illuminate\Http\Request $request
