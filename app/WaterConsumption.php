@@ -23,6 +23,16 @@ class WaterConsumption extends Model implements HasMedia
     ];
 
     /**
+     * Get formatted date attribute.
+     *
+     * @return mixed
+     */
+    public function getFormattedDateAttribute()
+    {
+        return $this->date->format('d F Y');
+    }
+
+    /**
      * A electricity belongTo building.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

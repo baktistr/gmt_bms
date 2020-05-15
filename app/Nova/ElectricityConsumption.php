@@ -97,9 +97,9 @@ class ElectricityConsumption extends Resource
                 ])
                 ->onlyOnForms(),
 
-            Date::make('Date')
-                ->sortable()
-                ->exceptOnForms(),
+            Date::make('Date', function () {
+                return $this->formatted_date;
+            }),
 
             BelongsTo::make('Building', 'building', Building::class)
                 ->rules(['required', 'exists:buildings,id'])
