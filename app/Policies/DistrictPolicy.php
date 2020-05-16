@@ -77,7 +77,7 @@ class DistrictPolicy
      */
     public function restore(User $user, District $district)
     {
-        return $user->isSuperAdmin();
+        return false;
     }
 
     /**
@@ -89,6 +89,6 @@ class DistrictPolicy
      */
     public function forceDelete(User $user, District $district)
     {
-        return $user->isSuperAdmin();
+        return false;
     }
 }

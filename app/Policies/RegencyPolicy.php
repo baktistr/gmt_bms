@@ -65,7 +65,7 @@ class RegencyPolicy
      */
     public function delete(User $user, Regency $regency)
     {
-        return $user->isSuperAdmin();
+        return false;
     }
 
     /**
@@ -77,7 +77,7 @@ class RegencyPolicy
      */
     public function restore(User $user, Regency $regency)
     {
-        return $user->isSuperAdmin();
+        return false;
     }
 
     /**
@@ -89,6 +89,6 @@ class RegencyPolicy
      */
     public function forceDelete(User $user, Regency $regency)
     {
-        return $user->isSuperAdmin();
+        return false;
     }
 }

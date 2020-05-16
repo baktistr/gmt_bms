@@ -30,7 +30,7 @@ class District extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -39,6 +39,7 @@ class District extends Resource
      */
     public static $search = [
         'id',
+        'name'
     ];
 
     /**
