@@ -164,7 +164,7 @@ class ElectricityConsumption extends Resource
                 return $this->formatted_wbp_cost;
             })->hideFromIndex(),
 
-            Text::make('Total Cost', function () {
+            Text::make('Total Cost Today', function () {
                 return $this->formatted_total_cost;
             }),
 
