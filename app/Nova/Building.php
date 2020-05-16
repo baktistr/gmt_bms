@@ -85,19 +85,17 @@ class Building extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
-
             HiddenField::make('Admin', 'manager_id')
                 ->defaultValue($request->user()->id)
                 ->onlyOnForms(),
 
             BelongsTo::make('Manager', 'manager', User::class),
 
-            Text::make('name', 'name')
+            Text::make('Name', 'name')
                 ->rules('required')
                 ->sortable(),
 
-            Text::make('location', 'location')
+            Text::make('Location', 'location')
                 ->rules('required')
                 ->sortable(),
 
