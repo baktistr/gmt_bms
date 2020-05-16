@@ -31,6 +31,9 @@
             font-family: 'Open Sans', sans-serif;
             font-size: small;
         }
+        .table {
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body class="min-w-site bg-40 text-black min-h-full">
