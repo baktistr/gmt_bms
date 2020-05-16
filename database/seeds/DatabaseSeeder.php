@@ -1,6 +1,5 @@
 <?php
 
-use App\WaterConsumption;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
