@@ -101,15 +101,15 @@ class Building extends Resource
                 ->rules('required')
                 ->sortable(),
 
-            HasMany::make('Help Desks', 'helpDesks', User::class),
-
-            HasMany::make('Viewers', 'viewers', User::class),
-
-            HasMany::make('Diesel Fuel Consumptions', 'dieselFuelConsumptions', DieselFuelConsumption::class),
-
             HasMany::make('Electricity Consumptions', 'electricityConsumptions', ElectricityConsumption::class),
 
             HasMany::make('Water Consumptions', 'waterConsumptions', WaterConsumption::class),
+
+            HasMany::make('Diesel Fuel Consumptions', 'dieselFuelConsumptions', DieselFuelConsumption::class),
+
+            HasMany::make('Help Desks', 'helpDesks', User::class),
+
+            HasMany::make('Viewers', 'viewers', User::class),
         ];
     }
 
