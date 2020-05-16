@@ -16,6 +16,9 @@ class CreateBuildingsTable extends Migration
         Schema::create('buildings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('manager_id');
+            $table->unsignedBigInteger('province_id');
+            $table->unsignedBigInteger('regency_id');
+            $table->unsignedBigInteger('district_id');
             $table->string('name')->index();
             $table->string('location');
             $table->string('phone_number');
