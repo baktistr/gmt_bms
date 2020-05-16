@@ -2,7 +2,11 @@
 
 namespace App\Nova;
 
+use App\Nova\Metrics\TotalHelpDesks;
+use App\Nova\Metrics\TotalManagers;
+use App\Nova\Metrics\TotalViewers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
@@ -115,7 +119,17 @@ class User extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            (new TotalManagers)->canSee(function () {
+                return Auth::user()->hasRole('Super Admin');
+            }),
+            (new TotalHelpDesks)->canSee(function () {
+                return Auth::user()->hasRole('Super Admin');
+            }),
+            (new TotalViewers)->canSee(function () {
+                return Auth::user()->hasRole('Super Admin');
+            }),
+        ];
     }
 
     /**

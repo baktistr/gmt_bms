@@ -2,8 +2,13 @@
 
 namespace App\Providers;
 
+use App\Nova\Metrics\TotalBuildings;
+use App\Nova\Metrics\TotalHelpDesks;
+use App\Nova\Metrics\TotalManagers;
+use App\Nova\Metrics\TotalViewers;
 use App\Policies\PermissionPolicy;
 use App\Policies\RolePolicy;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Nova;
@@ -58,7 +63,20 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function cards()
     {
-        return [];
+        return [
+            (new TotalBuildings)->canSee(function () {
+                return Auth::user()->hasRole('Super Admin');
+            })->width('1/4'),
+            (new TotalManagers)->canSee(function () {
+                return Auth::user()->hasRole('Super Admin');
+            })->width('1/4'),
+            (new TotalHelpDesks)->canSee(function () {
+                return Auth::user()->hasRole('Super Admin');
+            })->width('1/4'),
+            (new TotalViewers)->canSee(function () {
+                return Auth::user()->hasRole('Super Admin');
+            })->width('1/4'),
+        ];
     }
 
     /**
