@@ -24,12 +24,12 @@ class BuildingSeeder extends Seeder
             $row = explode(';', $building);
 
             factory(Building::class)->create([
-                'province_id'  => $randomDistrict->regency->province->id,
-                'regency_id'   => $randomDistrict->regency->id,
-                'district_id'  => $randomDistrict->id,
-                'name'         => $row[1],
-                'location'     => $row[2],
-                'phone_number' => $row[3],
+                'province_id'    => $randomDistrict->regency->province->id,
+                'regency_id'     => $randomDistrict->regency->id,
+                'district_id'    => $randomDistrict->id,
+                'name'           => $row[1],
+                'address_detail' => $row[2],
+                'phone_number'   => $row[3],
             ]);
         }
 

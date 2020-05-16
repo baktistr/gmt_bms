@@ -20,7 +20,7 @@ class CreateBuildingsTable extends Migration
             $table->unsignedBigInteger('regency_id');
             $table->unsignedBigInteger('district_id');
             $table->string('name')->index();
-            $table->string('location');
+            $table->text('address_detail');
             $table->string('phone_number');
             $table->timestamps();
             $table->softDeletes();

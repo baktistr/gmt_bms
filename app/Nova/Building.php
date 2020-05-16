@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Orlyapps\NovaBelongsToDepend\NovaBelongsToDepend;
 use Outhebox\NovaHiddenField\HiddenField;
@@ -114,9 +115,12 @@ class Building extends Resource
                 ->rules('required')
                 ->sortable(),
 
-            Text::make('Location', 'location')
+            Textarea::make('Address Detail')
                 ->rules('required')
-                ->sortable(),
+                ->onlyOnForms(),
+
+            Text::make('Address Detail')
+                ->exceptOnForms(),
 
             HasMany::make('Electricity Consumptions', 'electricityConsumptions', ElectricityConsumption::class),
 
