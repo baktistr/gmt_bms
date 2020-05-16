@@ -43,19 +43,9 @@ class District extends Resource
     {
         return [
             ID::make()->sortable(),
-
             BelongsTo::make('Regency', 'regency', Regency::class)
                 ->sortable(),
-
             Text::make('Name'),
-
-            Text::make('Assets count', function () {
-                return $this->assets()->count();
-            })->showOnIndex(function () use ($request) {
-                return $request->user()->isSuperAdmin();
-            })->showOnDetail(function () use ($request) {
-                return $request->user()->isSuperAdmin();
-            }),
         ];
     }
 

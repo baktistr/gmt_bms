@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Regency extends Resource
@@ -50,14 +51,6 @@ class Regency extends Resource
 
             Text::make('Name')
                 ->sortable(),
-
-            Text::make('Assets count', function () {
-                return $this->assets()->count();
-            })->showOnIndex(function () use ($request) {
-                return $request->user()->isSuperAdmin();
-            })->showOnDetail(function () use ($request) {
-                return $request->user()->isSuperAdmin();
-            }),
 
             Text::make('Districts Count', function () {
                 return $this->districts()->count();
