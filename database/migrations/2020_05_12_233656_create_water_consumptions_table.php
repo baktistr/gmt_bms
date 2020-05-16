@@ -21,6 +21,7 @@ class CreateWaterConsumptionsTable extends Migration
             $table->float('rate');
             $table->string('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

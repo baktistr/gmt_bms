@@ -5,12 +5,14 @@ namespace App;
 use App\Events\DieselFuelConsumptionCreated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Nova\Actions\Actionable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class DieselFuelConsumption extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    use InteractsWithMedia, Actionable, SoftDeletes;
 
     /**
      * The attributes that should be cast to native types.

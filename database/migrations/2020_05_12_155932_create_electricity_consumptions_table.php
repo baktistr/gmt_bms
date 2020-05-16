@@ -25,6 +25,7 @@ class CreateElectricityConsumptionsTable extends Migration
             $table->bigInteger('kvar');
             $table->string('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

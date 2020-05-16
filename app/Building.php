@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\DieselFuelConsumption;
+use Laravel\Nova\Actions\Actionable;
 
 class Building extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Actionable;
 
     /**
      * A building belongs to manager.

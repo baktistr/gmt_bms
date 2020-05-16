@@ -2,16 +2,16 @@
 
 namespace App;
 
-use Carbon\Carbon;
-use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Nova\Actions\Actionable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class WaterConsumption extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    use InteractsWithMedia, Actionable, SoftDeletes;
 
     /**
      * The attributes that should be cast to native types.
@@ -49,7 +49,7 @@ class WaterConsumption extends Model implements HasMedia
      */
     public function totalUsage()
     {
-        $usageYesterday = WaterConsumption::query()
+        $usageYesterday = self::query()
             ->where('building_id', $this->building_id)
             ->where('date', date('Y-m-d', strtotime('-1 days', strtotime($this->date))))
             ->first();

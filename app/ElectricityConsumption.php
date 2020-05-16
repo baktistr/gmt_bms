@@ -4,12 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Nova\Actions\Actionable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class ElectricityConsumption extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    use InteractsWithMedia, Actionable, SoftDeletes;
 
     /**
      * The attributes that should be cast to native types.
