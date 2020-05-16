@@ -1,6 +1,7 @@
 <?php
 
 use App\Building;
+use App\District;
 use Illuminate\Database\Seeder;
 use App\User;
 
@@ -17,12 +18,18 @@ class BuildingSeeder extends Seeder
         $buildings = file(database_path('seeds/data/buildings.csv'));
 
         foreach ($buildings as $building) {
+            // Get random location data from
+            $randomDistrict = District::with('regency.province')->inRandomOrder()->first();
+
             $row = explode(';', $building);
 
             factory(Building::class)->create([
-                'name'         => $row[1],
-                'location'     => $row[2],
-                'phone_number' => $row[3],
+                'province_id'    => $randomDistrict->regency->province->id,
+                'regency_id'     => $randomDistrict->regency->id,
+                'district_id'    => $randomDistrict->id,
+                'name'           => $row[1],
+                'address_detail' => $row[2],
+                'phone_number'   => $row[3],
             ]);
         }
 

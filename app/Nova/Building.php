@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Orlyapps\NovaBelongsToDepend\NovaBelongsToDepend;
 use Outhebox\NovaHiddenField\HiddenField;
 
 class Building extends Resource
@@ -91,13 +93,34 @@ class Building extends Resource
 
             BelongsTo::make('Manager', 'manager', User::class),
 
+            NovaBelongsToDepend::make('Province')
+                ->options(\App\Province::all())
+                ->hideFromIndex(),
+
+            NovaBelongsToDepend::make('Regency')
+                ->optionsResolve(function ($province) {
+                    return $province->regencies()->get(['id', 'name']);
+                })
+                ->dependsOn('Province')
+                ->hideFromIndex(),
+
+            NovaBelongsToDepend::make('District')
+                ->optionsResolve(function ($regency) {
+                    return $regency->districts()->get(['id', 'name']);
+                })
+                ->dependsOn('Regency')
+                ->hideFromIndex(),
+
             Text::make('Name', 'name')
                 ->rules('required')
                 ->sortable(),
 
-            Text::make('Location', 'location')
+            Textarea::make('Address Detail')
                 ->rules('required')
-                ->sortable(),
+                ->onlyOnForms(),
+
+            Text::make('Address Detail')
+                ->exceptOnForms(),
 
             HasMany::make('Electricity Consumptions', 'electricityConsumptions', ElectricityConsumption::class),
 
