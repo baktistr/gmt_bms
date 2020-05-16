@@ -23,15 +23,6 @@ class Province extends Model
         return $this->hasMany(Regency::class, 'province_id');
     }
 
-    /**
-     * A province can have many assets.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function assets(): HasMany
-    {
-        return $this->hasMany(Asset::class, 'province_id');
-    }
 
     /**
      * Get all of the districts for the province.

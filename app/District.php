@@ -23,13 +23,4 @@ class District extends Model
         return $this->belongsTo(Regency::class, 'regency_id');
     }
 
-    /**
-     * A district can have many assets.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function assets(): HasMany
-    {
-        return $this->hasMany(Asset::class, 'district_id');
-    }
 }
