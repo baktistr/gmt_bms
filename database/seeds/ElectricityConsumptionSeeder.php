@@ -17,10 +17,10 @@ class ElectricityConsumptionSeeder extends Seeder
         Building::get()->each(function ($building) {
             $electricMeter = 100;
 
-            for ($i = 1; $i <= rand(10, 30); $i++) {
+            for ($i = 40; $i >= 1; $i--) {
                 factory(ElectricityConsumption::class)->create([
                     'building_id'    => $building->id,
-                    'date'           => now()->addDays($i),
+                    'date'           => now()->subDays($i),
                     'electric_meter' => $electricMeter += $usage = rand(100, 500),
                     'lwbp'           => $lwbp = rand(1, $usage),
                     'wbp'            => $usage - $lwbp,
