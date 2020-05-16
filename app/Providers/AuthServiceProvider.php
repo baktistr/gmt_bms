@@ -31,12 +31,12 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         ActionEvent::class            => ActionEventPolicy::class,
         User::class                   => UserPolicy::class,
+        Province::class               => ProvincePolicy::class,
+        Regency::class                => RegencyPolicy::class,
+        District::class               => DistrictPolicy::class,
         Building::class               => BuildingPolicy::class,
         ElectricityConsumption::class => ElectricityConsumptionPolicy::class,
         WaterConsumption::class       => WaterConsumptionPolicy::class,
-        Province::class               => ProvincePolicy::class,
-        Regency::class                => RegencyPolicy::class,
-        District::class               => DistrictPolicy::class
     ];
 
     /**
