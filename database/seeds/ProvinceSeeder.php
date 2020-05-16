@@ -11,6 +11,15 @@ class ProvinceSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $provinces = file(database_path('seeds/locations/province.csv'));
+
+        foreach ($provinces as $province) {
+            $row = explode(',', $province);
+
+            factory(Province::class)->create([
+                'id' => $row[0],
+                'name' => str_replace(PHP_EOL, '', ucwords(strtolower($row[1]))),
+            ]);
+        }
     }
 }

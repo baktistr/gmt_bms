@@ -15,6 +15,8 @@ class CreateDistrictsTable extends Migration
     {
         Schema::create('districts', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('regency_id');
+            $table->string('name');
             $table->timestamps();
         });
     }

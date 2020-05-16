@@ -11,6 +11,16 @@ class RegencySeeder extends Seeder
      */
     public function run()
     {
-        //
+        $regencies = file(database_path('seeds/locations/regency.csv'));
+
+        foreach ($regencies as $regency) {
+            $row = explode(',', $regency);
+
+            factory(Regency::class)->create([
+                'id'          => $row[0],
+                'province_id' => $row[1],
+                'name'        => str_replace(PHP_EOL, '', ucwords(strtolower($row[2]))),
+            ]);
+        }
     }
 }
