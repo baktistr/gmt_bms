@@ -140,6 +140,10 @@ class ElectricityConsumption extends Resource
                 return $this->formatted_wbp_rate;
             })->exceptOnForms(),
 
+            Text::make('KVAr', function () {
+                return $this->formatted_kvar;
+            })->exceptOnForms(),
+
             Text::make('Total Usage', function () {
                 return $this->formatted_total_usage;
             }),

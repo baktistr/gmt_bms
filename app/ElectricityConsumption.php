@@ -67,7 +67,7 @@ class ElectricityConsumption extends Model implements HasMedia
      */
     public function getFormattedLwbpRateAttribute()
     {
-        return number_format($this->lwbp_rate) . ' kwh';
+        return 'Rp. ' . number_format($this->lwbp_rate);
     }
 
     /**
@@ -77,7 +77,17 @@ class ElectricityConsumption extends Model implements HasMedia
      */
     public function getFormattedWbpRateAttribute()
     {
-        return number_format($this->wbp_rate) . ' kwh';
+        return 'Rp. ' . number_format($this->wbp_rate);
+    }
+
+    /**
+     * Get formatted KVAr rate
+     *
+     * @return mixed
+     */
+    public function getFormattedKvarAttribute()
+    {
+        return number_format($this->kvar) . ' KVAr';
     }
 
     /**
@@ -97,7 +107,7 @@ class ElectricityConsumption extends Model implements HasMedia
      */
     public function getFormattedLwbpCostAttribute()
     {
-        return 'Rp. ' . number_format($this->totalLWBPCost(), 2);
+        return 'Rp. ' . number_format($this->totalLWBPCost());
     }
 
     /**
@@ -107,7 +117,7 @@ class ElectricityConsumption extends Model implements HasMedia
      */
     public function getFormattedWbpCostAttribute()
     {
-        return 'Rp. ' . number_format($this->totalWBPCost(), 2);
+        return 'Rp. ' . number_format($this->totalWBPCost());
     }
 
     /**
@@ -117,7 +127,7 @@ class ElectricityConsumption extends Model implements HasMedia
      */
     public function getFormattedTotalCostAttribute()
     {
-        return 'Rp. ' . number_format($this->totalCost(), 2);
+        return 'Rp. ' . number_format($this->totalCost());
     }
 
     /**
