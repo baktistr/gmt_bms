@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Building;
 use App\ElectricityConsumption;
+use App\Policies\ActionEventPolicy;
 use App\Policies\BuildingPolicy;
 use App\Policies\ElectricityConsumptionPolicy;
 use App\Policies\UserPolicy;
@@ -12,6 +13,7 @@ use App\User;
 use App\WaterConsumption;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Actions\ActionEvent;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -21,6 +23,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
+        ActionEvent::class            => ActionEventPolicy::class,
         User::class                   => UserPolicy::class,
         Building::class               => BuildingPolicy::class,
         ElectricityConsumption::class => ElectricityConsumptionPolicy::class,
