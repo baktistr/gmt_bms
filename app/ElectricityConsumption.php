@@ -147,7 +147,16 @@ class ElectricityConsumption extends Model implements HasMedia
      */
     public function totalUsage(): int
     {
-        return $this->lwbp + $this->wbp;
+        $usageYesterday = self::query()
+            ->where('building_id', $this->building_id)
+            ->where('date', date('Y-m-d', strtotime('-1 days', strtotime($this->date))))
+            ->first();
+
+        if ($usageYesterday) {
+            return ($this->electric_meter - $usageYesterday->electric_meter);
+        }
+
+        return $this->electric_meter;
     }
 
     /**
