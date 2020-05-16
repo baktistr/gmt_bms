@@ -45,9 +45,19 @@ class ElectricityConsumption extends Model implements HasMedia
      *
      * @return mixed
      */
+    public function getFormattedElectricMeterAttribute()
+    {
+        return number_format($this->electric_meter) . ' KWh';
+    }
+
+    /**
+     * Get formatted LWBP gauge
+     *
+     * @return mixed
+     */
     public function getFormattedLwbpGaugeAttribute()
     {
-        return number_format($this->lwbp) . ' kwh';
+        return number_format($this->lwbp) . ' KWh';
     }
 
     /**
@@ -57,7 +67,7 @@ class ElectricityConsumption extends Model implements HasMedia
      */
     public function getFormattedWbpGaugeAttribute()
     {
-        return number_format($this->wbp) . ' kwh';
+        return number_format($this->wbp) . ' KWh';
     }
 
     /**
@@ -97,7 +107,7 @@ class ElectricityConsumption extends Model implements HasMedia
      */
     public function getFormattedTotalUsageAttribute()
     {
-        return number_format($this->totalUsage()) . ' kwh';
+        return number_format($this->totalUsage()) . ' KWh';
     }
 
     /**
@@ -131,7 +141,7 @@ class ElectricityConsumption extends Model implements HasMedia
     }
 
     /**
-     * Get total usage (kwh).
+     * Get total usage (KWh).
      *
      * @return int
      */

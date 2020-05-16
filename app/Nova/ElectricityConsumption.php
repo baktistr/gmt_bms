@@ -104,7 +104,11 @@ class ElectricityConsumption extends Resource
                 ->rules(['required', 'exists:buildings,id'])
                 ->withoutTrashed(),
 
-            FormattedNumber::make('LWBP Gauge (kwh)', 'lwbp')
+            FormattedNumber::make('Electric Meter (KWh)', 'electric_meter')
+                ->rules(['required', 'numeric'])
+                ->onlyOnForms(),
+
+            FormattedNumber::make('LWBP Gauge (KWh)', 'lwbp')
                 ->rules(['required', 'numeric'])
                 ->onlyOnForms(),
 
@@ -112,7 +116,7 @@ class ElectricityConsumption extends Resource
                 ->rules(['required', 'numeric'])
                 ->onlyOnForms(),
 
-            FormattedNumber::make('WBP Gauge (kwh)', 'wbp')
+            FormattedNumber::make('WBP Gauge (KWh)', 'wbp')
                 ->rules(['required', 'numeric'])
                 ->onlyOnForms(),
 
@@ -120,9 +124,13 @@ class ElectricityConsumption extends Resource
                 ->rules(['required', 'numeric'])
                 ->onlyOnForms(),
 
-            FormattedNumber::make('KVAR (kvar)', 'kvar')
+            FormattedNumber::make('KVAr', 'kvar')
                 ->rules(['required', 'numeric'])
                 ->onlyOnForms(),
+
+            Text::make('Electric Meter', function () {
+                return $this->formatted_electric_meter;
+            })->exceptOnForms(),
 
             Text::make('LWBP Gauge', function () {
                 return $this->formatted_lwbp_gauge;
@@ -140,13 +148,13 @@ class ElectricityConsumption extends Resource
                 return $this->formatted_wbp_rate;
             })->exceptOnForms(),
 
-            Text::make('KVAr', function () {
-                return $this->formatted_kvar;
-            })->exceptOnForms(),
-
             Text::make('Total Usage', function () {
                 return $this->formatted_total_usage;
             }),
+
+            Text::make('KVAr', function () {
+                return $this->formatted_kvar;
+            })->exceptOnForms(),
 
             Text::make('Total LWBP Cost', function () {
                 return $this->formatted_lwbp_cost;

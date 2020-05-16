@@ -17,11 +17,12 @@ class CreateElectricityConsumptionsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('building_id');
             $table->date('date');
-            $table->integer('lwbp');
+            $table->bigInteger('electric_meter');
+            $table->bigInteger('lwbp');
             $table->float('lwbp_rate');
-            $table->integer('wbp');
+            $table->bigInteger('wbp');
             $table->float('wbp_rate');
-            $table->integer('kvar');
+            $table->bigInteger('kvar');
             $table->string('description')->nullable();
             $table->timestamps();
         });
