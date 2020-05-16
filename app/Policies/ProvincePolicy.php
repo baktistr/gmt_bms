@@ -77,7 +77,8 @@ class ProvincePolicy
      */
     public function restore(User $user, Province $province)
     {
-        return $user->isSuperAdmin();
+        // return $user->isSuperAdmin();
+        return false;
     }
 
     /**
@@ -89,6 +90,7 @@ class ProvincePolicy
      */
     public function forceDelete(User $user, Province $province)
     {
-        return $user->isSuperAdmin();
+        // return $user->isSuperAdmin();
+        return false;
     }
 }
