@@ -43,6 +43,13 @@ class District extends Resource
     ];
 
     /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = false;
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -52,8 +59,10 @@ class District extends Resource
     {
         return [
             ID::make()->sortable(),
+
             BelongsTo::make('Regency', 'regency', Regency::class)
                 ->sortable(),
+
             Text::make('Name'),
         ];
     }
