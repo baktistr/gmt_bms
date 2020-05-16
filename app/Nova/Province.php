@@ -4,6 +4,8 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Province extends Resource
@@ -41,6 +43,26 @@ class Province extends Resource
     {
         return [
             ID::make()->sortable(),
+
+            Text::make('Name')
+                ->sortable(),
+
+            Text::make('Assets Count', function () {
+                return $this->regencies()->count();
+            })->showOnIndex(function () use ($request) {
+                return $request->user()->isSuperAdmin();
+            })->showOnDetail(function () use ($request) {
+                return $request->user()->isSuperAdmin();
+            }),
+
+            Text::make('Regencies Count', function () {
+                return $this->regencies()->count();
+            }),
+
+            Text::make('Districts Count', function () {
+                return $this->districts()->count();
+            }),
+            HasMany::make('Regencies', 'regencies', Regency::class),
         ];
     }
 

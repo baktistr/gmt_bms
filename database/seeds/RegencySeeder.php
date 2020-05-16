@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Regency;
 
 class RegencySeeder extends Seeder
 {

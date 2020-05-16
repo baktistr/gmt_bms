@@ -4,6 +4,8 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class District extends Resource
@@ -41,6 +43,19 @@ class District extends Resource
     {
         return [
             ID::make()->sortable(),
+
+            BelongsTo::make('Regency', 'regency', Regency::class)
+                ->sortable(),
+
+            Text::make('Name'),
+
+            Text::make('Assets count', function () {
+                return $this->assets()->count();
+            })->showOnIndex(function () use ($request) {
+                return $request->user()->isSuperAdmin();
+            })->showOnDetail(function () use ($request) {
+                return $request->user()->isSuperAdmin();
+            }),
         ];
     }
 
