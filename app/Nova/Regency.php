@@ -11,6 +11,14 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Regency extends Resource
 {
+
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $group = 'Region';
+
     /**
      * The model the resource corresponds to.
      *

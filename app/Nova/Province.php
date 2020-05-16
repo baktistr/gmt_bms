@@ -10,6 +10,15 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Province extends Resource
 {
+
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $group = 'Region';
+
+
     /**
      * The model the resource corresponds to.
      *
@@ -31,6 +40,7 @@ class Province extends Resource
      */
     public static $search = [
         'id',
+        'name'
     ];
 
     /**

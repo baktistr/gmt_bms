@@ -10,6 +10,14 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class District extends Resource
 {
+
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $group = 'Region';
+
     /**
      * The model the resource corresponds to.
      *
