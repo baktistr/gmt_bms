@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "76da4d7c0337787b4b8c54ad2fec0a30",
+    "content-hash": "f7827aaf2a11893ca1d90113fe8b79a5",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -798,21 +798,21 @@
         },
         {
             "name": "ebess/advanced-nova-media-library",
-            "version": "3.2.0",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/muhghazaliakbar/advanced-nova-media-library.git",
-                "reference": "aa598575f96cdd22676b419cae801d84f7ea0d34"
+                "url": "https://github.com/ebess/advanced-nova-media-library.git",
+                "reference": "f6e644f2c703b2df93858be293813dcf3ad05e94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/muhghazaliakbar/advanced-nova-media-library/zipball/aa598575f96cdd22676b419cae801d84f7ea0d34",
-                "reference": "aa598575f96cdd22676b419cae801d84f7ea0d34",
+                "url": "https://api.github.com/repos/ebess/advanced-nova-media-library/zipball/f6e644f2c703b2df93858be293813dcf3ad05e94",
+                "reference": "f6e644f2c703b2df93858be293813dcf3ad05e94",
                 "shasum": ""
             },
             "require": {
                 "laravel/framework": "^5.6|^6.0|^7.0",
-                "laravel/nova": "^2.0|^3.0|*",
+                "laravel/nova": "^2.0|^3.0",
                 "php": ">=7.1.0",
                 "spatie/laravel-medialibrary": "^8.0"
             },
@@ -829,6 +829,7 @@
                     "Ebess\\AdvancedNovaMediaLibrary\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -837,10 +838,7 @@
                 "laravel",
                 "nova"
             ],
-            "support": {
-                "source": "https://github.com/muhghazaliakbar/advanced-nova-media-library/tree/3.2.0"
-            },
-            "time": "2020-05-07T00:01:23+00:00"
+            "time": "2020-04-05T16:56:27+00:00"
         },
         {
             "name": "egulias/email-validator",
