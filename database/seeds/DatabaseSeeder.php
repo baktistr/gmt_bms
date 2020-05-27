@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ElectricityConsumptionSeeder::class);
         $this->call(WaterConsumptionSeeder::class);
         $this->call(DieselFuelConsumptionSeeder::class);
+        $this->call(EquipmentSeeder::class);
     }
 }
