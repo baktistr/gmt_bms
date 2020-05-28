@@ -15,6 +15,13 @@ class BuildingEquipments extends Resource
      *
      * @var string
      */
+    public static $group = 'Consumptions';
+
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
     public static $model = \App\BuildingEquipments::class;
 
     /**
