@@ -15,10 +15,10 @@ class CreateBuildingEquipmentsTable extends Migration
     {
         Schema::create('building_equipment', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('building_equipment_category_id');
             $table->string('number');
             $table->text('desc');
             $table->date('date_installation');
-            $table->string('category')->nullable();
             $table->string('manufacture');
             $table->string('manufacture_model_number');
             $table->date('year_of_construction');
