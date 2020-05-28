@@ -8,7 +8,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Date;
 
-class BuildingEquipments extends Resource
+class BuildingEquipment extends Resource
 {
     /**
      * The model the resource corresponds to.
@@ -22,7 +22,7 @@ class BuildingEquipments extends Resource
      *
      * @var string
      */
-    public static $model = \App\BuildingEquipments::class;
+    public static $model = \App\BuildingEquipment::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -38,6 +38,8 @@ class BuildingEquipments extends Resource
      */
     public static $search = [
         'id',
+        'number',
+        'manufacture'
     ];
 
     /**
@@ -51,24 +53,35 @@ class BuildingEquipments extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Number', 'number'),
+            Text::make('Number', 'number')
+                ->rules('required'),
 
-            Date::make('Date Installation', 'date_installation'),
+            Date::make('Date Installation', 'date_installation')
+                ->rules('required'),
 
-            Text::make('Manufacture ', 'manufacture'),
+            Text::make('Manufacture ', 'manufacture')
+                ->rules('required'),
 
-            Text::make('Manufacture Number ', 'manufacture_model_number'),
+            Text::make('Manufacture Number ', 'manufacture_model_number')
+                ->rules('required'),
 
-            Date::make('Year Construction', 'year_of_construction'),
+            Date::make('Year Construction', 'year_of_construction')
+                ->rules('required'),
 
+            Text::make('Cost Center', 'costs_center')
+                ->rules('required')
+                ->onlyOnForms(),
 
-            Text::make('Cost Center', 'costs_center'),
+            Text::make('Location', 'location')
+                ->rules('required')
+                ->onlyOnForms(),
 
-            Text::make('Location', 'location'),
+            Text::make('Barcode Number', 'barcode_number')
+                ->rules('required')
+                ->onlyOnForms(),
 
-            Text::make('Barcode Number', 'barcode_number'),
-
-            Text::make('Addtional Information', 'addtional_information'),
+            Text::make('Addtional Information', 'addtional_information')
+                ->onlyOnForms(),
         ];
     }
 
