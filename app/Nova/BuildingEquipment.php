@@ -70,18 +70,22 @@ class BuildingEquipment extends Resource
 
             Text::make('Cost Center', 'costs_center')
                 ->rules('required')
-                ->onlyOnForms(),
+                ->onlyOnForms()
+                ->showOnDetail(),
 
             Text::make('Location', 'location')
                 ->rules('required')
-                ->onlyOnForms(),
+                ->onlyOnForms()
+                ->showOnDetail(),
 
             Text::make('Barcode Number', 'barcode_number')
                 ->rules('required')
-                ->onlyOnForms(),
+                ->onlyOnForms()
+                ->showOnDetail(),
 
             Text::make('Addtional Information', 'addtional_information')
-                ->onlyOnForms(),
+                ->onlyOnForms()
+                ->showOnDetail(),
         ];
     }
 
