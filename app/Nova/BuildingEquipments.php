@@ -51,32 +51,24 @@ class BuildingEquipments extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Number', 'number')
-                ->sortable(),
+            Text::make('Number', 'number'),
 
-            Text::make('Manufacture ', 'manufacture')
-                ->sortable(),
+            Date::make('Date Installation', 'date_installation'),
 
-            Text::make('Manufacture Number ', 'manufacture_model_number')
-                ->sortable(),
+            Text::make('Manufacture ', 'manufacture'),
 
-            Date::make('Year Construction', 'year_of_construction')
-                ->sortable(),
+            Text::make('Manufacture Number ', 'manufacture_model_number'),
+
+            Date::make('Year Construction', 'year_of_construction'),
 
 
-            Date::make('Date Installation', 'date_installation')
-                ->sortable(),
+            Text::make('Cost Center', 'costs_center'),
 
-            Text::make('Cost Center', 'costs_center')
-                ->sortable(),
+            Text::make('Location', 'location'),
 
-            Text::make('Location', 'location')
-                ->sortable(),
+            Text::make('Barcode Number', 'barcode_number'),
 
-            Text::make('Barcode Number', 'barcode_number')
-                ->sortable(),
-
-            Text::make('Addtional Information', 'addtional_information')->sortable(),
+            Text::make('Addtional Information', 'addtional_information'),
         ];
     }
 

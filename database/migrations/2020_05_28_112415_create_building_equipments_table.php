@@ -13,7 +13,7 @@ class CreateBuildingEquipmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('building_equipments', function (Blueprint $table) {
+        Schema::create('building_equipment', function (Blueprint $table) {
             $table->id();
             $table->string('number');
             $table->text('desc');
