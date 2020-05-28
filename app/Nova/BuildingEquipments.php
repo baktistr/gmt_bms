@@ -3,28 +3,19 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Date;
 
-class Equipment extends Resource
+class BuildingEquipments extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Equipment::class;
-
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $group = 'Consumptions';
-
+    public static $model = \App\BuildingEquipments::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -40,8 +31,6 @@ class Equipment extends Resource
      */
     public static $search = [
         'id',
-        'number',
-        'manufacture'
     ];
 
     /**

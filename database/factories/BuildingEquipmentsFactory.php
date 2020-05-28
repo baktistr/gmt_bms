@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Equipment;
+use App\BuildingEquipments;
 use Faker\Generator as Faker;
 
-$factory->define(Equipment::class, function (Faker $faker) {
+$factory->define(BuildingEquipments::class, function (Faker $faker) {
     return [
         'number'                   => 'EQ-' . $faker->randomDigit,
         'desc'                     => $faker->sentence,

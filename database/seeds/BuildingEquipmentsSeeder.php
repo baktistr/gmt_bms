@@ -1,9 +1,9 @@
 <?php
 
-use App\Equipment;
+use App\BuildingEquipments;
 use Illuminate\Database\Seeder;
 
-class EquipmentSeeder extends Seeder
+class BuildingEquipmentsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +12,6 @@ class EquipmentSeeder extends Seeder
      */
     public function run()
     {
-        factory(Equipment::class, 100)->create();
+        factory(BuildingEquipments::class, 5)->create();
     }
 }
