@@ -1,6 +1,7 @@
 <?php
 
 use App\BuildingEquipment;
+use App\BuildingEquipmentCategory;
 use Illuminate\Database\Seeder;
 
 class BuildingEquipmentSeeder extends Seeder
@@ -12,6 +13,10 @@ class BuildingEquipmentSeeder extends Seeder
      */
     public function run()
     {
-        factory(BuildingEquipment::class, 5)->create();
+        BuildingEquipmentCategory::get()->each(function ($category) {
+            factory(BuildingEquipment::class)->create([
+                'building_equipment_category_id' => $category->id,
+            ]);
+        });
     }
 }
