@@ -14,7 +14,6 @@ $factory->define(BuildingEquipmentCategory::class, function (Faker $faker) {
         'building_id' => function () {
             return factory(Building::class)->create()->id;
         },
-
-        'name' => $faker->sentence,
+        'name' => $faker->name,
     ];
 });

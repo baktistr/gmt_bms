@@ -13,16 +13,17 @@ class CreateBuildingEquipmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('building_equipment', function (Blueprint $table) {
+        Schema::create('building_equipments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('building_id');
             $table->foreignId('building_equipment_category_id');
             $table->string('number');
             $table->text('desc');
             $table->date('date_installation');
             $table->string('manufacture');
             $table->string('manufacture_model_number');
-            $table->date('year_of_construction');
-            $table->float('costs_center');
+            $table->year('year_of_construction');
+            $table->float('costs_center', 12);
             $table->text('location');
             $table->string('barcode_number');
             $table->string('addtional_information')->nullable();

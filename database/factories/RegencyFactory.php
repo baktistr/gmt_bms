@@ -2,6 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Province;
 use App\Regency;
 use Faker\Generator as Faker;
 
