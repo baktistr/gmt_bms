@@ -4,13 +4,21 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
-class BuildingEquipment extends Resource
+class BuildingEquipmentCategory extends Resource
 {
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $model = \App\BuildingEquipmentCategory::class;
+
     /**
      * The model the resource corresponds to.
      *
@@ -19,18 +27,11 @@ class BuildingEquipment extends Resource
     public static $group = 'Consumptions';
 
     /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\BuildingEquipment::class;
-
-    /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -39,8 +40,7 @@ class BuildingEquipment extends Resource
      */
     public static $search = [
         'id',
-        'number',
-        'manufacture'
+        'name',
     ];
 
     /**
@@ -54,42 +54,14 @@ class BuildingEquipment extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Number', 'number')
+            Text::make('Name', 'name')
                 ->rules('required|string'),
 
-            Date::make('Date Installation', 'date_installation')
-                ->rules('required|date'),
-
-            Text::make('Manufacture ', 'manufacture')
+            HasMany::make('Equipments', 'equipments', BuildingEquipment::class)
                 ->rules('required|string'),
 
-            Text::make('Manufacture Number ', 'manufacture_model_number')
-                ->rules('required|string'),
-
-            Date::make('Year Construction', 'year_of_construction')
-                ->rules('required|date'),
-
-            Text::make('Cost Center', 'costs_center')
-                ->rules('required|string')
-                ->onlyOnForms()
-                ->showOnDetail(),
-
-            Text::make('Location', 'location')
-                ->rules('required|string')
-                ->onlyOnForms()
-                ->showOnDetail(),
-
-            Text::make('Barcode Number', 'barcode_number')
-                ->rules('required')
-                ->onlyOnForms()
-                ->showOnDetail(),
-
-            Text::make('Addtional Information', 'addtional_information')
-                ->onlyOnForms()
-                ->showOnDetail(),
-
-            BelongsTo::make('category', 'category', BuildingEquipmentCategory::class)
-                ->rules('required|exists:building_equipment_categories'),
+            BelongsTo::make('Buildings', 'building', Building::class)
+                ->rules('required|exists:buildings,id'),
         ];
     }
 
