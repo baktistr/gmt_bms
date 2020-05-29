@@ -12,8 +12,6 @@ use Laravel\Nova\Fields\Markdown;
 
 class BuildingEquipment extends Resource
 {
-
-
     /**
      * The model the resource corresponds to.
      *

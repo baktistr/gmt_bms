@@ -58,10 +58,10 @@ class BuildingEquipmentCategory extends Resource
                 ->rules('required', 'string'),
 
             HasMany::make('Equipments', 'equipments', BuildingEquipment::class)
-                ->rules('required', 'string', 'exists:building_equipments,id'),
+                ->rules('required', 'string', 'exists:building_equipments'),
 
             BelongsTo::make('Buildings', 'building', Building::class)
-                ->rules('required|exists:buildings,id'),
+                ->rules('required|exists:buildings'),
         ];
     }
 
