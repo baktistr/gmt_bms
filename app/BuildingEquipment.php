@@ -21,11 +21,12 @@ class BuildingEquipment extends Model
      */
     protected $casts = [
         'date_installation' => 'date',
+        'year_of_construction' => 'date',
     ];
 
     /**
      * An equipment belongs to one category.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function category(): BelongsTo
