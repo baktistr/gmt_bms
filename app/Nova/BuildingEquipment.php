@@ -8,9 +8,12 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\Markdown;
 
 class BuildingEquipment extends Resource
 {
+
+
     /**
      * The model the resource corresponds to.
      *
@@ -55,41 +58,50 @@ class BuildingEquipment extends Resource
             ID::make()->sortable(),
 
             Text::make('Number', 'number')
-                ->rules('required|string'),
+                ->rules('required', 'string'),
 
             Date::make('Date Installation', 'date_installation')
-                ->rules('required|date'),
+                ->rules('required', 'date'),
 
             Text::make('Manufacture ', 'manufacture')
-                ->rules('required|string'),
+                ->rules('required', 'string'),
 
             Text::make('Manufacture Number ', 'manufacture_model_number')
-                ->rules('required|string'),
+                ->rules('required', 'string'),
 
-            Date::make('Year Construction', 'year_of_construction')
-                ->rules('required|date'),
+            Text::make('Year Construction', 'year_of_construction')
+                ->rules('required', 'min:1990', "max:" . date('Y'), 'numeric'),
 
             Text::make('Cost Center', 'costs_center')
-                ->rules('required|string')
+                ->rules('required', 'string')
                 ->onlyOnForms()
                 ->showOnDetail(),
 
             Text::make('Location', 'location')
-                ->rules('required|string')
+                ->rules('required', 'string')
                 ->onlyOnForms()
                 ->showOnDetail(),
 
             Text::make('Barcode Number', 'barcode_number')
-                ->rules('required')
+                ->rules('required', 'string')
                 ->onlyOnForms()
                 ->showOnDetail(),
 
             Text::make('Addtional Information', 'addtional_information')
+                ->rules('string')
+                ->onlyOnForms()
+                ->showOnDetail(),
+
+            Markdown::make('Description', 'desc')
+                ->rules('string')
                 ->onlyOnForms()
                 ->showOnDetail(),
 
             BelongsTo::make('category', 'category', BuildingEquipmentCategory::class)
-                ->rules('required|exists:building_equipment_categories'),
+                ->rules('required'),
+
+            BelongsTo::make('Building', 'building', Building::class)
+                ->rules('required'),
         ];
     }
 

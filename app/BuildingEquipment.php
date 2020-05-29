@@ -21,7 +21,7 @@ class BuildingEquipment extends Model
      */
     protected $casts = [
         'date_installation' => 'date',
-        'year_of_construction' => 'date',
+        'year_of_construction' => 'year',
     ];
 
     /**
@@ -32,5 +32,16 @@ class BuildingEquipment extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(BuildingEquipmentCategory::class, 'building_equipment_category_id');
+    }
+
+
+    /**
+     * An equipment belongs to one Building.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function building(): BelongsTo
+    {
+        return $this->belongsTo(Building::class, 'building_id');
     }
 }

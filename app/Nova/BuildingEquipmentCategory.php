@@ -55,10 +55,10 @@ class BuildingEquipmentCategory extends Resource
             ID::make()->sortable(),
 
             Text::make('Name', 'name')
-                ->rules('required|string'),
+                ->rules('required', 'string'),
 
             HasMany::make('Equipments', 'equipments', BuildingEquipment::class)
-                ->rules('required|string'),
+                ->rules('required', 'string', 'exists:building_equipments,id'),
 
             BelongsTo::make('Buildings', 'building', Building::class)
                 ->rules('required|exists:buildings,id'),
