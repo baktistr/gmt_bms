@@ -21,8 +21,17 @@ class BuildingEquipment extends Model
      */
     protected $casts = [
         'date_installation' => 'date',
-        'year_of_construction' => 'year',
     ];
+
+    /**
+     * Get formatted date attribute.
+     *
+     * @return mixed
+     */
+    public function getFormattedDateAttribute()
+    {
+        return $this->date_installation->format('d F Y');
+    }
 
     /**
      * An equipment belongs to one category.
