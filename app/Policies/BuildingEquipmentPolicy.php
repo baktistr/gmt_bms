@@ -42,7 +42,7 @@ class BuildingEquipmentPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('Create Building');
+        return $user->hasRole('Building Manager');
     }
 
     /**
