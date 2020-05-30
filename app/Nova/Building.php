@@ -128,6 +128,8 @@ class Building extends Resource
 
             HasMany::make('Diesel Fuel Consumptions', 'dieselFuelConsumptions', DieselFuelConsumption::class),
 
+            HasMany::make('Equipments', 'equipments', BuildingEquipment::class),
+
             HasMany::make('Help Desks', 'helpDesks', User::class),
 
             HasMany::make('Viewers', 'viewers', User::class),

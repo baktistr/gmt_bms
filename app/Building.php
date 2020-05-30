@@ -97,6 +97,26 @@ class Building extends Model
     }
 
     /**
+     * A building can have many equipment categories.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function equipmentCategories(): HasMany
+    {
+        return $this->hasMany(BuildingEquipmentCategory::class, 'building_id');
+    }
+
+    /**
+     * A building can have many equipments.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function equipments(): HasMany
+    {
+        return $this->hasMany(BuildingEquipment::class, 'building_id');
+    }
+
+    /**
      * A building can assign many help-desks.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
