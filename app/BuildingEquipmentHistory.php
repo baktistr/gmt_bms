@@ -13,6 +13,15 @@ class BuildingEquipmentHistory extends Model
      */
     protected $table = 'building_equipment_histories';
 
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $casts = [
+        'date_of_problem'       => 'date',
+        'date_of_problem_fixed' => 'date',
+    ];
+
     /**
      * @var string[] $type
      */

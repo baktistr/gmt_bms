@@ -8,6 +8,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Markdown;
 
 class BuildingEquipment extends Resource
@@ -31,7 +32,7 @@ class BuildingEquipment extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'number';
 
     /**
      * The columns that should be searched.
@@ -100,6 +101,10 @@ class BuildingEquipment extends Resource
 
             BelongsTo::make('Building', 'building', Building::class)
                 ->rules('required'),
+
+            HasMany::make('Histories', 'histories', BuildingEquipmentHistory::class)
+                ->onlyOnIndex()
+                ->onlyOnDetail(),
         ];
     }
 
