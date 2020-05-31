@@ -18,7 +18,7 @@ class CreateBuildingEquipmentsTable extends Migration
             $table->foreignId('building_id');
             $table->foreignId('building_equipment_category_id');
             $table->string('number');
-            $table->text('desc');
+            $table->string('name');
             $table->date('date_installation');
             $table->string('manufacture');
             $table->string('manufacture_model_number');

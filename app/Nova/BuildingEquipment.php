@@ -91,7 +91,7 @@ class BuildingEquipment extends Resource
                 ->onlyOnForms()
                 ->showOnDetail(),
 
-            Markdown::make('Description', 'desc')
+            Text::make('Name', 'name')
                 ->rules('string')
                 ->onlyOnForms()
                 ->showOnDetail(),
