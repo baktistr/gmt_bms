@@ -15,8 +15,8 @@ $factory->define(BuildingEquipment::class, function (Faker $faker) {
         'building_equipment_category_id' => function () {
             return factory(BuildingEquipmentCategory::class)->create()->id;
         },
-        'number'                         => 'EQ-' . $faker->randomDigit,
-        'name'                           => $faker->sentence,
+        'equipment_number'               => 'EQ-' . $faker->randomDigit,
+        'equipment_name'                 => $faker->sentence,
         'date_installation'              => now()->subDays(rand(1, 30)),
         'manufacture'                    => $faker->company,
         'manufacture_model_number'       => 'MMN-' . $faker->randomNumber(5),

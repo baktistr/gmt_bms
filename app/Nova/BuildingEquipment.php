@@ -82,10 +82,10 @@ class BuildingEquipment extends Resource
             BelongsTo::make('Building', 'building', Building::class)
                 ->rules('required'),
 
-            Text::make('Equipment Number')
+            Text::make('Equipment Number', 'number')
                 ->rules('required', 'string'),
 
-            Textarea::make('Equipment Description')
+            Textarea::make('Equipment Description', 'name')
                 ->rules('string')
                 ->alwaysShow(),
 
@@ -118,11 +118,6 @@ class BuildingEquipment extends Resource
 
             Text::make('Barcode Number')
                 ->rules('required')
-                ->onlyOnForms()
-                ->showOnDetail(),
-
-            Text::make('Name', 'name')
-                ->rules('string')
                 ->onlyOnForms()
                 ->showOnDetail(),
 
