@@ -3,9 +3,13 @@
 namespace App\Providers;
 
 use App\Building;
+use App\BuildingEquipment;
+use App\BuildingEquipmentCategory;
 use App\District;
 use App\ElectricityConsumption;
 use App\Policies\ActionEventPolicy;
+use App\Policies\BuildingEquipmentCategoryPolicy;
+use App\Policies\BuildingEquipmentPolicy;
 use App\Policies\BuildingPolicy;
 use App\Policies\DistrictPolicy;
 use App\Policies\ElectricityConsumptionPolicy;
@@ -29,14 +33,16 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        ActionEvent::class            => ActionEventPolicy::class,
-        User::class                   => UserPolicy::class,
-        Province::class               => ProvincePolicy::class,
-        Regency::class                => RegencyPolicy::class,
-        District::class               => DistrictPolicy::class,
-        Building::class               => BuildingPolicy::class,
-        ElectricityConsumption::class => ElectricityConsumptionPolicy::class,
-        WaterConsumption::class       => WaterConsumptionPolicy::class,
+        ActionEvent::class               => ActionEventPolicy::class,
+        User::class                      => UserPolicy::class,
+        Province::class                  => ProvincePolicy::class,
+        Regency::class                   => RegencyPolicy::class,
+        District::class                  => DistrictPolicy::class,
+        Building::class                  => BuildingPolicy::class,
+        ElectricityConsumption::class    => ElectricityConsumptionPolicy::class,
+        WaterConsumption::class          => WaterConsumptionPolicy::class,
+        BuildingEquipmentCategory::class => BuildingEquipmentCategoryPolicy::class,
+        BuildingEquipment::class         => BuildingEquipmentPolicy::class,
     ];
 
     /**
