@@ -19,6 +19,14 @@ class BuildingEquipmentHistory extends Resource
      */
     public static $model = \App\BuildingEquipmentHistory::class;
 
+
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $group = 'Equipments';
+
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
@@ -107,5 +115,16 @@ class BuildingEquipmentHistory extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Histories';
     }
 }
