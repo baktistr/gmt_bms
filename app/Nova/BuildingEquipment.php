@@ -3,8 +3,10 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Date;
@@ -18,7 +20,7 @@ class BuildingEquipment extends Resource
      *
      * @var string
      */
-    public static $group = 'Consumptions';
+    public static $group = 'Equipments';
 
     /**
      * The model the resource corresponds to.
@@ -46,6 +48,24 @@ class BuildingEquipment extends Resource
     ];
 
     /**
+     * Build an "index" query for the given resource.
+     *
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder   $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        $user = $request->user();
+
+        if ($user->hasRole('Building Manager')) {
+            return $query->where('building_id', $user->building->id);
+        }
+
+        return $query;
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -56,38 +76,48 @@ class BuildingEquipment extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Number', 'number')
+            BelongsTo::make('Category', 'category', BuildingEquipmentCategory::class)
+                ->rules('required'),
+
+            BelongsTo::make('Building', 'building', Building::class)
+                ->rules('required'),
+
+            Text::make('Equipment Number')
                 ->rules('required', 'string'),
 
-            Date::make('Date Installation', 'date_installation')
-                ->rules('required', 'date'),
-
-            Text::make('Manufacture ', 'manufacture')
-                ->rules('required', 'string'),
-
-            Text::make('Manufacture Number ', 'manufacture_model_number')
-                ->rules('required', 'string'),
-
-            Text::make('Year Construction', 'year_of_construction')
-                ->rules('required', 'min:1990', "max:" . date('Y'), 'numeric'),
-
-            Text::make('Cost Center', 'costs_center')
-                ->rules('required', 'string')
-                ->onlyOnForms()
-                ->showOnDetail(),
-
-            Text::make('Location', 'location')
-                ->rules('required', 'string')
-                ->onlyOnForms()
-                ->showOnDetail(),
-
-            Text::make('Barcode Number', 'barcode_number')
-                ->rules('required', 'string')
-                ->onlyOnForms()
-                ->showOnDetail(),
-
-            Text::make('Addtional Information', 'addtional_information')
+            Textarea::make('Equipment Description')
                 ->rules('string')
+                ->alwaysShow(),
+
+            Date::make('Date Installation')
+                ->rules(['required', 'date_format:Y-m-d'])
+                ->withMeta([
+                    'value' => now()->format('Y-m-d'),
+                ])
+                ->onlyOnForms(),
+
+            Date::make('Date Installation', function () {
+                return $this->formatted_date;
+            }),
+
+            Text::make('Manufacture')
+                ->rules('required', 'string'),
+
+            Text::make('Manufacture Model Number')
+                ->rules('required', 'string'),
+
+            Text::make('Year of Construction')
+                ->rules('required', 'numeric', 'min:1990', 'max:' . date('Y')),
+
+            Text::make('Cost Center')
+                ->rules('required'),
+
+            Textarea::make('Location')
+                ->rules('required')
+                ->alwaysShow(),
+
+            Text::make('Barcode Number')
+                ->rules('required')
                 ->onlyOnForms()
                 ->showOnDetail(),
 
@@ -105,6 +135,7 @@ class BuildingEquipment extends Resource
             HasMany::make('Histories', 'histories', BuildingEquipmentHistory::class)
                 ->onlyOnIndex()
                 ->onlyOnDetail(),
+
         ];
     }
 
@@ -150,5 +181,15 @@ class BuildingEquipment extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Equipments';
     }
 }

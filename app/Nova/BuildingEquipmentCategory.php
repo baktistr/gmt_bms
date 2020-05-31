@@ -24,7 +24,7 @@ class BuildingEquipmentCategory extends Resource
      *
      * @var string
      */
-    public static $group = 'Consumptions';
+    public static $group = 'Equipments';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -44,6 +44,24 @@ class BuildingEquipmentCategory extends Resource
     ];
 
     /**
+     * Build an "index" query for the given resource.
+     *
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder   $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        $user = $request->user();
+
+        if ($user->hasRole('Building Manager')) {
+            return $query->where('building_id', $user->building->id);
+        }
+
+        return $query;
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -54,14 +72,13 @@ class BuildingEquipmentCategory extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Name', 'name')
+            Text::make('Name')
                 ->rules('required', 'string'),
 
-            HasMany::make('Equipments', 'equipments', BuildingEquipment::class)
-                ->rules('required', 'string', 'exists:building_equipments'),
-
             BelongsTo::make('Buildings', 'building', Building::class)
-                ->rules('required|exists:buildings'),
+                ->rules('required', 'exists:buildings'),
+
+            HasMany::make('Equipments', 'equipments', BuildingEquipment::class),
         ];
     }
 
@@ -107,5 +124,15 @@ class BuildingEquipmentCategory extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Categories';
     }
 }

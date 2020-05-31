@@ -23,10 +23,10 @@ class CreateBuildingEquipmentsTable extends Migration
             $table->string('manufacture');
             $table->string('manufacture_model_number');
             $table->year('year_of_construction');
-            $table->float('costs_center', 12);
+            $table->float('cost_center', 12);
             $table->text('location');
             $table->string('barcode_number');
-            $table->string('addtional_information')->nullable();
+            $table->string('additional_information')->nullable();
             $table->timestamps();
         });
     }
