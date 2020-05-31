@@ -11,7 +11,6 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Markdown;
 
 class BuildingEquipment extends Resource
 {
@@ -34,7 +33,7 @@ class BuildingEquipment extends Resource
      *
      * @var string
      */
-    public static $title = 'number';
+    public static $title = 'equipment_number';
 
     /**
      * The columns that should be searched.
@@ -82,12 +81,15 @@ class BuildingEquipment extends Resource
             BelongsTo::make('Building', 'building', Building::class)
                 ->rules('required'),
 
-            Text::make('Equipment Number', 'number')
+            Text::make('Equipment Number', 'equipment_number')
                 ->rules('required', 'string'),
 
-            Textarea::make('Equipment Description', 'name')
+            Text::make('Equipment Name', 'equipment_name')
                 ->rules('string')
-                ->alwaysShow(),
+                ->showOnIndex()
+                ->showOnCreating()
+                ->showOnUpdating(),
+
 
             Date::make('Date Installation')
                 ->rules(['required', 'date_format:Y-m-d'])
@@ -104,7 +106,9 @@ class BuildingEquipment extends Resource
                 ->rules('required', 'string'),
 
             Text::make('Manufacture Model Number')
-                ->rules('required', 'string'),
+                ->rules('required', 'string')
+                ->onlyOnDetail()
+                ->onlyOnForms(),
 
             Text::make('Year of Construction')
                 ->rules('required', 'numeric', 'min:1990', 'max:' . date('Y')),
@@ -120,12 +124,6 @@ class BuildingEquipment extends Resource
                 ->rules('required')
                 ->onlyOnForms()
                 ->showOnDetail(),
-
-            BelongsTo::make('category', 'category', BuildingEquipmentCategory::class)
-                ->rules('required'),
-
-            BelongsTo::make('Building', 'building', Building::class)
-                ->rules('required'),
 
             HasMany::make('Histories', 'histories', BuildingEquipmentHistory::class)
                 ->onlyOnIndex()

@@ -7,6 +7,7 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -60,7 +61,8 @@ class BuildingEquipmentHistory extends Resource
 
             Date::make('Date Of Problem', 'date_of_problem'),
 
-            Text::make('Action', 'action'),
+            Select::make('Action')
+                ->options(\App\BuildingEquipmentHistory::$type),
 
             Markdown::make('Problem', 'problem'),
 
