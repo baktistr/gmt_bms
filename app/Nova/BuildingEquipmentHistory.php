@@ -22,6 +22,13 @@ class BuildingEquipmentHistory extends Resource
 
 
     /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = false;
+
+    /**
      * The model the resource corresponds to.
      *
      * @var string
@@ -59,18 +66,32 @@ class BuildingEquipmentHistory extends Resource
 
             BelongsTo::make('Equipment', 'equipment', BuildingEquipment::class),
 
+            Date::make('Date Of Problem', 'date_of_problem')
+                ->rules(['required', 'date_format:Y-m-d'])
+                ->withMeta([
+                    'value' => now()->format('Y-m-d'),
+                ])
+                ->onlyOnForms(),
+
             Date::make('Date Of Problem', 'date_of_problem', function () {
                 return $this->formatted_problem;
-            }),
+            })->onlyOnIndex(),
 
             Select::make('Action')
                 ->options(\App\BuildingEquipmentHistory::$type),
 
             Markdown::make('Problem', 'problem'),
 
+            Date::make('Date Of Problem Fixed', 'date_of_problem_fixed')
+                ->rules(['required', 'date_format:Y-m-d'])
+                ->withMeta([
+                    'value' => now()->format('Y-m-d'),
+                ])
+                ->onlyOnForms(),
+
             Date::make('Date of Problem Fixed', 'date_of_problem_fixed', function () {
                 return $this->formatted_fixed;
-            }),
+            })->onlyOnIndex(),
 
             Text::make('Cost', 'cost'),
 
