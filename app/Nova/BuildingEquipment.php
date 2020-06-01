@@ -42,8 +42,9 @@ class BuildingEquipment extends Resource
      */
     public static $search = [
         'id',
-        'number',
-        'manufacture'
+        'equipment_number',
+        'manufacture',
+        'equipment_name'
     ];
 
     /**

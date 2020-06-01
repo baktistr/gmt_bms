@@ -59,14 +59,18 @@ class BuildingEquipmentHistory extends Resource
 
             BelongsTo::make('Equipment', 'equipment', BuildingEquipment::class),
 
-            Date::make('Date Of Problem', 'date_of_problem'),
+            Date::make('Date Of Problem', 'date_of_problem', function () {
+                return $this->formatted_problem;
+            }),
 
             Select::make('Action')
                 ->options(\App\BuildingEquipmentHistory::$type),
 
             Markdown::make('Problem', 'problem'),
 
-            Date::make('Date of Problem Fixed', 'date_of_problem_fixed'),
+            Date::make('Date of Problem Fixed', 'date_of_problem_fixed', function () {
+                return $this->formatted_fixed;
+            }),
 
             Text::make('Cost', 'cost'),
 

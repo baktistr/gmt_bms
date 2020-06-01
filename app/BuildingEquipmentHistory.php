@@ -35,4 +35,24 @@ class BuildingEquipmentHistory extends Model
     {
         return $this->belongsTo(BuildingEquipment::class, 'building_equipment_id');
     }
+
+    /**
+     * Get formatted date date_of_problem attribute.
+     *
+     * @return mixed
+     */
+    public function getFormattedProblemAttribute()
+    {
+        return $this->date_of_problem->format('d F Y');
+    }
+
+    /**
+     *Get Formatted date_of_problem_fixed Attribute
+     *
+     * @return date
+     */
+    public function getFormattedFixedAttribute()
+    {
+        return $this->date_of_problem_fixed->format('d F Y');
+    }
 }
