@@ -53,4 +53,14 @@ class BuildingEquipment extends Model
     {
         return $this->belongsTo(Building::class, 'building_id');
     }
+
+    /**
+     * An Equipment has Many Histories
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function histories(): HasMany
+    {
+        return $this->hasMany(BuildingEquipmentHistory::class, 'building_equipment_id');
+    }
 }

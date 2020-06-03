@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\BuildingEquipmentCategory;
+use App\BuildingEquipmentHistory;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class BuildingEquipmentCategoryPolicy
+class BuildingEquipmentHistoryPolicy
 {
     use HandlesAuthorization;
 
@@ -25,13 +25,12 @@ class BuildingEquipmentCategoryPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
-     * @param  \App\BuildingEquipmentCategory  $category
+     * @param  \App\BuildingEquipmentHistory  $history
      * @return mixed
      */
-    public function view(User $user, BuildingEquipmentCategory $category)
+    public function view(User $user, BuildingEquipmentHistory $history)
     {
-        return $user->hasPermissionTo('View Building')
-            && ($user->id == $category->building->manager_id || $user->building_id == $category->building->id);
+        return $user->hasPermissionTo('View Building');
     }
 
     /**
@@ -49,50 +48,50 @@ class BuildingEquipmentCategoryPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\BuildingEquipmentCategory  $category
+     * @param  \App\BuildingEquipmentHistory  $history
      * @return mixed
      */
-    public function update(User $user, BuildingEquipmentCategory $category)
+    public function update(User $user, BuildingEquipmentHistory $history)
     {
-        return $user->hasPermissionTo('Update Building') && $user->id == $category->building->manager_id;
+        return $user->hasPermissionTo('Update Building');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\BuildingEquipmentCategory  $category
+     * @param  \App\BuildingEquipmentHistory  $history
      * @return mixed
      */
-    public function delete(User $user, BuildingEquipmentCategory $category)
+    public function delete(User $user, BuildingEquipmentHistory $history)
     {
         return $user->hasRole('Building Manager')
-            && ($user->id == $category->building->manager_id || $user->building_id == $category->building->id);
+            && ($user->id == $history->equipment->building->manager_id || $user->building_id == $history->equipment->building->id);
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\BuildingEquipmentCategory  $category
+     * @param  \App\BuildingEquipmentHistory  $history
      * @return mixed
      */
-    public function restore(User $user, BuildingEquipmentCategory $category)
+    public function restore(User $user, BuildingEquipmentHistory $history)
     {
         return $user->hasRole('Building Manager')
-            && ($user->id == $category->building->manager_id || $user->building_id == $category->building->id);
+            && ($user->id == $history->equipment->building->manager_id || $user->building_id == $history->equipment->building->id);
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\BuildingEquipmentCategory  $category
+     * @param  \App\BuildingEquipmentHistory  $history
      * @return mixed
      */
-    public function forceDelete(User $user, BuildingEquipmentCategory $category)
+    public function forceDelete(User $user, BuildingEquipmentHistory $history)
     {
         return $user->hasRole('Building Manager')
-            && ($user->id == $category->building->manager_id || $user->building_id == $category->building->id);
+            && ($user->id == $history->equipment->building->manager_id || $user->building_id == $history->equipment->building->id);
     }
 }

@@ -10,7 +10,7 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\Markdown;
+use Laravel\Nova\Fields\HasMany;
 
 class BuildingEquipment extends Resource
 {
@@ -33,7 +33,7 @@ class BuildingEquipment extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'equipment_name';
 
     /**
      * The columns that should be searched.
@@ -42,8 +42,9 @@ class BuildingEquipment extends Resource
      */
     public static $search = [
         'id',
-        'number',
-        'manufacture'
+        'equipment_number',
+        'equipment_name',
+        'manufacture',
     ];
 
     /**
@@ -59,6 +60,10 @@ class BuildingEquipment extends Resource
 
         if ($user->hasRole('Building Manager')) {
             return $query->where('building_id', $user->building->id);
+        }
+
+        if (($user->hasRole('Help Desk') || $user->hasRole('Viewer')) && $user->building_id) {
+            return $query->where('building_id', $user->building_id);
         }
 
         return $query;
@@ -81,12 +86,15 @@ class BuildingEquipment extends Resource
             BelongsTo::make('Building', 'building', Building::class)
                 ->rules('required'),
 
-            Text::make('Equipment Number')
+            Text::make('Equipment Number', 'equipment_number')
                 ->rules('required', 'string'),
 
-            Textarea::make('Equipment Description')
+            Text::make('Equipment Name', 'equipment_name')
                 ->rules('string')
-                ->alwaysShow(),
+                ->showOnIndex()
+                ->showOnCreating()
+                ->showOnUpdating(),
+
 
             Date::make('Date Installation')
                 ->rules(['required', 'date_format:Y-m-d'])
@@ -103,7 +111,9 @@ class BuildingEquipment extends Resource
                 ->rules('required', 'string'),
 
             Text::make('Manufacture Model Number')
-                ->rules('required', 'string'),
+                ->rules('required', 'string')
+                ->onlyOnDetail()
+                ->onlyOnForms(),
 
             Text::make('Year of Construction')
                 ->rules('required', 'numeric', 'min:1990', 'max:' . date('Y')),
@@ -120,10 +130,10 @@ class BuildingEquipment extends Resource
                 ->onlyOnForms()
                 ->showOnDetail(),
 
-            Text::make('Additional Information')
-                ->rules('string')
-                ->onlyOnForms()
-                ->showOnDetail(),
+            HasMany::make('Histories', 'histories', BuildingEquipmentHistory::class)
+                ->onlyOnIndex()
+                ->onlyOnDetail(),
+
         ];
     }
 
