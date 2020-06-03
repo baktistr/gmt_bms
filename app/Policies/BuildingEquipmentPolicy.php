@@ -66,7 +66,7 @@ class BuildingEquipmentPolicy
      */
     public function delete(User $user, BuildingEquipment $equipment)
     {
-        return $user->hasPermissionTo('View Building')
+        return $user->hasRole('Building Manager')
             && ($user->id == $equipment->building->manager_id || $user->building_id == $equipment->building->id);
     }
 
@@ -79,7 +79,7 @@ class BuildingEquipmentPolicy
      */
     public function restore(User $user, BuildingEquipment $equipment)
     {
-        return $user->hasPermissionTo('View Building')
+        return $user->hasRole('Building Manager')
             && ($user->id == $equipment->building->manager_id || $user->building_id == $equipment->building->id);
     }
 
@@ -92,7 +92,7 @@ class BuildingEquipmentPolicy
      */
     public function forceDelete(User $user, BuildingEquipment $equipment)
     {
-        return $user->hasPermissionTo('View Building')
+        return $user->hasRole('Building Manager')
             && ($user->id == $equipment->building->manager_id || $user->building_id == $equipment->building->id);
     }
 }

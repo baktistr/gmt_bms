@@ -58,6 +58,10 @@ class BuildingEquipmentCategory extends Resource
             return $query->where('building_id', $user->building->id);
         }
 
+        if (($user->hasRole('Help Desk') || $user->hasRole('Viewer')) && $user->building_id) {
+            return $query->where('building_id', $user->building_id);
+        }
+
         return $query;
     }
 

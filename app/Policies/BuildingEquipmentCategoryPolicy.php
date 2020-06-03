@@ -66,7 +66,7 @@ class BuildingEquipmentCategoryPolicy
      */
     public function delete(User $user, BuildingEquipmentCategory $category)
     {
-        return $user->hasPermissionTo('View Building')
+        return $user->hasRole('Building Manager')
             && ($user->id == $category->building->manager_id || $user->building_id == $category->building->id);
     }
 
@@ -79,7 +79,7 @@ class BuildingEquipmentCategoryPolicy
      */
     public function restore(User $user, BuildingEquipmentCategory $category)
     {
-        return $user->hasPermissionTo('View Building')
+        return $user->hasRole('Building Manager')
             && ($user->id == $category->building->manager_id || $user->building_id == $category->building->id);
     }
 
@@ -92,7 +92,7 @@ class BuildingEquipmentCategoryPolicy
      */
     public function forceDelete(User $user, BuildingEquipmentCategory $category)
     {
-        return $user->hasPermissionTo('View Building')
+        return $user->hasRole('Building Manager')
             && ($user->id == $category->building->manager_id || $user->building_id == $category->building->id);
     }
 }
