@@ -8,14 +8,14 @@ use Faker\Generator as Faker;
 
 $factory->define(BuildingEquipmentHistory::class, function (Faker $faker) {
     return [
-        'building_equipment_id' => function () {
+        'building_equipment_id'  => function () {
             return factory(BuildingEquipment::class)->create()->id;
         },
-        'date_of_problem'       => $faker->date('Y-m-d'),
-        'action'                => $faker->randomElement(array_keys(BuildingEquipmentHistory::$type)),
-        'problem'               => $faker->paragraph,
-        'date_of_problem_fixed' => $faker->date('Y-m-d'),
-        'cost'                  => rand(1000000, 9000000),
-        'addtional_information' => $faker->sentence,
+        'date_of_problem'        => $faker->date('Y-m-d'),
+        'action'                 => $faker->randomElement(array_keys(BuildingEquipmentHistory::$type)),
+        'problem'                => $faker->paragraph,
+        'date_of_problem_fixed'  => $faker->date('Y-m-d'),
+        'cost'                   => rand(1000000, 9000000),
+        'additional_information' => $faker->sentence,
     ];
 });

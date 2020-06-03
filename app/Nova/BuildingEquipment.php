@@ -33,7 +33,7 @@ class BuildingEquipment extends Resource
      *
      * @var string
      */
-    public static $title = 'equipment_number';
+    public static $title = 'equipment_name';
 
     /**
      * The columns that should be searched.
@@ -43,8 +43,8 @@ class BuildingEquipment extends Resource
     public static $search = [
         'id',
         'equipment_number',
+        'equipment_name',
         'manufacture',
-        'equipment_name'
     ];
 
     /**

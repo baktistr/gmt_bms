@@ -21,7 +21,7 @@ class CreateBuildingEquipmentHistoriesTable extends Migration
             $table->text('problem');
             $table->date('date_of_problem_fixed');
             $table->float('cost', 12);
-            $table->text('addtional_information')->nullable();
+            $table->text('additional_information')->nullable();
             $table->timestamps();
         });
     }

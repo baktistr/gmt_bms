@@ -9,7 +9,9 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Rimu\FormattedNumber\FormattedNumber;
 
 class BuildingEquipmentHistory extends Resource
 {
@@ -75,12 +77,7 @@ class BuildingEquipmentHistory extends Resource
 
             Date::make('Date Of Problem', 'date_of_problem', function () {
                 return $this->formatted_problem;
-            })->onlyOnIndex(),
-
-            Select::make('Action')
-                ->options(\App\BuildingEquipmentHistory::$type),
-
-            Markdown::make('Problem', 'problem'),
+            })->exceptOnForms(),
 
             Date::make('Date Of Problem Fixed', 'date_of_problem_fixed')
                 ->rules(['required', 'date_format:Y-m-d'])
@@ -91,12 +88,25 @@ class BuildingEquipmentHistory extends Resource
 
             Date::make('Date of Problem Fixed', 'date_of_problem_fixed', function () {
                 return $this->formatted_fixed;
-            })->onlyOnIndex(),
+            })->exceptOnForms(),
 
-            Text::make('Cost', 'cost'),
+            Select::make('Action')
+                ->options(\App\BuildingEquipmentHistory::$type)
+                ->displayUsingLabels(),
 
-            Markdown::make('Addtional Information', 'addtional_information'),
+            Textarea::make('Problem', 'problem')
+                ->alwaysShow(),
 
+            FormattedNumber::make('Cost', 'cost')
+                ->rules(['required', 'numeric'])
+                ->onlyOnForms(),
+
+            Text::make('Cost', function () {
+                return $this->formatted_cost;
+            })->exceptOnForms(),
+
+            Textarea::make('Additional Information')
+                ->alwaysShow(),
         ];
     }
 

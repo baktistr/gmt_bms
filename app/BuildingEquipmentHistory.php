@@ -7,13 +7,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BuildingEquipmentHistory extends Model
 {
-
-    /**
-     * {@inheritDoc}
-     */
-    protected $table = 'building_equipment_histories';
-
-
     /**
      * {@inheritDoc}
      */
@@ -49,10 +42,20 @@ class BuildingEquipmentHistory extends Model
     /**
      *Get Formatted date_of_problem_fixed Attribute
      *
-     * @return date
+     * @return mixed
      */
     public function getFormattedFixedAttribute()
     {
         return $this->date_of_problem_fixed->format('d F Y');
+    }
+
+    /**
+     * Get formatted LWBP rate
+     *
+     * @return mixed
+     */
+    public function getFormattedCostAttribute()
+    {
+        return 'Rp. ' . number_format($this->cost);
     }
 }
