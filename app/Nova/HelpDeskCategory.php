@@ -50,7 +50,9 @@ class HelpDeskCategory extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name', 'name')->rules('required', 'string')
+            
+            Text::make('Name', 'name')
+                ->rules('required', 'string')
         ];
     }
 

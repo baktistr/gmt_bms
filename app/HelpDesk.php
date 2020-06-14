@@ -7,9 +7,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class HelpDesk extends Model
 {
-
-
-
     /**
      * Get formatted date attribute.
      *
@@ -19,16 +16,6 @@ class HelpDesk extends Model
     {
         return $this->created_at->format('d F Y');
     }
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     *
-     * @var array
-     */
-    protected $casts = [
-        'created_at' => 'date',
-    ];
 
     /**
      * {@inheritDoc}

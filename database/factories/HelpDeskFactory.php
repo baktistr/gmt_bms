@@ -16,7 +16,7 @@ $factory->define(HelpDesk::class, function (Faker $faker) {
         'help_desk_category_id' => function () {
             return factory(HelpDeskCategory::class)->create()->id;
         },
-        'building_id'              => function () {
+        'building_id'           => function () {
             return factory(Building::class)->create()->id;
         },
         'title'                 => $faker->sentence,

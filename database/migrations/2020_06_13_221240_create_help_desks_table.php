@@ -19,8 +19,8 @@ class CreateHelpDesksTable extends Migration
             $table->foreignId('help_desk_category_id');
             $table->foreignId('building_id');
             $table->string('title');
-            $table->string('message');
             $table->string('status');
+            $table->text('message');
             $table->timestamps();
         });
     }

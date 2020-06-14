@@ -18,7 +18,7 @@ class HelpDesk extends Resource
      *
      * @var string
      */
-    public static $group = "Help Desk";
+    public static $group = 'Help Desk';
 
     /**
      * The model the resource corresponds to.
@@ -75,7 +75,7 @@ class HelpDesk extends Resource
                 ->options(\App\HelpDesk::$statuses)
                 ->displayUsingLabels(),
 
-            Date::make('Created At', function () {
+            Date::make('Created At', function(){
                 return $this->formatted_date;
             }),
         ];
