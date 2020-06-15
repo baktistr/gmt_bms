@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -50,9 +51,11 @@ class HelpDeskCategory extends Resource
     {
         return [
             ID::make()->sortable(),
-            
+
             Text::make('Name', 'name')
-                ->rules('required', 'string')
+                ->rules('required', 'string'),
+                
+            HasMany::make('Helpdesk', 'helpdesks', HelpDesk::class)
         ];
     }
 

@@ -41,8 +41,9 @@ class HelpDesk extends Resource
      */
     public static $search = [
         'id',
+        'title',
+        'status',
         'message',
-        'status'
     ];
 
     /**
