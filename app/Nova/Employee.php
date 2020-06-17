@@ -11,6 +11,14 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Employee extends Resource
 {
+
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $group = 'Employees';
+
     /**
      * The model the resource corresponds to.
      *
