@@ -65,14 +65,11 @@ class Employee extends Resource
             Text::make('Position', 'position')
                 ->rules('required', 'string'),
 
-            Text::make('Place Birth', 'place_birth')
+            Text::make('Birth Place', 'birth_place')
                 ->rules('required', 'string'),
 
             Date::make('Birth Date')
                 ->rules(['required', 'date_format:Y-m-d'])
-                ->withMeta([
-                    'value' => now()->format('Y-m-d'),
-                ])
                 ->onlyOnForms(),
 
             Date::make('Birth Date', function () {

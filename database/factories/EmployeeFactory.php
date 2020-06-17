@@ -15,6 +15,6 @@ $factory->define(Employee::class, function (Faker $faker) {
         'address'       => $faker->address,
         'position'      => $faker->sentence,
         'place_birth'   => $faker->streetAddress,
-        'birth_date'   => now()->subDays(3),
+        'birth_date'    => now()->subDays(3),
     ];
 });

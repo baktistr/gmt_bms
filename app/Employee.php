@@ -10,6 +10,7 @@ class Employee extends Model
     protected $casts = [
         'birth_date' => 'date'
     ];
+    
     /**
      * A Employee Belongs To Building
      * 
@@ -19,6 +20,7 @@ class Employee extends Model
     {
         return $this->belongsTo(Building::class, 'building_id');
     }
+
     /**
      * Get formatted date attribute.
      *

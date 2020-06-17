@@ -19,7 +19,7 @@ class CreateEmployeesTable extends Migration
             $table->string('name');
             $table->string('address');
             $table->string('position');
-            $table->string('place_birth');
+            $table->string('birth_place');
             $table->date('birth_date');
             $table->timestamps();
         });
