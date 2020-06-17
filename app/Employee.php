@@ -7,21 +7,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Employee extends Model
 {
-
     protected $casts = [
         'birth_date' => 'date'
     ];
-
     /**
      * A Employee Belongs To Building
+     * 
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function building(): BelongsTo
     {
         return $this->belongsTo(Building::class, 'building_id');
     }
-
-
-
     /**
      * Get formatted date attribute.
      *
