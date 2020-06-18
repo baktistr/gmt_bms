@@ -16,7 +16,7 @@ class EmployeeSeeder extends Seeder
         Building::get()
             ->each(function ($building) {
                 factory(Employee::class, rand(3, 5))->create([
-                    'building_id'   => $building->id,
+                    'building_id' => $building->id,
                 ]);
             });
     }
