@@ -82,6 +82,15 @@ class Building extends Model
     {
         return $this->hasMany(WaterConsumption::class, 'building_id');
     }
+    
+    /**
+     * A building can Have Many Employees
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function employees(): HasMany
+    {
+        return $this->hasMany(Employee::class, 'building_id');
+    }
 
     /**
      * A building can assign many viewers.

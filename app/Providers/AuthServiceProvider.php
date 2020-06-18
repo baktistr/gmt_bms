@@ -7,12 +7,14 @@ use App\BuildingEquipment;
 use App\BuildingEquipmentCategory;
 use App\District;
 use App\ElectricityConsumption;
+use App\Employee;
 use App\Policies\ActionEventPolicy;
 use App\Policies\BuildingEquipmentCategoryPolicy;
 use App\Policies\BuildingEquipmentPolicy;
 use App\Policies\BuildingPolicy;
 use App\Policies\DistrictPolicy;
 use App\Policies\ElectricityConsumptionPolicy;
+use App\Policies\EmployeePolicy;
 use App\Policies\ProvincePolicy;
 use App\Policies\RegencyPolicy;
 use App\Policies\UserPolicy;
@@ -43,6 +45,7 @@ class AuthServiceProvider extends ServiceProvider
         WaterConsumption::class          => WaterConsumptionPolicy::class,
         BuildingEquipmentCategory::class => BuildingEquipmentCategoryPolicy::class,
         BuildingEquipment::class         => BuildingEquipmentPolicy::class,
+        Employee::class                  => EmployeePolicy::class,
     ];
 
     /**

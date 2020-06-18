@@ -2,36 +2,23 @@
 
 namespace App\Nova;
 
-use App\Nova\Metrics\TotalHelpDesks;
-use App\Nova\Metrics\TotalManagers;
-use App\Nova\Metrics\TotalViewers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Password;
-use Laravel\Nova\Fields\Text;
-use KABBOUCHI\NovaImpersonate\Impersonate;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
-use Laravel\Nova\Fields\HasOne;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Vyuldashev\NovaPermission\RoleSelect;
 
-class User extends Resource
+class Employee extends Resource
 {
-    /**
-     * The logical group associated with the resource.
-     *
-     * @var string
-     */
-    public static $group = 'Application';
-
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\User::class;
+    public static $model = \App\Employee::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -46,27 +33,36 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'id',
+        'name'
     ];
+
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $group = 'Admin';
 
     /**
      * Build an "index" query for the given resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder   $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
         $user = $request->user();
 
-        if ($user->hasRole('Super Admin')) {
-            return $query;
+        if ($user->hasRole('Building Manager')) {
+            return $query->whereHas('building', function ($query) use ($user) {
+                $query->where('manager_id', $user->id);
+            });
         }
 
-        return $query->find($user->id);
+        return $query;
     }
-
     /**
      * Get the fields displayed by the resource.
      *
@@ -83,30 +79,28 @@ class User extends Resource
                 ->conversionOnDetailView('large')
                 ->rules('required'),
 
-            Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255'),
+            BelongsTo::make('Building', 'building', Building::class),
 
-            Text::make('Email')
-                ->sortable()
-                ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
+            Text::make('Name', 'name')
+                ->rules('required', 'string'),
 
-            Password::make('Password')
-                ->onlyOnForms()
-                ->creationRules('required', 'string', 'min:8')
-                ->updateRules('nullable', 'string', 'min:8'),
+            Textarea::make('Address', 'address')
+                ->rules('required', 'string')
+                ->alwaysShow(),
 
-            RoleSelect::make('Role', 'roles'),
+            Text::make('Position', 'position')
+                ->rules('required', 'string'),
 
-            BelongsTo::make('Assigned Building', 'assignedBuilding', Building::class),
+            Text::make('Birth Place', 'birth_place')
+                ->rules('required', 'string'),
 
-            HasOne::make('Building', 'building', Building::class),
+            Date::make('Birth Date')
+                ->rules(['required', 'date_format:Y-m-d'])
+                ->onlyOnForms(),
 
-            Impersonate::make($this)->withMeta([
-                'redirect_to' => config('nova.path')
-            ]),
+            Date::make('Birth Date', function () {
+                return $this->formatted_date;
+            })->exceptOnForms()
         ];
     }
 
@@ -118,17 +112,7 @@ class User extends Resource
      */
     public function cards(Request $request)
     {
-        return [
-            (new TotalManagers)->canSee(function () {
-                return Auth::user()->hasRole('Super Admin');
-            }),
-            (new TotalHelpDesks)->canSee(function () {
-                return Auth::user()->hasRole('Super Admin');
-            }),
-            (new TotalViewers)->canSee(function () {
-                return Auth::user()->hasRole('Super Admin');
-            }),
-        ];
+        return [];
     }
 
     /**

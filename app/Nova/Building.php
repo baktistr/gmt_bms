@@ -130,6 +130,8 @@ class Building extends Resource
 
             HasMany::make('Equipments', 'equipments', BuildingEquipment::class),
 
+            HasMany::make('Employees' , 'employees', Employee::class),
+
             HasMany::make('Help Desks', 'helpDesks', User::class),
 
             HasMany::make('Viewers', 'viewers', User::class),
