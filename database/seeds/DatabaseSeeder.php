@@ -1,5 +1,6 @@
 <?php
 
+use App\Attendance;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -26,6 +27,7 @@ class DatabaseSeeder extends Seeder
         $this->call(HelpDeskCategorySeeder::class);
         $this->call(HelpDeskSeeder::class);
         $this->call(EmployeeSeeder::class);
+        $this->call(AttendanceSeeder::class);
 
     }
 }

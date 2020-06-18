@@ -4,14 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Nova\Actions\Actionable;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Employee extends Model implements HasMedia
 {
-    use SoftDeletes, InteractsWithMedia;
+    use SoftDeletes, InteractsWithMedia, Actionable;
 
     /**
      * {@inheritDoc}
@@ -23,7 +25,7 @@ class Employee extends Model implements HasMedia
     /**
      * A Employee Belongs To Building
      *
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function building(): BelongsTo
     {
@@ -31,11 +33,21 @@ class Employee extends Model implements HasMedia
     }
 
     /**
+     * An employee can have many attendances.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function attendances(): HasMany
+    {
+        return $this->hasMany(Attendance::class, 'employee_id');
+    }
+
+    /**
      * Get formatted date attribute.
      *
      * @return mixed
      */
-    public function getFormattedDateAttribute()
+    public function getFormattedBirthDateAttribute()
     {
         return $this->birth_date->format('d F Y');
     }
