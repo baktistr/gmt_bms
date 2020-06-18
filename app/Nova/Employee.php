@@ -7,6 +7,7 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Employee extends Resource
@@ -17,7 +18,7 @@ class Employee extends Resource
      *
      * @var string
      */
-    public static $group = 'Employees';
+    public static $group = 'Admin';
 
     /**
      * The model the resource corresponds to.
@@ -43,6 +44,26 @@ class Employee extends Resource
         'name'
     ];
 
+
+    /**
+     * Build an "index" query for the given resource.
+     *
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder   $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        $user = $request->user();
+
+        if ($user->hasRole('Building Manager')) {
+            return $query->whereHas('building', function ($query) use ($user) {
+                $query->where('manager_id', $user->id);
+            });
+        }
+
+        return $query;
+    }
     /**
      * Get the fields displayed by the resource.
      *
@@ -59,7 +80,7 @@ class Employee extends Resource
             Text::make('Name', 'name')
                 ->rules('required', 'string'),
 
-            Text::make('Address', 'address')
+            Textarea::make('Address', 'address')
                 ->rules('required', 'string'),
 
             Text::make('Position', 'position')
@@ -74,7 +95,7 @@ class Employee extends Resource
 
             Date::make('Birth Date', function () {
                 return $this->formatted_date;
-            })->onlyOnIndex()
+            })->exceptOnForms()
         ];
     }
 
