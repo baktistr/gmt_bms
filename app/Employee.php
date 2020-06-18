@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Nova\Actions\Actionable;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Employee extends Model implements HasMedia
 {
-    use SoftDeletes, InteractsWithMedia;
+    use SoftDeletes, InteractsWithMedia, Actionable;
 
     /**
      * {@inheritDoc}
@@ -46,7 +47,7 @@ class Employee extends Model implements HasMedia
      *
      * @return mixed
      */
-    public function getFormattedDateAttribute()
+    public function getFormattedBirthDateAttribute()
     {
         return $this->birth_date->format('d F Y');
     }

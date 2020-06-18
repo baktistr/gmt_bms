@@ -21,6 +21,7 @@ class CreateAttendancesTable extends Migration
             $table->string('attendance');
             $table->string('desc')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

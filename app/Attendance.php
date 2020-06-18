@@ -4,9 +4,22 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Nova\Actions\Actionable;
 
 class Attendance extends Model
 {
+    use SoftDeletes, Actionable;
+
+    /**
+     * Attribute casting.
+     *
+     * @var string[] $casts
+     */
+    protected $casts = [
+        'date' => 'date'
+    ];
+
     /**
      * Attendance types.
      *
@@ -19,13 +32,23 @@ class Attendance extends Model
     ];
 
     /**
+     * Get formatted date attribute.
+     *
+     * @return mixed
+     */
+    public function getFormattedDateAttribute()
+    {
+        return $this->date->format('d F Y');
+    }
+
+    /**
      * A attendance BelongsTo building manager | user
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function buildingManager(): BelongsTo
+    public function building(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'building_manager_id');
+        return $this->belongsTo(Building::class, 'building_id');
     }
 
     /**
