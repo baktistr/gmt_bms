@@ -22,6 +22,7 @@ class CreateEmployeesTable extends Migration
             $table->string('birth_place');
             $table->date('birth_date');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

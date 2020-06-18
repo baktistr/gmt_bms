@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
@@ -12,14 +13,6 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Employee extends Resource
 {
-
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $group = 'Admin';
-
     /**
      * The model the resource corresponds to.
      *
@@ -44,6 +37,12 @@ class Employee extends Resource
         'name'
     ];
 
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $group = 'Admin';
 
     /**
      * Build an "index" query for the given resource.
@@ -75,13 +74,19 @@ class Employee extends Resource
         return [
             ID::make()->sortable(),
 
+            Images::make('Avatar')
+                ->conversionOnIndexView('small')
+                ->conversionOnDetailView('large')
+                ->rules('required'),
+
             BelongsTo::make('Building', 'building', Building::class),
 
             Text::make('Name', 'name')
                 ->rules('required', 'string'),
 
             Textarea::make('Address', 'address')
-                ->rules('required', 'string'),
+                ->rules('required', 'string')
+                ->alwaysShow(),
 
             Text::make('Position', 'position')
                 ->rules('required', 'string'),
