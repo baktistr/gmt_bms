@@ -7,15 +7,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Attendance extends Model
 {
+    /**
+     * Attendance types.
+     *
+     * @var string[] $types
+     */
     public static $types = [
-        'Hadir'     => 'hadir',
-        'Izin'      => 'izin',
-        'Alpha'     => 'alpha'
+        'hadir' => 'Hadir',
+        'izin'  => 'Izin',
+        'alpha' => 'Alpha'
     ];
 
     /**
-     * A attandance BelongsTo building manager | user
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     * A attendance BelongsTo building manager | user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function buildingManager(): BelongsTo
     {
@@ -23,8 +29,9 @@ class Attendance extends Model
     }
 
     /**
-     * A attandance BelongsTo Employee
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     * A attendance BelongsTo Employee
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function employee(): BelongsTo
     {

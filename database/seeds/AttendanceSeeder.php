@@ -1,9 +1,9 @@
 <?php
 
 use App\Attendance;
-use App\Employee;
-use App\User;
+use App\Building;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 
 class AttendanceSeeder extends Seeder
 {
@@ -14,12 +14,19 @@ class AttendanceSeeder extends Seeder
      */
     public function run()
     {
-        $manager = User::role('Building Manager')->inRandomOrder()->first();
-        Employee::get()->each(function ($employee) use ($manager) {
-            factory(Attendance::class)->create([
-                'building_manager_id'   => $manager->id,
-                'employee_id'           => $employee->id
-            ]);
-        });
+        Building::with(['employees', 'manager'])
+            ->get()
+            ->each(function ($building) {
+                for ($day = 1; $day <= 20; $day++) {
+                    $building->employees->each(function ($employee) use ($building, $day) {
+                        factory(Attendance::class)->create([
+                            'building_id' => $building->id,
+                            'employee_id' => $employee->id,
+                            'date'        => now()->subDays($day),
+                            'attendance'  => Arr::random(array_keys(Attendance::$types)),
+                        ]);
+                    });
+                }
+            });
     }
 }

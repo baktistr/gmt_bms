@@ -15,11 +15,11 @@ class CreateAttendancesTable extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('building_manager_id');
+            $table->foreignId('building_id');
             $table->foreignId('employee_id');
-            $table->string('attandance');
-            $table->string('desc')->nullable();
             $table->date('date');
+            $table->string('attendance');
+            $table->string('desc')->nullable();
             $table->timestamps();
         });
     }
