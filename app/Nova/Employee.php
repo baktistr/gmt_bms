@@ -91,14 +91,21 @@ class Employee extends Resource
                 ->alwaysShow(),
 
             Text::make('Position', 'position')
-                ->rules('required', 'string'),
+                ->rules('required', 'string')
+                ->hideFromIndex(),
 
             Text::make('Birth Place')
-                ->rules('required', 'string'),
+                ->rules('required', 'string')
+                ->hideFromIndex(),
 
             Date::make('Birth Date')
                 ->rules(['required', 'date_format:Y-m-d'])
-                ->format('DD MMMM YYYY'),
+                ->format('DD MMMM YYYY')
+                ->hideFromIndex(),
+
+            Text::make('Attendance Today', function () {
+                return $this->attendance_today;
+            }),
 
             HasMany::make('Attendances', 'attendances', Attendance::class),
         ];
@@ -145,6 +152,8 @@ class Employee extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            new Actions\AddDailyAttendances,
+        ];
     }
 }

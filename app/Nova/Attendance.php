@@ -93,7 +93,8 @@ class Attendance extends Resource
                 ->sortable(),
 
             Textarea::make('Description', 'desc')
-                ->nullable(),
+                ->nullable()
+                ->alwaysShow(),
         ];
     }
 
