@@ -16,7 +16,7 @@ $factory->define(Attendance::class, function (Faker $faker) {
             return factory(Employee::class)->create()->id;
         },
         'date'        => now()->subDays(rand(1, 30)),
-        'attendance'  => $faker->randomElement(array_keys(Attendance::$types)),
+        'status'      => $faker->randomElement(array_keys(Attendance::$statuses)),
         'desc'        => $faker->optional(0.2)->sentence,
     ];
 });

@@ -23,7 +23,7 @@ class AttendanceSeeder extends Seeder
                             'building_id' => $building->id,
                             'employee_id' => $employee->id,
                             'date'        => now()->subDays($day),
-                            'attendance'  => Arr::random(array_keys(Attendance::$types)),
+                            'status'      => Arr::random(array_keys(Attendance::$statuses)),
                         ]);
                     });
                 }

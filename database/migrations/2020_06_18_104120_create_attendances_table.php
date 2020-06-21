@@ -18,7 +18,7 @@ class CreateAttendancesTable extends Migration
             $table->foreignId('building_id');
             $table->foreignId('employee_id');
             $table->date('date');
-            $table->string('attendance');
+            $table->string('status');
             $table->string('desc')->nullable();
             $table->timestamps();
             $table->softDeletes();

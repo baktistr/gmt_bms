@@ -27,7 +27,7 @@ class UpdateAttendanceStatus extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         foreach ($models as $model) {
-            $model->update(['attendance' => $fields->status]);
+            $model->update(['status' => $fields->status]);
         }
     }
 
@@ -40,7 +40,7 @@ class UpdateAttendanceStatus extends Action
     {
         return [
             Select::make('Status')
-                ->options(Attendance::$types)
+                ->options(Attendance::$statuses)
                 ->displayUsingLabels()
                 ->rules('required'),
         ];

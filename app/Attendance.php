@@ -33,11 +33,11 @@ class Attendance extends Model
     ];
 
     /**
-     * Attendance types.
+     * Attendance statuses.
      *
-     * @var string[] $types
+     * @var string[] $statuses
      */
-    public static $types = [
+    public static $statuses = [
         'present' => 'Present',
         'permit'  => 'Permit',
         'absent'  => 'Absent'

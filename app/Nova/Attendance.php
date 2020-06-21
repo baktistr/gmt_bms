@@ -86,8 +86,8 @@ class Attendance extends Resource
                 ->rules('required')
                 ->sortable(),
 
-            Select::make('Attendance')
-                ->options(\App\Attendance::$types)
+            Select::make('Status')
+                ->options(\App\Attendance::$statuses)
                 ->displayUsingLabels()
                 ->rules('required')
                 ->sortable(),
