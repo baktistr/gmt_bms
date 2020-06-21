@@ -134,6 +134,8 @@ class Building extends Resource
 
             HasMany::make('Employees' , 'employees', Employee::class),
 
+            HasMany::make('Attendances', 'attendances', Attendance::class),
+
             HasMany::make('Help Desks', 'helpDesks', User::class),
 
             HasMany::make('Viewers', 'viewers', User::class),

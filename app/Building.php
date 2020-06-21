@@ -147,4 +147,14 @@ class Building extends Model
     {
         return $this->hasMany(HelpDesk::class, 'building_id');
     }
+
+    /**
+     * A building can have many employee attendances.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function attendances(): HasMany
+    {
+        return $this->hasMany(Attendance::class, 'building_id');
+    }
 }
