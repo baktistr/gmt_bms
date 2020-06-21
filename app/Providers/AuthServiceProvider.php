@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Attendance;
 use App\Building;
 use App\BuildingEquipment;
 use App\BuildingEquipmentCategory;
@@ -9,6 +10,7 @@ use App\District;
 use App\ElectricityConsumption;
 use App\Employee;
 use App\Policies\ActionEventPolicy;
+use App\Policies\AttendancePolicy;
 use App\Policies\BuildingEquipmentCategoryPolicy;
 use App\Policies\BuildingEquipmentPolicy;
 use App\Policies\BuildingPolicy;
@@ -46,6 +48,7 @@ class AuthServiceProvider extends ServiceProvider
         BuildingEquipmentCategory::class => BuildingEquipmentCategoryPolicy::class,
         BuildingEquipment::class         => BuildingEquipmentPolicy::class,
         Employee::class                  => EmployeePolicy::class,
+        Attendance::class                => AttendancePolicy::class,
     ];
 
     /**
