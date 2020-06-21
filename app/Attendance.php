@@ -38,9 +38,9 @@ class Attendance extends Model
      * @var string[] $types
      */
     public static $types = [
-        'hadir' => 'Hadir',
-        'izin'  => 'Izin',
-        'alpha' => 'Alpha'
+        'present' => 'Present',
+        'permit'  => 'Permit',
+        'absent'  => 'Absent'
     ];
 
     /**
