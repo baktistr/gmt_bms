@@ -10,14 +10,14 @@ use Faker\Generator as Faker;
 
 $factory->define(HelpDesk::class, function (Faker $faker) {
     return [
-        'user_id'               => function () {
-            return factory(User::class)->create()->id;
-        },
         'help_desk_category_id' => function () {
             return factory(HelpDeskCategory::class)->create()->id;
         },
         'building_id'           => function () {
             return factory(Building::class)->create()->id;
+        },
+        'help_desk_id'          => function () {
+            return factory(User::class)->create()->id;
         },
         'title'                 => $faker->sentence,
         'message'               => $faker->paragraph,

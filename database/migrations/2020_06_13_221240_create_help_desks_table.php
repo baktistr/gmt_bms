@@ -15,13 +15,14 @@ class CreateHelpDesksTable extends Migration
     {
         Schema::create('help_desks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
             $table->foreignId('help_desk_category_id');
             $table->foreignId('building_id');
+            $table->foreignId('help_desk_id');
             $table->string('title');
             $table->string('status');
             $table->text('message');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -4,9 +4,33 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Nova\Actions\Actionable;
 
 class HelpDesk extends Model
 {
+    use Actionable, SoftDeletes;
+
+    /**
+     * Cast default value for attributes.
+     *
+     * @var string[] $attributes
+     */
+    protected $attributes = [
+        'status' => 'pending',
+    ];
+
+    /**
+     * Help-desk statuses.
+     *
+     * @var string[] $statuses
+     */
+    public static $statuses = [
+        'pending'     => 'Pending',
+        'in-progress' => 'In progress',
+        'done'        => 'done'
+    ];
+
     /**
      * Get formatted date attribute.
      *
@@ -18,26 +42,18 @@ class HelpDesk extends Model
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public static $statuses = [
-        'pending' => 'Pending',
-        'in-progress' => 'In progress',
-        'done' => 'done'
-    ];
-
-    /**
-     * A Help desk can have one Category 
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     * A Help desk can have one Category
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function category(): BelongsTo
     {
         return $this->belongsTo(HelpDeskCategory::class, 'help_desk_category_id');
     }
-    
+
     /**
-     * A Helpdesk belongsTo Building
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     * A Help-desk belongsTo Building
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function building(): BelongsTo
     {
@@ -45,12 +61,12 @@ class HelpDesk extends Model
     }
 
     /**
-     * A Helpdesk Belongs To User
-     * 
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     * A Help-desk Belongs To User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): BelongsTo
+    public function helpDesk(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'help_desk_id');
     }
 }

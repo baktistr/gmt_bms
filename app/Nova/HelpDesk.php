@@ -47,6 +47,24 @@ class HelpDesk extends Resource
     ];
 
     /**
+     * Build an "index" query for the given resource.
+     *
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder   $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        $user = $request->user();
+
+        if ($user->hasRole('Help Desk')) {
+            $query->where('help_desk_id', $user->id);
+        }
+
+        return $query;
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -58,12 +76,15 @@ class HelpDesk extends Resource
             ID::make()->sortable(),
 
             BelongsTo::make('Category', 'category', HelpDeskCategory::class)
-                ->rules('required'),
+                ->rules('required')
+                ->withoutTrashed(),
 
             BelongsTo::make('Building', 'building', Building::class)
-                ->rules('required'),
+                ->rules('required')
+                ->withoutTrashed(),
 
-            BelongsTo::make('Building Manager', 'user', User::class),
+            BelongsTo::make('Help Desk', 'helpDesk', User::class)
+                ->withoutTrashed(),
 
             Text::make('Title', 'title')
                 ->rules('required', 'string'),
@@ -75,10 +96,6 @@ class HelpDesk extends Resource
             Select::make('Status')
                 ->options(\App\HelpDesk::$statuses)
                 ->displayUsingLabels(),
-
-            Date::make('Created At', function(){
-                return $this->formatted_date;
-            }),
         ];
     }
 

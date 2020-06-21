@@ -82,7 +82,7 @@ class Building extends Model
     {
         return $this->hasMany(WaterConsumption::class, 'building_id');
     }
-    
+
     /**
      * A building can Have Many Employees
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -136,5 +136,15 @@ class Building extends Model
             ->whereHas('roles', function ($query) {
                 $query->where('name', 'Help Desk');
             });
+    }
+
+    /**
+     * A building can have many complaints.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function complaints(): HasMany
+    {
+        return $this->hasMany(HelpDesk::class, 'building_id');
     }
 }
