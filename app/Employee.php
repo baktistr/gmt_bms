@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Actionable;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
@@ -50,6 +51,26 @@ class Employee extends Model implements HasMedia
     public function getFormattedBirthDateAttribute()
     {
         return $this->birth_date->format('d F Y');
+    }
+
+    /**
+     * Get attendance today attribute.
+     *
+     * @return string
+     */
+    public function getAttendanceTodayAttribute()
+    {
+        $attendanceToday = $this->attendances()
+            ->where('date', now()->format('Y-m-d'))
+            ->first();
+
+        if ($attendanceToday) {
+            $desc = $attendanceToday->desc ? ' ('.Str::limit($attendanceToday->desc, 50).')' : null;
+
+            return Attendance::$types[$attendanceToday->attendance] . $desc;
+        }
+
+        return 'Not yet';
     }
 
     /**

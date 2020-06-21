@@ -12,6 +12,18 @@ class Attendance extends Model
     use SoftDeletes, Actionable;
 
     /**
+     * Mass assigment attributes.
+     *
+     * @var string[] $fillable
+     */
+    protected $fillable = [
+        'building_id',
+        'date',
+        'attendance',
+        'desc',
+    ];
+
+    /**
      * Attribute casting.
      *
      * @var string[] $casts
