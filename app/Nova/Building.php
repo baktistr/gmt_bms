@@ -115,6 +115,10 @@ class Building extends Resource
                 ->rules('required')
                 ->sortable(),
 
+            Text::make('Phone Number', 'phone_number')
+                ->rules('required')
+                ->sortable(),
+
             Textarea::make('Address Detail')
                 ->rules('required')
                 ->onlyOnForms(),
@@ -132,7 +136,7 @@ class Building extends Resource
 
             HasMany::make('Complaints', 'complaints', HelpDesk::class),
 
-            HasMany::make('Employees' , 'employees', Employee::class),
+            HasMany::make('Employees', 'employees', Employee::class),
 
             HasMany::make('Attendances', 'attendances', Attendance::class),
 
