@@ -66,7 +66,7 @@ class AddDailyAttendances extends Action
                 ->sortable(),
 
             Select::make('Attendance')
-                ->options(Attendance::$types)
+                ->options(Attendance::$statuses)
                 ->displayUsingLabels()
                 ->rules('required')
                 ->sortable(),

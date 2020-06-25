@@ -67,7 +67,7 @@ class Employee extends Model implements HasMedia
         if ($attendanceToday) {
             $desc = $attendanceToday->desc ? ' ('.Str::limit($attendanceToday->desc, 50).')' : null;
 
-            return Attendance::$types[$attendanceToday->attendance] . $desc;
+            return Attendance::$statuses[$attendanceToday->attendance] . $desc;
         }
 
         return 'Not yet';
