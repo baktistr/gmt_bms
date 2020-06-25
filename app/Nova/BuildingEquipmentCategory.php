@@ -55,7 +55,7 @@ class BuildingEquipmentCategory extends Resource
         $user = $request->user();
 
         if ($user->hasRole('Building Manager')) {
-            return $query->where('building_id', $user->building->id);
+            return $query->where('building_id', $user->building_id);
         }
 
         if (($user->hasRole('Help Desk') || $user->hasRole('Viewer')) && $user->building_id) {
