@@ -40,10 +40,9 @@ class AddDailyAttendances extends Action
                 $model->attendances()->create([
                     'building_id' => $model->building_id,
                     'date'        => $fields->date,
-                    'attendance'  => $fields->attendance,
+                    'status'      => $fields->attendance,
                     'desc'        => $fields->desc,
                 ]);
-
                 return Action::message('The daily attendances has been added.');
             }
         }

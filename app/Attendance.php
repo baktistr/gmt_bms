@@ -19,7 +19,7 @@ class Attendance extends Model
     protected $fillable = [
         'building_id',
         'date',
-        'attendance',
+        'status',
         'desc',
     ];
 
