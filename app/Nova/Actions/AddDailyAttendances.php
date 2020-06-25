@@ -71,7 +71,7 @@ class AddDailyAttendances extends Action
                 ->sortable(),
 
             Textarea::make('Description', 'desc')
-                ->rules(['nullable', 'required_unless:attendance,hadir']),
+                ->rules(['nullable', 'required_unless:attendance,present']),
         ];
     }
 }
