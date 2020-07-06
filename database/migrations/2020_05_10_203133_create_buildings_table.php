@@ -15,7 +15,7 @@ class CreateBuildingsTable extends Migration
     {
         Schema::create('buildings', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('manager_id');
+            $table->unsignedBigInteger('manager_id')->nullable();
             $table->unsignedBigInteger('province_id');
             $table->unsignedBigInteger('regency_id');
             $table->unsignedBigInteger('district_id');

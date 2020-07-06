@@ -91,7 +91,9 @@ class Building extends Resource
                 ->defaultValue($request->user()->id)
                 ->onlyOnForms(),
 
-            BelongsTo::make('Manager', 'manager', User::class),
+            BelongsTo::make('Manager', 'manager', User::class)
+                ->nullable()
+                ->withoutTrashed(),
 
             NovaBelongsToDepend::make('Province')
                 ->options(\App\Province::all())
