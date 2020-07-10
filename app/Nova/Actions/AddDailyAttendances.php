@@ -22,30 +22,27 @@ class AddDailyAttendances extends Action
     /**
      * Perform the action on the given models.
      *
-     * @param  \Laravel\Nova\Fields\ActionFields  $fields
-     * @param  \Illuminate\Support\Collection  $models
+     * @param \Laravel\Nova\Fields\ActionFields $fields
+     * @param \Illuminate\Support\Collection    $models
      * @return mixed
      */
     public function handle(ActionFields $fields, Collection $models)
     {
         foreach ($models as $model) {
-            $attendance = $model->attendances()
-                ->where('building_id', $model->building_id)
-                ->where('date', $fields->date)
-                ->first();
-
-            if ($attendance) {
-                return Action::danger('The daily attendance already added for given users, You can update the employee attendances in "Attendances" page.');
-            } else {
-                $model->attendances()->create([
+            $model->attendances()->updateOrCreate(
+                [
                     'building_id' => $model->building_id,
                     'date'        => $fields->date,
-                    'status'      => $fields->attendance,
-                    'desc'        => $fields->desc,
-                ]);
-                return Action::message('The daily attendances has been added.');
-            }
+                ],
+                [
+                    'date'   => $fields->date,
+                    'status' => $fields->attendance,
+                    'desc'   => $fields->desc,
+                ]
+            );
         }
+
+        return Action::message('The daily attendances has been added.');
     }
 
     /**
@@ -58,7 +55,7 @@ class AddDailyAttendances extends Action
         return [
             Date::make('Date')
                 ->withMeta([
-                    'value' => $this->date ?? now()->format('Y-m-d')
+                    'value' => $this->date ?? now()->format('Y-m-d'),
                 ])
                 ->rules(['required', 'date_format:Y-m-d'])
                 ->format('DD MMMM YYYY')
