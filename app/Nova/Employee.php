@@ -46,6 +46,13 @@ class Employee extends Resource
     public static $group = 'Admin';
 
     /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = false;
+
+    /**
      * Build an "index" query for the given resource.
      *
      * @param \Laravel\Nova\Http\Requests\NovaRequest $request
