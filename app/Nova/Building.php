@@ -128,6 +128,10 @@ class Building extends Resource
             Text::make('Address Detail')
                 ->exceptOnForms(),
 
+            HasMany::make('Attendances', 'attendances', Attendance::class),
+
+            HasMany::make('Employees', 'employees', Employee::class),
+
             HasMany::make('Electricity Consumptions', 'electricityConsumptions', ElectricityConsumption::class),
 
             HasMany::make('Water Consumptions', 'waterConsumptions', WaterConsumption::class),
@@ -139,8 +143,6 @@ class Building extends Resource
             HasMany::make('Complaints', 'complaints', HelpDesk::class),
 
             HasMany::make('Employees', 'employees', Employee::class),
-
-            HasMany::make('Attendances', 'attendances', Attendance::class),
 
             HasMany::make('Help Desks', 'helpDesks', User::class),
 
