@@ -64,7 +64,6 @@ class RoleAndPermissionSeeder extends Seeder
             'Building Manager' => [
                 'View All Buildings',
                 'View Building',
-                'Update Building',
             ],
             'Help Desk'        => [
                 'View All Buildings',
