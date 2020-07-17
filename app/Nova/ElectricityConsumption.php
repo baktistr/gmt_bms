@@ -7,6 +7,7 @@ use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Number;
@@ -29,7 +30,7 @@ class ElectricityConsumption extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'formatted_date';
 
     /**
      * The columns that should be searched.
@@ -111,83 +112,27 @@ class ElectricityConsumption extends Resource
                 ->rules(['required', 'exists:buildings,id'])
                 ->withoutTrashed(),
 
-            FormattedNumber::make('Electric Meter (KWh)', 'electric_meter')
-                ->rules(['required', 'numeric'])
-                ->onlyOnForms(),
-
-            FormattedNumber::make('LWBP Gauge (KWh)', 'lwbp')
-                ->rules(['required', 'numeric'])
-                ->onlyOnForms(),
-
-            FormattedNumber::make('LWBP Rate (Rp)', 'lwbp_rate')
-                ->rules(['required', 'numeric'])
-                ->onlyOnForms(),
-
-            FormattedNumber::make('WBP Gauge (KWh)', 'wbp')
-                ->rules(['required', 'numeric'])
-                ->onlyOnForms(),
-
-            FormattedNumber::make('WBP Rate (Rp)', 'wbp_rate')
-                ->rules(['required', 'numeric'])
-                ->onlyOnForms(),
-
-            FormattedNumber::make('KVAr', 'kvar')
-                ->rules(['required', 'numeric'])
-                ->onlyOnForms(),
-
-            Text::make('Electric Meter', function () {
-                return $this->formatted_electric_meter;
-            })->exceptOnForms(),
-
-            Text::make('LWBP Gauge', function () {
-                return $this->formatted_lwbp_gauge;
-            })->exceptOnForms(),
-
-            Text::make('LWBP Rate', function () {
-                return $this->formatted_lwbp_rate;
-            })->exceptOnForms(),
-
-            Text::make('WBP Gauge', function () {
-                return $this->formatted_wbp_gauge;
-            })->exceptOnForms(),
-
-            Text::make('WBP Rate', function () {
-                return $this->formatted_wbp_rate;
-            })->exceptOnForms(),
-
-            Text::make('Total Usage', function () {
-                return $this->formatted_total_usage;
+            Text::make('Total Meteran Listrik', function () {
+                return $this->total_electric_meter;
             }),
 
-            Text::make('KVAr', function () {
-                return $this->formatted_kvar;
-            })->exceptOnForms(),
-
-            Text::make('Total LWBP Cost', function () {
-                return $this->formatted_lwbp_cost;
-            })->hideFromIndex(),
-
-            Text::make('Total WBP Cost', function () {
-                return $this->formatted_wbp_cost;
-            })->hideFromIndex(),
-
-            Text::make('Total Cost Today', function () {
-                return $this->formatted_total_cost;
+            Text::make('Total LWBP', function () {
+                return $this->total_lwbp_gauge;
             }),
 
-            Markdown::make('Description')
-                ->nullable()
-                ->alwaysShow(),
+            Text::make('Total WBP', function () {
+                return $this->total_wbp_gauge;
+            }),
 
-            new Panel('Receipt of Payments', [
-                Images::make('LWBP Payment Receipt', 'lwbp')
-                    ->rules(['required'])
-                    ->hideFromIndex(),
+            Text::make('Total KVAr', function () {
+                return $this->total_kvar;
+            }),
 
-                Images::make('WBP Payment Receipt', 'wbp')
-                    ->rules(['required'])
-                    ->hideFromIndex(),
-            ]),
+            Text::make('Total Pemakaian', function () {
+                return $this->total_cost;
+            }),
+
+            HasMany::make('Meteran Gedung', 'dailyConsumptions', DailyElectricityConsumption::class),
         ];
     }
 

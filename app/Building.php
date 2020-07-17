@@ -157,4 +157,13 @@ class Building extends Model
     {
         return $this->hasMany(Attendance::class, 'building_id');
     }
+
+    /**
+     * A building can have many building meters
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function buildingElectricityMeters(): HasMany
+    {
+        return $this->hasMany(BuildingElectricityMeter::class, 'building_id');
+    }
 }
