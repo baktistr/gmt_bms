@@ -4,14 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Nova\Actions\Actionable;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
 
-class ElectricityConsumption extends Model implements HasMedia
+class ElectricityConsumption extends Model
 {
-    use InteractsWithMedia, Actionable, SoftDeletes;
+    use Actionable, SoftDeletes;
 
     /**
      * The attributes that should be cast to native types.
@@ -33,6 +32,112 @@ class ElectricityConsumption extends Model implements HasMedia
     }
 
     /**
+     * Total eletric meter.
+     *
+     * @return int
+     */
+    public function getTotalElectricMeterAttribute()
+    {
+        return number_format($this->totalElectricMeter()) . ' KWh';
+    }
+
+    /**
+     * Total WBP gauge.
+     *
+     * @return int
+     */
+    public function getTotalWbpGaugeAttribute()
+    {
+        return number_format($this->totalWbpGauge()) . ' KWh';
+    }
+
+    /**
+     * Total LWBP gauge.
+     *
+     * @return int
+     */
+    public function getTotalLwbpGaugeAttribute()
+    {
+        return number_format($this->totalLwbpGauge()) . ' KWh';
+    }
+
+    /**
+     * Total KVAr.
+     *
+     * @return int
+     */
+    public function getTotalKvarAttribute()
+    {
+        return number_format($this->totalKvar()) . ' KWh';
+    }
+
+    /**
+     * Total Cost.
+     *
+     * @return int
+     */
+    public function getTotalCostAttribute()
+    {
+        return 'Rp.' . number_format($this->totalCost());
+    }
+
+    /**
+     * Total electric meter.
+     *
+     * @return int|mixed
+     */
+    public function totalElectricMeter()
+    {
+        return (int)$this->dailyConsumptions()->sum('electric_meter');
+    }
+
+    /**
+     * Total WBP Gauge.
+     *
+     * @return int|mixed
+     */
+    public function totalWbpGauge()
+    {
+        return (int)$this->dailyConsumptions()->sum('wbp');
+    }
+
+    /**
+     * Total LWBP Gauge.
+     *
+     * @return int|mixed
+     */
+    public function totalLwbpGauge()
+    {
+        return (int)$this->dailyConsumptions()->sum('lwbp');
+    }
+
+    /**
+     * Total KVAr.
+     *
+     * @return int|mixed
+     */
+    public function totalKvar()
+    {
+        return (int)$this->dailyConsumptions()->sum('kvar');
+    }
+
+    /**
+     * Get daily total cost.
+     *
+     * @return int
+     */
+    public function totalCost()
+    {
+        $totalCost = collect([]);
+
+        $this->dailyConsumptions->each(function ($consumption) use ($totalCost) {
+            return $totalCost->add($consumption->totalCost());
+        });
+
+        return $totalCost->sum();
+    }
+
+    /**
      * A electricity belongTo building.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -43,163 +148,12 @@ class ElectricityConsumption extends Model implements HasMedia
     }
 
     /**
-     * Get formatted LWBP gauge
+     * A electricity consumption can have many daily consuption.
      *
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function getFormattedElectricMeterAttribute()
+    public function dailyConsumptions(): HasMany
     {
-        return number_format($this->electric_meter) . ' KWh';
-    }
-
-    /**
-     * Get formatted LWBP gauge
-     *
-     * @return mixed
-     */
-    public function getFormattedLwbpGaugeAttribute()
-    {
-        return number_format($this->lwbp) . ' KWh';
-    }
-
-    /**
-     * Get formatted WBP gauge
-     *
-     * @return mixed
-     */
-    public function getFormattedWbpGaugeAttribute()
-    {
-        return number_format($this->wbp) . ' KWh';
-    }
-
-    /**
-     * Get formatted LWBP rate
-     *
-     * @return mixed
-     */
-    public function getFormattedLwbpRateAttribute()
-    {
-        return 'Rp. ' . number_format($this->lwbp_rate);
-    }
-
-    /**
-     * Get formatted WBP rate
-     *
-     * @return mixed
-     */
-    public function getFormattedWbpRateAttribute()
-    {
-        return 'Rp. ' . number_format($this->wbp_rate);
-    }
-
-    /**
-     * Get formatted KVAr rate
-     *
-     * @return mixed
-     */
-    public function getFormattedKvarAttribute()
-    {
-        return number_format($this->kvar) . ' KVAr';
-    }
-
-    /**
-     * Get formatted total usage
-     *
-     * @return mixed
-     */
-    public function getFormattedTotalUsageAttribute()
-    {
-        return number_format($this->totalUsage()) . ' KWh';
-    }
-
-    /**
-     * Get formatted total LWBP cost
-     *
-     * @return mixed
-     */
-    public function getFormattedLwbpCostAttribute()
-    {
-        return 'Rp. ' . number_format($this->totalLWBPCost());
-    }
-
-    /**
-     * Get formatted total WBP cost
-     *
-     * @return mixed
-     */
-    public function getFormattedWbpCostAttribute()
-    {
-        return 'Rp. ' . number_format($this->totalWBPCost());
-    }
-
-    /**
-     * Get formatted total cost
-     *
-     * @return mixed
-     */
-    public function getFormattedTotalCostAttribute()
-    {
-        return 'Rp. ' . number_format($this->totalCost());
-    }
-
-    /**
-     * Get total usage (KWh).
-     *
-     * @return int
-     */
-    public function totalUsage(): int
-    {
-        $usageYesterday = self::query()
-            ->where('building_id', $this->building_id)
-            ->where('date', date('Y-m-d', strtotime('-1 days', strtotime($this->date))))
-            ->first();
-
-        if ($usageYesterday) {
-            return ($this->electric_meter - $usageYesterday->electric_meter);
-        }
-
-        return $this->electric_meter;
-    }
-
-    /**
-     * Get total LWBP cost (Rp)
-     *
-     * @return int
-     */
-    public function totalLWBPCost(): int
-    {
-        return $this->lwbp * $this->lwbp_rate;
-    }
-
-    /**
-     * Get total WBP cost (Rp)
-     *
-     * @return int
-     */
-    public function totalWBPCost(): int
-    {
-        return $this->wbp * $this->wbp_rate;
-    }
-
-    /**
-     * Get total cost (Rp)
-     *
-     * @return int
-     */
-    public function totalCost(): int
-    {
-        return $this->totalLWBPCost() + $this->totalWBPCost();
-    }
-
-    /**
-     * Register the media collections.
-     */
-    public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection('wbp')
-            ->singleFile();
-
-        $this->addMediaCollection('lwbp')
-            ->singleFile();
+        return $this->hasMany(DailyElectricityConsumption::class, 'electricity_consumption_id');
     }
 }

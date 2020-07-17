@@ -132,7 +132,9 @@ class Building extends Resource
 
             HasMany::make('Employees', 'employees', Employee::class),
 
-            HasMany::make('Electricity Consumptions', 'electricityConsumptions', ElectricityConsumption::class),
+            HasMany::make('Meteran Gedung', 'buildingElectricityMeters', BuildingElectricityMeter::class),
+
+            HasMany::make('Pemakaian Listrik Harian', 'electricityConsumptions', ElectricityConsumption::class),
 
             HasMany::make('Water Consumptions', 'waterConsumptions', WaterConsumption::class),
 
