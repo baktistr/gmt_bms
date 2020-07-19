@@ -11,10 +11,10 @@ class HelpDesk extends Model
 {
     use Actionable, SoftDeletes;
 
-    public static $Priorities = [
-        'Low'       => 'low',
-        'Medium'    => 'medium',
-        'High'      => 'high',
+    public static $priority = [
+        'Low'    => 'low',
+        'Medium' => 'medium',
+        'High'   => 'high',
     ];
 
     /**
