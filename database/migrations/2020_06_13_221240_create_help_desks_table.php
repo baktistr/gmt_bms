@@ -21,6 +21,7 @@ class CreateHelpDesksTable extends Migration
             $table->string('title');
             $table->string('status');
             $table->text('message');
+            $table->string('priorities');
             $table->timestamps();
             $table->softDeletes();
         });

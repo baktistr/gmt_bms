@@ -11,6 +11,12 @@ class HelpDesk extends Model
 {
     use Actionable, SoftDeletes;
 
+    public static $Priorities = [
+        'Low'       => 'low',
+        'Medium'    => 'medium',
+        'High'      => 'high',
+    ];
+
     /**
      * Cast default value for attributes.
      *

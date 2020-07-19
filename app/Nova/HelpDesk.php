@@ -96,6 +96,10 @@ class HelpDesk extends Resource
             Select::make('Status')
                 ->options(\App\HelpDesk::$statuses)
                 ->displayUsingLabels(),
+
+            Select::make('Status')
+                ->options(\App\HelpDesk::$priorities)
+                ->displayUsingLabels(),
         ];
     }
 
