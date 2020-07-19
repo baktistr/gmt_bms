@@ -22,6 +22,6 @@ $factory->define(HelpDesk::class, function (Faker $faker) {
         'title'                 => $faker->sentence,
         'message'               => $faker->paragraph,
         'status'                => $faker->randomElement(array_keys(HelpDesk::$statuses)),
-        'priority'            => $faker->randomElement(array_keys(HelpDesk::$priority)),
+        'priority'              => $faker->randomElement(array_keys(HelpDesk::$priority)),
     ];
 });
