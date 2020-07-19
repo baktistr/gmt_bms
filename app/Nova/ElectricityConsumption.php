@@ -62,7 +62,7 @@ class ElectricityConsumption extends Resource
      *
      * @var bool
      */
-    public static $displayInNavigation = false;
+    public static $displayInNavigation = true;
 
     /**
      * Build an "index" query for the given resource.
