@@ -23,7 +23,7 @@ class TotalWaterConsumption extends Value
             ->where('building_id', $request->user()->building->id)
             ->get()
             ->each(function ($consumption) use ($totalConsumption) {
-                $totalConsumption->add($consumption->totalUsage());
+                $totalConsumption->add($consumption->usage);
             });
 
         return $this->result($totalConsumption->sum());

@@ -22,7 +22,7 @@ class TotalElectricityConsumption extends Value
             ->where('building_id', $request->user()->building->id)
             ->get()
             ->each(function ($consumption) use ($totalConsumption) {
-                $totalConsumption->add($consumption->totalCost());
+                $totalConsumption->add($consumption->totalElectricMeter());
             });
 
         return $this->result($totalConsumption->sum());
