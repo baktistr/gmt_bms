@@ -38,11 +38,18 @@ class DailyElectricityConsumption extends Resource
     ];
 
     /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $group = 'Consumption';
+
+    /**
      * Indicates if the resource should be displayed in the sidebar.
      *
      * @var bool
      */
-    public static $displayInNavigation = false;
+    public static $displayInNavigation = true;
 
     /**
      * Get the fields displayed by the resource.

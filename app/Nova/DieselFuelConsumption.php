@@ -45,14 +45,14 @@ class DieselFuelConsumption extends Resource
      *
      * @var string
      */
-    public static $group = 'Consumptions';
+    public static $group = 'Consumption';
 
     /**
      * Indicates if the resource should be displayed in the sidebar.
      *
      * @var bool
      */
-    public static $displayInNavigation = false;
+    public static $displayInNavigation = true;
 
     /**
      * Build an "index" query for the given resource.

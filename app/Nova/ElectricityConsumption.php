@@ -55,7 +55,7 @@ class ElectricityConsumption extends Resource
      *
      * @var string
      */
-    public static $group = 'Consumptions';
+    public static $group = 'Consumption';
 
     /**
      * Indicates if the resource should be displayed in the sidebar.

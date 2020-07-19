@@ -36,6 +36,13 @@ class BuildingElectricityMeter extends Resource
     ];
 
     /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $group = 'Consumption';
+
+    /**
      * Indicates if the resource should be displayed in the sidebar.
      *
      * @var bool
