@@ -8,6 +8,7 @@ use App\Nova\Metrics\TotalEmployees;
 use App\Nova\Metrics\TotalHelpDesks;
 use App\Nova\Metrics\TotalManagers;
 use App\Nova\Metrics\TotalViewers;
+use App\Nova\Metrics\TotalWaterConsumption;
 use App\Policies\PermissionPolicy;
 use App\Policies\RolePolicy;
 use Illuminate\Support\Facades\Auth;
@@ -83,6 +84,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 return Auth::user()->hasRole('Building Manager');
             })->width('1/4'),
             (new TotalElectricityConsumption)->canSee(function () {
+                return Auth::user()->hasRole('Building Manager');
+            })->width('1/4'),
+            (new TotalWaterConsumption)->canSee(function () {
                 return Auth::user()->hasRole('Building Manager');
             })->width('1/4'),
         ];

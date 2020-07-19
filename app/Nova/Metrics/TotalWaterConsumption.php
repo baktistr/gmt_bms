@@ -3,10 +3,11 @@
 namespace App\Nova\Metrics;
 
 use App\ElectricityConsumption;
+use App\WaterConsumption;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 
-class TotalElectricityConsumption extends Value
+class TotalWaterConsumption extends Value
 {
     /**
      * Calculate the value of the metric.
@@ -18,11 +19,11 @@ class TotalElectricityConsumption extends Value
     {
         $totalConsumption = collect([]);
 
-        ElectricityConsumption::query()
+        WaterConsumption::query()
             ->where('building_id', $request->user()->building->id)
             ->get()
             ->each(function ($consumption) use ($totalConsumption) {
-                $totalConsumption->add($consumption->totalCost());
+                $totalConsumption->add($consumption->totalUsage());
             });
 
         return $this->result($totalConsumption->sum());
@@ -57,6 +58,6 @@ class TotalElectricityConsumption extends Value
      */
     public function uriKey()
     {
-        return 'total-electricity-consumption';
+        return 'total-water-consumption';
     }
 }
