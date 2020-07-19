@@ -73,8 +73,11 @@ class HelpDesk extends Resource
     public function fields(Request $request)
     {
         return [
-            Text::make('Priority' , 'priority')
-                ->onlyOnIndex(),
+            Select::make('Priority')
+                ->options(\App\HelpDesk::$priority)
+                ->rules('required')
+                ->sortable()
+                ->displayUsingLabels(),
 
             BelongsTo::make('Category', 'category', HelpDeskCategory::class)
                 ->rules('required')
@@ -97,12 +100,6 @@ class HelpDesk extends Resource
             Select::make('Status')
                 ->options(\App\HelpDesk::$statuses)
                 ->displayUsingLabels(),
-
-            Select::make('Priority')
-                ->options(\App\HelpDesk::$priority)
-                ->rules('required')
-                ->displayUsingLabels()
-                ->onlyOnForms(),
         ];
     }
 
