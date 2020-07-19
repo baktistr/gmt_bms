@@ -73,7 +73,7 @@ class HelpDesk extends Resource
     public function fields(Request $request)
     {
         return [
-            Text::make('Priority' , 'Priority')
+            Text::make('Priority' , 'priority')
                 ->onlyOnIndex(),
 
             BelongsTo::make('Category', 'category', HelpDeskCategory::class)
