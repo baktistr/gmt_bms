@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Nova\Metrics\TotalBuildings;
+use App\Nova\Metrics\TotalElectricityConsumption;
 use App\Nova\Metrics\TotalEmployees;
 use App\Nova\Metrics\TotalHelpDesks;
 use App\Nova\Metrics\TotalManagers;
@@ -79,6 +80,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             })->width('1/4'),
 
             (new TotalEmployees)->canSee(function () {
+                return Auth::user()->hasRole('Building Manager');
+            })->width('1/4'),
+            (new TotalElectricityConsumption)->canSee(function () {
                 return Auth::user()->hasRole('Building Manager');
             })->width('1/4'),
         ];
