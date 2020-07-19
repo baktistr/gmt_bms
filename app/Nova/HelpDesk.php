@@ -74,7 +74,7 @@ class HelpDesk extends Resource
     {
         return [
             Text::make('Priority' , 'priority')
-                ->onlyOnIndex(),
+                ->exceptOnForms(),
 
             BelongsTo::make('Category', 'category', HelpDeskCategory::class)
                 ->rules('required')
