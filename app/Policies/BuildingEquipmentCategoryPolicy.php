@@ -54,7 +54,7 @@ class BuildingEquipmentCategoryPolicy
      */
     public function update(User $user, BuildingEquipmentCategory $category)
     {
-        return $user->hasPermissionTo('Update Building') && $user->id == $category->building->manager_id;
+        return $user->hasRole('Building Manager') && $user->id == $category->building->manager_id;
     }
 
     /**
