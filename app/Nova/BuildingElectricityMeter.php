@@ -66,8 +66,6 @@ class BuildingElectricityMeter extends Resource
 
             Markdown::make('Description', 'desc')
                 ->nullable(),
-
-            HasMany::make('Meteran Harian', 'dailyConsumptions', DailyElectricityConsumption::class),
         ];
     }
 

@@ -75,6 +75,12 @@ class HelpDesk extends Resource
         return [
             Text::make('Priority' , 'priority')
                 ->exceptOnForms(),
+          
+            Select::make('Priority')
+                ->options(\App\HelpDesk::$priority)
+                ->rules('required')
+                ->sortable()
+                ->displayUsingLabels(),
 
             BelongsTo::make('Category', 'category', HelpDeskCategory::class)
                 ->rules('required')
@@ -97,12 +103,6 @@ class HelpDesk extends Resource
             Select::make('Status')
                 ->options(\App\HelpDesk::$statuses)
                 ->displayUsingLabels(),
-
-            Select::make('Priority')
-                ->options(\App\HelpDesk::$priority)
-                ->rules('required')
-                ->displayUsingLabels()
-                ->onlyOnForms(),
         ];
     }
 
