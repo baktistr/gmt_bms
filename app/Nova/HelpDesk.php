@@ -149,4 +149,14 @@ class HelpDesk extends Resource
     {
         return [];
     }
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Scope Detail';
+    }
 }

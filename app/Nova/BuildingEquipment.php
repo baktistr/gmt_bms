@@ -188,6 +188,6 @@ class BuildingEquipment extends Resource
      */
     public static function label()
     {
-        return 'Equipments';
+        return 'Item Equipment';
     }
 }

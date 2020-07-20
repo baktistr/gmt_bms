@@ -191,4 +191,14 @@ class DieselFuelConsumption extends Resource
     {
         return [];
     }
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Fuel Consumption';
+    }
 }
