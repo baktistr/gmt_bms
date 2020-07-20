@@ -73,6 +73,9 @@ class HelpDesk extends Resource
     public function fields(Request $request)
     {
         return [
+            Text::make('Priority' , 'priority')
+                ->exceptOnForms(),
+          
             Select::make('Priority')
                 ->options(\App\HelpDesk::$priority)
                 ->rules('required')
