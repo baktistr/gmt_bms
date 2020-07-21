@@ -11,6 +11,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\HasMany;
+use Rimu\FormattedNumber\FormattedNumber;
 
 class BuildingEquipment extends Resource
 {
@@ -95,7 +96,6 @@ class BuildingEquipment extends Resource
                 ->showOnCreating()
                 ->showOnUpdating(),
 
-
             Date::make('Date Installation')
                 ->rules(['required', 'date_format:Y-m-d'])
                 ->withMeta([
@@ -118,8 +118,8 @@ class BuildingEquipment extends Resource
             Text::make('Year of Construction')
                 ->rules('required', 'numeric', 'min:1990', 'max:' . date('Y')),
 
-            Text::make('Cost Center')
-                ->rules('required'),
+            FormattedNumber::make('Cost Center')
+                ->rules(['required', 'numeric']),
 
             Textarea::make('Location')
                 ->rules('required')
