@@ -21,15 +21,15 @@ class BuildingSeeder extends Seeder
             // Get random location data from
             $randomDistrict = District::with('regency.province')->inRandomOrder()->first();
 
-            $row = explode(';', $building);
+            $row = explode(',', $building);
 
             factory(Building::class)->create([
                 'province_id'    => $randomDistrict->regency->province->id,
                 'regency_id'     => $randomDistrict->regency->id,
                 'district_id'    => $randomDistrict->id,
-                'name'           => $row[1],
-                'address_detail' => $row[2],
-                'phone_number'   => $row[3],
+                'name'           => $row[6],
+                'address_detail' => $row[7],
+                // 'phone_number'   => $row[3],
             ]);
         }
 
