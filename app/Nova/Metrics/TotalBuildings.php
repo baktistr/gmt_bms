@@ -16,7 +16,7 @@ class TotalBuildings extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->result(Building::count());
+        return $this->result(Building::count())->allowZeroResult();
     }
 
     /**
@@ -36,7 +36,7 @@ class TotalBuildings extends Value
      */
     public function cacheFor()
     {
-         return now()->addMinutes(5);
+        //  return now()->addMinutes(5);
     }
 
     /**
