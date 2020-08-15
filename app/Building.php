@@ -104,17 +104,7 @@ class Building extends Model
                 $query->where('name', 'Viewer');
             });
     }
-
-    /**
-     * A building can have many equipment categories.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function equipmentCategories(): HasMany
-    {
-        return $this->hasMany(BuildingEquipmentCategory::class, 'building_id');
-    }
-
+    
     /**
      * A building can have many equipments.
      *

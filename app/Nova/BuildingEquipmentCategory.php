@@ -77,11 +77,6 @@ class BuildingEquipmentCategory extends Resource
 
             Text::make('Name')
                 ->rules('required', 'string'),
-
-            BelongsTo::make('Building', 'building', Building::class)
-                ->rules('required'),
-
-            HasMany::make('Equipments', 'equipments', BuildingEquipment::class),
         ];
     }
 
