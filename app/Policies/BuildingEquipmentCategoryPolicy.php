@@ -10,7 +10,7 @@ class BuildingEquipmentCategoryPolicy
 {
     use HandlesAuthorization;
 
-    /**
+      /**
      * Determine whether the user can view any models.
      *
      * @param  \App\User  $user
@@ -18,19 +18,19 @@ class BuildingEquipmentCategoryPolicy
      */
     public function viewAny(User $user)
     {
-        return false ;
+        return $user->hasPermissionTo('View All Buildings');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
-     * @param  \App\BuildingEquipmentCategory  $buildingEquipmentCategory
+     * @param  \App\BuildingEquipmentCategory  $category
      * @return mixed
      */
-    public function view(User $user, BuildingEquipmentCategory $buildingEquipmentCategory)
+    public function view(User $user, BuildingEquipmentCategory $category)
     {
-        //
+        // return $user->hasPermissionTo('View Building');
     }
 
     /**
@@ -41,54 +41,54 @@ class BuildingEquipmentCategoryPolicy
      */
     public function create(User $user)
     {
-        //
+        // return $user->hasRole('Building Manager');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\BuildingEquipmentCategory  $buildingEquipmentCategory
+     * @param  \App\BuildingEquipmentCategory  $category
      * @return mixed
      */
-    public function update(User $user, BuildingEquipmentCategory $buildingEquipmentCategory)
+    public function update(User $user, BuildingEquipmentCategory $category)
     {
-        //
+        // return $user->hasRole('Building Manager');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\BuildingEquipmentCategory  $buildingEquipmentCategory
+     * @param  \App\BuildingEquipmentCategory  $category
      * @return mixed
      */
-    public function delete(User $user, BuildingEquipmentCategory $buildingEquipmentCategory)
+    public function delete(User $user, BuildingEquipmentCategory $category)
     {
-        //
+        // return $user->hasRole('Building Manager');
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\BuildingEquipmentCategory  $buildingEquipmentCategory
+     * @param  \App\BuildingEquipmentCategory  $category
      * @return mixed
      */
-    public function restore(User $user, BuildingEquipmentCategory $buildingEquipmentCategory)
+    public function restore(User $user, BuildingEquipmentCategory $category)
     {
-        //
+        return $user->hasRole('Building Manager');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\BuildingEquipmentCategory  $buildingEquipmentCategory
+     * @param  \App\BuildingEquipmentCategory  $category
      * @return mixed
      */
-    public function forceDelete(User $user, BuildingEquipmentCategory $buildingEquipmentCategory)
+    public function forceDelete(User $user, BuildingEquipmentCategory $category)
     {
-        //
+        return $user->hasRole('Building Manager');
     }
 }
