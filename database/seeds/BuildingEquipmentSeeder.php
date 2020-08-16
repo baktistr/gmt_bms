@@ -14,14 +14,14 @@ class BuildingEquipmentSeeder extends Seeder
      */
     public function run()
     {
+
         Building::get()->each(function ($building) {
-            $building->equipmentCategories()->get()
-                ->each(function ($category) use ($building) {
-                    factory(BuildingEquipment::class, rand(3, 5))->create([
-                        'building_id'                    => $building->id,
-                        'building_equipment_category_id' => $category->id,
-                    ]);
-                });
+            BuildingEquipmentCategory::get()->each(function ($category) use ($building) {
+                factory(BuildingEquipment::class, rand(2, 4))->create([
+                    'building_equipment_category_id' => $category->id,
+                    'building_id'                    => $building->id,
+                ]);
+            });
         });
     }
 }

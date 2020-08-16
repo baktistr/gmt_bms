@@ -10,7 +10,7 @@ class BuildingEquipmentCategoryPolicy
 {
     use HandlesAuthorization;
 
-    /**
+      /**
      * Determine whether the user can view any models.
      *
      * @param  \App\User  $user
@@ -30,8 +30,7 @@ class BuildingEquipmentCategoryPolicy
      */
     public function view(User $user, BuildingEquipmentCategory $category)
     {
-        return $user->hasPermissionTo('View Building')
-            && ($user->id == $category->building->manager_id || $user->building_id == $category->building->id);
+        // return $user->hasPermissionTo('View Building');
     }
 
     /**
@@ -42,7 +41,7 @@ class BuildingEquipmentCategoryPolicy
      */
     public function create(User $user)
     {
-        return $user->hasRole('Building Manager');
+        // return $user->hasRole('Building Manager');
     }
 
     /**
@@ -54,7 +53,7 @@ class BuildingEquipmentCategoryPolicy
      */
     public function update(User $user, BuildingEquipmentCategory $category)
     {
-        return $user->hasRole('Building Manager') && $user->id == $category->building->manager_id;
+        // return $user->hasRole('Building Manager');
     }
 
     /**
@@ -66,8 +65,7 @@ class BuildingEquipmentCategoryPolicy
      */
     public function delete(User $user, BuildingEquipmentCategory $category)
     {
-        return $user->hasRole('Building Manager')
-            && ($user->id == $category->building->manager_id || $user->building_id == $category->building->id);
+        // return $user->hasRole('Building Manager');
     }
 
     /**
@@ -79,8 +77,7 @@ class BuildingEquipmentCategoryPolicy
      */
     public function restore(User $user, BuildingEquipmentCategory $category)
     {
-        return $user->hasRole('Building Manager')
-            && ($user->id == $category->building->manager_id || $user->building_id == $category->building->id);
+        return $user->hasRole('Building Manager');
     }
 
     /**
@@ -92,7 +89,6 @@ class BuildingEquipmentCategoryPolicy
      */
     public function forceDelete(User $user, BuildingEquipmentCategory $category)
     {
-        return $user->hasRole('Building Manager')
-            && ($user->id == $category->building->manager_id || $user->building_id == $category->building->id);
+        return $user->hasRole('Building Manager');
     }
 }
