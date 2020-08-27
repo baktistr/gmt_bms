@@ -22,7 +22,7 @@ class CreateDailyElectricityConsumptionsTable extends Migration
             $table->float('lwbp_rate');
             $table->bigInteger('wbp');
             $table->float('wbp_rate');
-            $table->bigInteger('kvar');
+            $table->bigInteger('kvar')->nullable();
             $table->string('description')->nullable();
             $table->timestamps();
         });
