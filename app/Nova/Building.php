@@ -3,14 +3,17 @@
 namespace App\Nova;
 
 use App\Nova\Metrics\TotalBuildings;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
+use GeneaLabs\NovaMapMarkerField\MapMarker;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Orlyapps\NovaBelongsToDepend\NovaBelongsToDepend;
+use Laravel\Nova\Panel;
 use Outhebox\NovaHiddenField\HiddenField;
+use Rimu\FormattedNumber\FormattedNumber;
 
 class Building extends Resource
 {
@@ -44,7 +47,9 @@ class Building extends Resource
     public static $search = [
         'id',
         'name',
-        'location',
+        'building_code',
+        'allotment',
+        'phone_number',
     ];
 
     /**
@@ -76,6 +81,7 @@ class Building extends Resource
      */
     public static $with = [
         'manager',
+        'area',
     ];
 
     /**
@@ -95,57 +101,87 @@ class Building extends Resource
                 ->nullable()
                 ->withoutTrashed(),
 
-            NovaBelongsToDepend::make('Province')
-                ->options(\App\Province::all())
+            Text::make('Kode Gedung', function () {
+                return "{$this->area->code}-{$this->building_code}";
+            }),
+
+            Textarea::make('Deskripsi', 'description')
+                ->rules('required')
+                ->alwaysShow(),
+
+            Textarea::make('Peruntukan', 'allotment')
+                ->rules('required')
+                ->alwaysShow(),
+
+            Text::make('Telepon', 'phone_number')
                 ->hideFromIndex(),
 
-            NovaBelongsToDepend::make('Regency')
-                ->optionsResolve(function ($province) {
-                    return $province->regencies()->get(['id', 'name']);
-                })
-                ->dependsOn('Province')
+            Images::make('Gambar', 'image')
+                ->rules(['required'])
                 ->hideFromIndex(),
 
-            NovaBelongsToDepend::make('District')
-                ->optionsResolve(function ($regency) {
-                    return $regency->districts()->get(['id', 'name']);
-                })
-                ->dependsOn('Regency')
-                ->hideFromIndex(),
+            new Panel('Detail Lokasi', [
+                Text::make('TREG', function () {
+                    return $this->area->regional->name;
+                }),
 
-            Text::make('Name', 'name')
-                ->rules('required')
-                ->sortable(),
+                Text::make('Witel', function () {
+                    return $this->area->witel->name;
+                }),
 
-            Text::make('Phone Number', 'phone_number')
-                ->rules('required')
-                ->sortable(),
+                Text::make('Provinsi', function () {
+                    return $this->area->provinsi->name ?? '—';
+                }),
 
-            Textarea::make('Address Detail')
-                ->rules('required')
-                ->onlyOnForms(),
+                Text::make('Kabupaten/Kota', function () {
+                    return $this->area->kabupaten->name ?? '—';
+                }),
 
-            Text::make('Address Detail')
-                ->exceptOnForms(),
+                Text::make('Kecamatan', function () {
+                    return $this->area->kecamatan->name ?? '—';
+                }),
 
-            HasMany::make('Attendances', 'attendances', Attendance::class),
+                Text::make('Alamat', function () {
+                    return $this->area->address_detail ?? '—';
+                }),
 
-            HasMany::make('Employees', 'employees', Employee::class),
+                Text::make('Kode Pos', function () {
+                    return $this->area->postal_code ?? '-';
+                }),
 
-            HasMany::make('Meteran Gedung', 'buildingElectricityMeters', BuildingElectricityMeter::class),
+                FormattedNumber::make('Luas Tanah Total', 'surface_area')
+                    ->help('satuan dalam m<sup>2</sup>')
+                    ->onlyOnForms(),
 
-            HasMany::make('Pemakaian Listrik Harian', 'electricityConsumptions', ElectricityConsumption::class),
+                Text::make('Luas Tanah Total', function () {
+                    return number_format($this->surface_area) . ' m<sup>2</sup>';
+                })->asHtml(),
 
-            HasMany::make('Water Consumptions', 'waterConsumptions', WaterConsumption::class),
+                MapMarker::make('Lokasi')
+                    ->latitude('area.latitude')
+                    ->longitude('area.longitude')
+                    ->hideFromIndex()
+                    ->exceptOnForms(),
+            ]),
 
-            HasMany::make('Diesel Fuel Consumptions', 'dieselFuelConsumptions', DieselFuelConsumption::class),
-
-            HasMany::make('Equipments', 'equipments', BuildingEquipment::class),
-
-            HasMany::make('Complaints', 'complaints', HelpDesk::class),
-
-            HasMany::make('Employees', 'employees', Employee::class),
-
+//            HasMany::make('Attendances', 'attendances', Attendance::class),
+//
+//            HasMany::make('Employees', 'employees', Employee::class),
+//
+//            HasMany::make('Meteran Gedung', 'buildingElectricityMeters', BuildingElectricityMeter::class),
+//
+//            HasMany::make('Pemakaian Listrik Harian', 'electricityConsumptions', ElectricityConsumption::class),
+//
+//            HasMany::make('Water Consumptions', 'waterConsumptions', WaterConsumption::class),
+//
+//            HasMany::make('Diesel Fuel Consumptions', 'dieselFuelConsumptions', DieselFuelConsumption::class),
+//
+//            HasMany::make('Equipments', 'equipments', BuildingEquipment::class),
+//
+//            HasMany::make('Complaints', 'complaints', HelpDesk::class),
+//
+//            HasMany::make('Employees', 'employees', Employee::class),
+//
             HasMany::make('Help Desks', 'helpDesks', User::class),
 
             HasMany::make('Viewers', 'viewers', User::class),
