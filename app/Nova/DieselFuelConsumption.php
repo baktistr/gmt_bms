@@ -116,7 +116,7 @@ class DieselFuelConsumption extends Resource
                 return $this->type == 'incoming' ? "{$this->amount} liters" : '-';
             }),
 
-            Text::make('Remain', function () {
+            Text::make('Usage', function () {
                 return $this->type == 'remain' ? "{$this->amount} liters" : '-';
             }),
 
@@ -128,13 +128,13 @@ class DieselFuelConsumption extends Resource
                 Text::make('Incoming Amount (liters)', 'amount')
                     ->rules(['required', 'numeric', 'min:0']),
             ])->dependsOn('type', 'incoming')
-            ->onlyOnForms(),
+                ->onlyOnForms(),
 
             NovaDependencyContainer::make([
                 Text::make('Remain Amount (liters)', 'amount')
                     ->rules(['required', 'numeric', 'min:0']),
             ])->dependsOn('type', 'remain')
-            ->onlyOnForms(),
+                ->onlyOnForms(),
 
             Markdown::make('Description')
                 ->nullable()
