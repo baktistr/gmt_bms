@@ -2,8 +2,8 @@
 
 namespace App\Nova;
 
+use Coroowicaksono\ChartJsIntegration\LineChart;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Textarea;
@@ -145,7 +145,9 @@ class BuildingEquipment extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            $this->monthlyCostChart($request),
+        ];
     }
 
     /**
@@ -189,5 +191,70 @@ class BuildingEquipment extends Resource
     public static function label()
     {
         return 'Item Equipment';
+    }
+
+    protected function monthlyCostChart(Request $request)
+    {
+        // Collect the last 12 months.
+        $months = collect([]);
+        // Collect the series data.
+        $seriesData = collect([]);
+
+        // Get the series data.
+        for ($month = 11; $month >= 0; $month--) {
+            $months->push(now()->subMonths($month)->format('M Y'));
+
+            // Get the sum of every month, and push to the $seriesData collections
+            $cost = \App\BuildingEquipmentHistory::query()
+                ->where('building_equipment_id', $request->get('resourceId'))
+                ->whereYear('date_of_problem_fixed', now()->subMonths($month)->format('Y'))
+                ->whereMonth('date_of_problem_fixed', now()->subMonths($month)->format('m'))
+                ->sum('cost');
+
+            $seriesData->push($cost);
+        }
+
+        //return the line chart with the value
+        return (new LineChart())
+            ->title('Total biaya perawatan 12 bulan terakhir')
+            ->animations([
+                'enabled' => true,
+                'easing'  => 'easeinout',
+            ])
+            ->series([[
+                'barPercentage' => 1,
+                'label'         => 'Biaya Perawatan',
+                'borderColor'   => '#f7a35c',
+                'data'          => $seriesData->toArray(),
+            ]])
+            ->options([
+                'xaxis' => [
+                    'categories' => $months->toArray(),
+                ],
+                'tooltips' => [
+                    'callbacks' => [
+                        'label' => "function(tooltipItem, data) {
+                            // get the data label and data value to display
+                            // convert the data value to local string so it uses a comma seperated number
+                            var dataLabel = data.labels[tooltipItem.index];
+                            var value = ': Rp.' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
+                            
+                            if (Chart.helpers.isArray(dataLabel)) {
+                                // show value on first line of multiline label
+                                // need to clone because we are changing the value
+                                dataLabel = dataLabel.slice();
+                                dataLabel[0] += value;
+                            } else {
+                                dataLabel += value;
+                            }
+                            
+                            // return the text to display on the tooltip
+                            return dataLabel;
+                        };"
+                    ]
+                ]
+            ])
+            ->width('full')
+            ->onlyOnDetail();
     }
 }
