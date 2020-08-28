@@ -164,7 +164,11 @@ class Building extends Resource
             (new TotalBuildings)->canSee(function () use ($request) {
                 return $request->user()->hasRole('Super Admin');
             }),
+            
+            $this->monthlyElectricityChart($request) ?? [],
+
             $this->monthlyChart($request) ?? [],
+
         ];
     }
 
@@ -215,7 +219,7 @@ class Building extends Resource
         $seriesData = collect([]);
 
         $seriesData2 = collect([]);
-        
+
         for ($month = 11; $month >= 0; $month--) {
             $months->push(now()->subMonths($month)->format('M Y'));
             $income = \App\DieselFuelConsumption::query()
@@ -255,6 +259,52 @@ class Building extends Resource
                     'label'         => 'Pemakaian Solar',
                     'borderColor'   => '#f1c40f',
                     'data'          => $seriesData2->toArray(),
+                ],
+            ])
+            ->options([
+                'xaxis' => [
+                    'categories' => $months->toArray(),
+                ],
+            ])
+            ->width('full')
+            ->onlyOnDetail();
+    }
+
+
+    protected function monthlyElectricityChart(Request $request)
+    {
+        // Collect the last 12 months.
+        $months = collect([]);
+        // Collect the series data.
+        $seriesData = collect([]);
+        for ($month = 11; $month >= 0; $month--) {
+            $months->push(now()->subMonths($month)->format('M Y'));
+            $listrik = \App\ElectricityConsumption::query()
+                ->where('building_id', $request->get('resourceId'))
+                ->whereMonth('date', now()->subMonths($month)->format('m'))
+                ->get();
+            $totalCost = $listrik->map(fn ($cost) => $cost->totalCost());
+            $seriesData->push($totalCost);
+        }
+
+        $totalCost = collect([]);
+
+        for ($i = 0; $i < count($seriesData); $i++) {
+            $totalCost->push($seriesData[$i]->sum());
+        }
+
+        return (new LineChart())
+            ->title('Rekap Penggunaan Listrik')
+            ->animations([
+                'enabled' => true,
+                'easing'  => 'easeinout',
+            ])
+            ->series([
+                [
+                    'barPercentage' => 1,
+                    'label'         => 'Penggunaan Listrik',
+                    'borderColor'   => '#3498db',
+                    'data'          => $totalCost->toArray(),
                 ],
             ])
             ->options([
