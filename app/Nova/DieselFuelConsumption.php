@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Coroowicaksono\ChartJsIntegration\LineChart;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Epartment\NovaDependencyContainer\NovaDependencyContainer;
 use Illuminate\Http\Request;
@@ -156,7 +157,9 @@ class DieselFuelConsumption extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            $this->monthlyChart($request) ?? [],
+        ];
     }
 
     /**
@@ -200,5 +203,93 @@ class DieselFuelConsumption extends Resource
     public static function label()
     {
         return 'Fuel Consumption';
+    }
+
+    /**
+     * Add Monthly Chart
+     * 
+     * @author hanan
+     * @return LineChart
+     */
+    protected function monthlyChart(Request $request)
+    {
+        // Collect the last 12 months.
+        $months = collect([]);
+        // Collect the series data.
+        $seriesData = collect([]);
+
+        $seriesData2 = collect([]);
+
+        if ($request->user()->hasRole('Building Manager')) {
+            for ($month = 11; $month >= 0; $month--) {
+
+                $months->push(now()->subMonths($month)->format('M Y'));
+
+                $income = \App\DieselFuelConsumption::query()
+                    ->where('building_id', $request->user()->building->id)
+                    ->where('type', 'incoming')
+                    ->whereYear('date', now()->subMonths($month)->format('Y'))
+                    ->whereMonth('date', now()->subMonths($month)->format('m'))
+                    ->sum('amount');
+
+                $remain = \App\DieselFuelConsumption::query()
+                    ->where('type', 'remain')
+                    ->where('building_id', $request->user()->building->id)
+                    ->whereYear('date', now()->subMonths($month)->format('Y'))
+                    ->whereMonth('date', now()->subMonths($month)->format('m'))
+                    ->sum('amount');
+
+                $seriesData->push($income);
+
+                $seriesData2->push($remain);
+            }
+        } else {
+            for ($month = 11; $month >= 0; $month--) {
+                $months->push(now()->subMonths($month)->format('M Y'));
+
+                $income = \App\DieselFuelConsumption::query()
+                    ->where('type', 'incoming')
+                    ->whereYear('date', now()->subMonths($month)->format('Y'))
+                    ->whereMonth('date', now()->subMonths($month)->format('m'))
+                    ->sum('amount');
+
+                $remain = \App\DieselFuelConsumption::query()
+                    ->where('type', 'remain')
+                    ->whereYear('date', now()->subMonths($month)->format('Y'))
+                    ->whereMonth('date', now()->subMonths($month)->format('m'))
+                    ->sum('amount');
+
+                $seriesData->push($income);
+                $seriesData2->push($remain);
+            }
+        }
+
+
+        return (new LineChart())
+            ->title('Total biaya Penggunaan Solar 12 bulan terakhir')
+            ->animations([
+                'enabled' => true,
+                'easing'  => 'easeinout',
+            ])
+            ->series([
+                [
+                    'barPercentage' => 1,
+                    'label'         => 'Stok Masuk',
+                    'borderColor'   => '#2ecc71',
+                    'data'          => $seriesData->toArray(),
+                ],
+                [
+                    'barPercentage' => 1,
+                    'label'         => 'Sisa Solar',
+                    'borderColor'   => '#f1c40f',
+                    'data'          => $seriesData2->toArray(),
+                ],
+            ])
+            ->options([
+                'xaxis' => [
+                    'categories' => $months->toArray(),
+                ],
+            ])
+            ->width('full');
     }
 }
