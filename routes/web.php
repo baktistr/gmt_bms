@@ -1,5 +1,7 @@
 <?php
 
+use App\BuildingEquipmentHistory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 /*
@@ -31,8 +33,8 @@ Route::get('test', function () {
         $months->push(now()->subMonths($month)->format('M Y'));
 
         // Get the series data.
-        $cost = \App\BuildingEquipmentHistory::query()
-            ->where('building_equipment_id', 297)
+        $cost = BuildingEquipmentHistory::query()
+            ->where('building_equipment_id', 276)
             ->whereMonth('date_of_problem_fixed', now()->subMonths($month)->format('m'))
             ->whereYear('date_of_problem_fixed', now()->subMonths($month)->format('Y'))
             ->sum('cost');
@@ -40,5 +42,5 @@ Route::get('test', function () {
         $seriesData->push($cost);
     }
 
-    dd($months, $seriesData);
+    dd($months , $seriesData);
 });

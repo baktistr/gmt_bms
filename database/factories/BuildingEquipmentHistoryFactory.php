@@ -14,7 +14,7 @@ $factory->define(BuildingEquipmentHistory::class, function (Faker $faker) {
         'date_of_problem'        => $faker->date('Y-m-d'),
         'action'                 => $faker->randomElement(array_keys(BuildingEquipmentHistory::$type)),
         'problem'                => $faker->paragraph,
-        'date_of_problem_fixed'  => $faker->date('Y-m-d'),
+        'date_of_problem_fixed'  => $faker->unique()->dateTimeBetween('-1 years' , now()),
         'cost'                   => rand(1000000, 9000000),
         'additional_information' => $faker->sentence,
     ];
