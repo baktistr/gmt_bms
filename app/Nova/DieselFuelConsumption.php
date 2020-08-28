@@ -280,7 +280,7 @@ class DieselFuelConsumption extends Resource
                 ],
                 [
                     'barPercentage' => 1,
-                    'label'         => 'Sisa Solar',
+                    'label'         => 'Pemakaian Solar',
                     'borderColor'   => '#f1c40f',
                     'data'          => $seriesData2->toArray(),
                 ],
