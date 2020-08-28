@@ -169,6 +169,8 @@ class Building extends Resource
 
             $this->monthlyChart($request) ?? [],
 
+            $this->monthlyWaterConsumptions($request) ?? [],
+
         ];
     }
 
@@ -242,7 +244,7 @@ class Building extends Resource
         }
 
         return (new LineChart())
-            ->title('Total biaya Penggunaan Solar 12 bulan terakhir')
+            ->title('Rekap Pengunaan Solar')
             ->animations([
                 'enabled' => true,
                 'easing'  => 'easeinout',
@@ -359,6 +361,74 @@ class Building extends Resource
                             // return the text to display on the tooltip	
                             return dataLabel;	
                         };"
+                    ]
+                ]
+            ])
+            ->width('full')
+            ->onlyOnDetail();
+    }
+
+    /**
+     * Water Consumption Chart
+     * 
+     * @param $request
+     * @author hanan
+     * @return LineChart
+     */
+    protected function monthlyWaterConsumptions(Request $request)
+    {
+        $months = collect([]);
+        $waterSeries = collect([]);
+
+        for ($month = 11; $month >= 0; $month--) {
+            $months->add(now()->subMonths($month)->format('M Y'));
+
+            $waterConsumption = \App\WaterConsumption::query()
+                ->where('building_id', $request->get('resourceId'))
+                ->whereMonth('date', now()->subMonths($month)->format('m'))
+                ->get();
+
+            $waterSeries->push($waterConsumption->sum('usage'));
+        }
+
+        return (new LineChart())
+            ->title('Rekap Pemakaian Air')
+            ->animations([
+                'enabled' => true,
+                'easing'  => 'easeinout',
+            ])
+            ->series([
+                [
+                    'barPercentage' => 1,
+                    'label'         => 'Pemakaian Air',
+                    'borderColor'   => '#0077be',
+                    'data'          => $waterSeries->toArray(),
+                ],
+            ])
+            ->options([
+                'xaxis' => [
+                    'categories' => $months->toArray(),
+                ],
+                'tooltips' => [
+                    'callbacks' => [
+                        'label' => "function(tooltipItem, data) {	
+                        // get the data label and data value to display	
+                        // convert the data value to local string so it uses a comma seperated number	
+                        var dataLabel = data.labels[tooltipItem.index];	
+                        var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString() + ' m3';	
+                            
+                        if (Chart.helpers.isArray(dataLabel)) {	
+                            // show value on first line of multiline label	
+                            // need to clone because we are changing the value	
+                            dataLabel = dataLabel.slice();	
+                            dataLabel[0] += value;	
+                        } else {	
+                            dataLabel += value;	
+                        }	
+                            
+                        // return the text to display on the tooltip	
+                        return dataLabel;	
+                    };"
                     ]
                 ]
             ])
