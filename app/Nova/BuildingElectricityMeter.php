@@ -4,8 +4,6 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -32,7 +30,7 @@ class BuildingElectricityMeter extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name',
+        'id', 'name','id_meter'
     ];
 
     /**
@@ -60,13 +58,12 @@ class BuildingElectricityMeter extends Resource
         return [
             BelongsTo::make('Gedung', 'building', Building::class),
 
+            Text::make('ID Meter', 'id_meter')
+                ->rules('required', 'unique:building_electricity_meters,id_meter')
+                ->sortable(),
+
             Text::make('Name')
-                ->rules('required', 'unique:building_electricity_meters,name')
-                ->withMeta([
-                    'extraAttributes' => [
-                        'placeholder' => 'Isi tanpa spasi',
-                    ],
-                ])
+                ->rules(['required', 'string'])
                 ->sortable(),
 
             Markdown::make('Description', 'desc')
