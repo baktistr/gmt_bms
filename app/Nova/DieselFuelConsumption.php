@@ -217,25 +217,47 @@ class DieselFuelConsumption extends Resource
         // Collect the series data.
         $seriesData = collect([]);
 
-        // $fuelInput = DieselFuelConsumption::query()
+        $seriesData2 = collect([]);
+
         if ($request->user()->hasRole('Building Manager')) {
             for ($month = 11; $month >= 0; $month--) {
                 $months->push(now()->subMonths($month)->format('M Y'));
-                $fuelInput = \App\DieselFuelConsumption::query()
+
+                $fuelInput1 = \App\DieselFuelConsumption::query()
                     ->where('building_id', $request->user()->building->id)
+                    ->where('type', 'incoming')
                     ->whereYear('date', now()->subMonths($month)->format('Y'))
                     ->whereMonth('date', now()->subMonths($month)->format('m'))
                     ->sum('amount');
-                $seriesData->push($fuelInput);
+
+                $fuelInput2 = \App\DieselFuelConsumption::query()
+                    ->where('type', 'remain')
+                    ->whereYear('date', now()->subMonths($month)->format('Y'))
+                    ->whereMonth('date', now()->subMonths($month)->format('m'))
+                    ->sum('amount');
+
+                $seriesData->push($fuelInput1);
+
+                $seriesData2->push($fuelInput2);
             }
         } else {
             for ($month = 11; $month >= 0; $month--) {
                 $months->push(now()->subMonths($month)->format('M Y'));
-                $fuelInput = \App\DieselFuelConsumption::query()
+
+                $fuelInput1 = \App\DieselFuelConsumption::query()
+                    ->where('type', 'incoming')
                     ->whereYear('date', now()->subMonths($month)->format('Y'))
                     ->whereMonth('date', now()->subMonths($month)->format('m'))
                     ->sum('amount');
-                $seriesData->push($fuelInput);
+
+                $fuelInput2 = \App\DieselFuelConsumption::query()
+                    ->where('type', 'remain')
+                    ->whereYear('date', now()->subMonths($month)->format('Y'))
+                    ->whereMonth('date', now()->subMonths($month)->format('m'))
+                    ->sum('amount');
+
+                $seriesData->push($fuelInput1);
+                $seriesData2->push($fuelInput2);
             }
         }
 
@@ -246,12 +268,21 @@ class DieselFuelConsumption extends Resource
                 'enabled' => true,
                 'easing'  => 'easeinout',
             ])
-            ->series([[
-                'barPercentage' => 1,
-                'label'         => 'Solar',
-                'borderColor'   => '#f7a35c',
-                'data'          => $seriesData->toArray(),
-            ]])
+            ->series([
+                [
+                    'barPercentage' => 1,
+                    'label'         => 'Solar Masuk',
+                    'borderColor'   => '#f7a35c',
+                    'data'          => $seriesData->toArray(),
+                ],
+                [
+                    'barPercentage' => 1,
+                    'label'         => 'Solar Masuk',
+                    'borderColor'   => '#90ed70',
+                    'data'          => $seriesData2->toArray(),
+                ],
+
+            ])
             ->options([
                 'xaxis' => [
                     'categories' => $months->toArray(),
