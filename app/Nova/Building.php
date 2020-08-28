@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Nova\Metrics\TotalBuildings;
+use Coroowicaksono\ChartJsIntegration\LineChart;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
@@ -164,6 +165,7 @@ class Building extends Resource
             (new TotalBuildings)->canSee(function () use ($request) {
                 return $request->user()->hasRole('Super Admin');
             }),
+            $this->monthlyChart($request) ?? [],
         ];
     }
 
@@ -198,5 +200,70 @@ class Building extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    /**
+     * Add Monthly Chart
+     * 
+     * @author hanan
+     * @return LineChart
+     */
+    protected function monthlyChart(Request $request)
+    {
+        // Collect the last 12 months.
+        $months = collect([]);
+        // Collect the series data.
+        $seriesData = collect([]);
+
+        $seriesData2 = collect([]);
+        
+        for ($month = 11; $month >= 0; $month--) {
+            $months->push(now()->subMonths($month)->format('M Y'));
+            $income = \App\DieselFuelConsumption::query()
+                ->where('building_id', $request->get('resourceId'))
+                ->where('type', 'incoming')
+                ->whereYear('date', now()->subMonths($month)->format('Y'))
+                ->whereMonth('date', now()->subMonths($month)->format('m'))
+                ->sum('amount');
+
+            $remain = \App\DieselFuelConsumption::query()
+                ->where('type', 'remain')
+                ->where('building_id', $request->get('resourceId'))
+                ->whereYear('date', now()->subMonths($month)->format('Y'))
+                ->whereMonth('date', now()->subMonths($month)->format('m'))
+                ->sum('amount');
+
+            $seriesData->push($income);
+
+            $seriesData2->push($remain);
+        }
+
+        return (new LineChart())
+            ->title('Total biaya Penggunaan Solar 12 bulan terakhir')
+            ->animations([
+                'enabled' => true,
+                'easing'  => 'easeinout',
+            ])
+            ->series([
+                [
+                    'barPercentage' => 1,
+                    'label'         => 'Stok Masuk',
+                    'borderColor'   => '#2ecc71',
+                    'data'          => $seriesData->toArray(),
+                ],
+                [
+                    'barPercentage' => 1,
+                    'label'         => 'Pemakaian Solar',
+                    'borderColor'   => '#f1c40f',
+                    'data'          => $seriesData2->toArray(),
+                ],
+            ])
+            ->options([
+                'xaxis' => [
+                    'categories' => $months->toArray(),
+                ],
+            ])
+            ->width('full')
+            ->onlyOnDetail();
     }
 }
