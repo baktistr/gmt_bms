@@ -248,7 +248,7 @@ class DieselFuelConsumption extends Resource
             ])
             ->series([[
                 'barPercentage' => 1,
-                'label'         => 'Biaya Perawatan',
+                'label'         => 'Solar',
                 'borderColor'   => '#f7a35c',
                 'data'          => $seriesData->toArray(),
             ]])
