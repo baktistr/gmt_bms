@@ -61,7 +61,12 @@ class BuildingElectricityMeter extends Resource
             BelongsTo::make('Gedung', 'building', Building::class),
 
             Text::make('Name')
-                ->rules(['required', 'unique:building_electricity_meters,name,{{resourceId}}'])
+                ->rules('required', 'unique:building_electricity_meters,name')
+                ->withMeta([
+                    'extraAttributes' => [
+                        'placeholder' => 'Isi tanpa spasi',
+                    ],
+                ])
                 ->sortable(),
 
             Markdown::make('Description', 'desc')
