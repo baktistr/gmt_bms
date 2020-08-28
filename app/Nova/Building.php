@@ -45,7 +45,6 @@ class Building extends Resource
     public static $search = [
         'id',
         'name',
-        'location',
     ];
 
     /**
