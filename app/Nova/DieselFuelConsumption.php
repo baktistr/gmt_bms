@@ -157,9 +157,7 @@ class DieselFuelConsumption extends Resource
      */
     public function cards(Request $request)
     {
-        return [
-            $this->monthlyChart($request) ?? [],
-        ];
+        return [];
     }
 
     /**
