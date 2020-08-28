@@ -164,7 +164,11 @@ class Building extends Resource
             (new TotalBuildings)->canSee(function () use ($request) {
                 return $request->user()->hasRole('Super Admin');
             }),
+
+            $this->monthlyElectricityChart($request) ?? [],
+
             $this->monthlyChart($request) ?? [],
+
         ];
     }
 
@@ -215,7 +219,7 @@ class Building extends Resource
         $seriesData = collect([]);
 
         $seriesData2 = collect([]);
-        
+
         for ($month = 11; $month >= 0; $month--) {
             $months->push(now()->subMonths($month)->format('M Y'));
             $income = \App\DieselFuelConsumption::query()
@@ -261,6 +265,102 @@ class Building extends Resource
                 'xaxis' => [
                     'categories' => $months->toArray(),
                 ],
+                'tooltips' => [
+                    'callbacks' => [
+                        'label' => "function(tooltipItem, data) {	
+                            // get the data label and data value to display	
+                            // convert the data value to local string so it uses a comma seperated number	
+                            var dataLabel = data.labels[tooltipItem.index];	
+                            var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString() + ' ltr';	
+                            	
+                            if (Chart.helpers.isArray(dataLabel)) {	
+                                // show value on first line of multiline label	
+                                // need to clone because we are changing the value	
+                                dataLabel = dataLabel.slice();	
+                                dataLabel[0] += value;	
+                            } else {	
+                                dataLabel += value;	
+                            }	
+                            	
+                            // return the text to display on the tooltip	
+                            return dataLabel;	
+                        };"
+                    ]
+                ]
+            ])
+            ->width('full')
+            ->onlyOnDetail();
+    }
+
+    /**
+     * Chart Listrik
+     * 
+     * @param Request
+     * @return LineChart
+     * @author hanan
+     */
+    protected function monthlyElectricityChart(Request $request)
+    {
+        // Collect the last 12 months.
+        $months = collect([]);
+        // Collect the series data.
+        $seriesData = collect([]);
+        for ($month = 11; $month >= 0; $month--) {
+            $months->push(now()->subMonths($month)->format('M Y'));
+            $listrik = \App\ElectricityConsumption::query()
+                ->where('building_id', $request->get('resourceId'))
+                ->whereMonth('date', now()->subMonths($month)->format('m'))
+                ->get();
+            $totalCost = $listrik->map(fn ($cost) => $cost->totalCost());
+            $seriesData->push($totalCost);
+        }
+
+        $totalCost = collect([]);
+
+        for ($i = 0; $i < count($seriesData); $i++) {
+            $totalCost->push($seriesData[$i]->sum());
+        }
+
+        return (new LineChart())
+            ->title('Rekap Penggunaan Listrik')
+            ->animations([
+                'enabled' => true,
+                'easing'  => 'easeinout',
+            ])
+            ->series([
+                [
+                    'barPercentage' => 1,
+                    'label'         => 'Penggunaan Listrik',
+                    'borderColor'   => '#3498db',
+                    'data'          => $totalCost->toArray(),
+                ],
+            ])
+            ->options([
+                'xaxis' => [
+                    'categories' => $months->toArray(),
+                ],
+                'tooltips' => [
+                    'callbacks' => [
+                        'label' => "function(tooltipItem, data) {	
+                            // get the data label and data value to display	
+                            // convert the data value to local string so it uses a comma seperated number	
+                            var dataLabel = data.labels[tooltipItem.index];	
+                            var value = ': Rp.' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();	
+                            	
+                            if (Chart.helpers.isArray(dataLabel)) {	
+                                // show value on first line of multiline label	
+                                // need to clone because we are changing the value	
+                                dataLabel = dataLabel.slice();	
+                                dataLabel[0] += value;	
+                            } else {	
+                                dataLabel += value;	
+                            }	
+                            	
+                            // return the text to display on the tooltip	
+                            return dataLabel;	
+                        };"
+                    ]
+                ]
             ])
             ->width('full')
             ->onlyOnDetail();
