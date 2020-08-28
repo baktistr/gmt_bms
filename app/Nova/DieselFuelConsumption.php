@@ -234,6 +234,7 @@ class DieselFuelConsumption extends Resource
 
                 $remain = \App\DieselFuelConsumption::query()
                     ->where('type', 'remain')
+                    ->where('building_id', $request->user()->building->id)
                     ->whereYear('date', now()->subMonths($month)->format('Y'))
                     ->whereMonth('date', now()->subMonths($month)->format('m'))
                     ->sum('amount');
@@ -273,14 +274,14 @@ class DieselFuelConsumption extends Resource
             ->series([
                 [
                     'barPercentage' => 1,
-                    'label'         => 'Solar Masuk',
-                    'borderColor'   => '#f7a35c',
+                    'label'         => 'Stok Masuk',
+                    'borderColor'   => '#2ecc71',
                     'data'          => $seriesData->toArray(),
                 ],
                 [
                     'barPercentage' => 1,
                     'label'         => 'Sisa Solar',
-                    'borderColor'   => '#00FFFF',
+                    'borderColor'   => '#f1c40f',
                     'data'          => $seriesData2->toArray(),
                 ],
             ])
