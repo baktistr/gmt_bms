@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Coroowicaksono\ChartJsIntegration\LineChart;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Epartment\NovaDependencyContainer\NovaDependencyContainer;
 use Illuminate\Http\Request;
@@ -156,7 +157,9 @@ class DieselFuelConsumption extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            $this->monthlyChart($request) ?? [],
+        ];
     }
 
     /**
@@ -200,5 +203,60 @@ class DieselFuelConsumption extends Resource
     public static function label()
     {
         return 'Fuel Consumption';
+    }
+
+    /**
+     * Add Monthly Chart
+     * 
+     * @author hanan
+     */
+    protected function monthlyChart(Request $request)
+    {
+        // Collect the last 12 months.
+        $months = collect([]);
+        // Collect the series data.
+        $seriesData = collect([]);
+
+        // $fuelInput = DieselFuelConsumption::query()
+        if ($request->user()->hasRole('Building Manager')) {
+            for ($month = 11; $month >= 0; $month--) {
+                $months->push(now()->subMonths($month)->format('M Y'));
+                $fuelInput = \App\DieselFuelConsumption::query()
+                    ->where('building_id', $request->user()->building->id)
+                    ->whereYear('date', now()->subMonths($month)->format('Y'))
+                    ->whereMonth('date', now()->subMonths($month)->format('m'))
+                    ->sum('amount');
+                $seriesData->push($fuelInput);
+            }
+        } else {
+            for ($month = 11; $month >= 0; $month--) {
+                $months->push(now()->subMonths($month)->format('M Y'));
+                $fuelInput = \App\DieselFuelConsumption::query()
+                    ->whereYear('date', now()->subMonths($month)->format('Y'))
+                    ->whereMonth('date', now()->subMonths($month)->format('m'))
+                    ->sum('amount');
+                $seriesData->push($fuelInput);
+            }
+        }
+
+
+        return (new LineChart())
+            ->title('Total biaya Penggunaan Solar 12 bulan terakhir')
+            ->animations([
+                'enabled' => true,
+                'easing'  => 'easeinout',
+            ])
+            ->series([[
+                'barPercentage' => 1,
+                'label'         => 'Biaya Perawatan',
+                'borderColor'   => '#f7a35c',
+                'data'          => $seriesData->toArray(),
+            ]])
+            ->options([
+                'xaxis' => [
+                    'categories' => $months->toArray(),
+                ],
+            ])
+            ->width('full');
     }
 }

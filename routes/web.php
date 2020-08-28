@@ -1,6 +1,7 @@
 <?php
 
 use App\BuildingEquipmentHistory;
+use App\DieselFuelConsumption;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
@@ -42,5 +43,31 @@ Route::get('test', function () {
         $seriesData->push($cost);
     }
 
+    dd($months, $seriesData);
+});
+
+
+Route::get('test-solar', function () {
+    // Collect the last 12 months.
+    $months = collect([]);
+    // Collect the series data.
+    $seriesData = collect([]);
+
+    // $fuelInput = DieselFuelConsumption::query()
+
+    for ($month=11; $month >= 0 ; $month--) { 
+        $months->push(now()->subMonths($month)->format('M Y'));
+
+        $fuelInput = DieselFuelConsumption::query()
+            ->where('building_id' , request()->user()->building->id)
+            ->whereYear('date' , now()->subMonths($month)->format('Y'))
+            ->whereMonth('date' , now()->subMonths($month)->format('m'))
+            ->sum('amount');
+
+        $seriesData->push($fuelInput);
+
+    }
+
     dd($months , $seriesData);
+
 });
