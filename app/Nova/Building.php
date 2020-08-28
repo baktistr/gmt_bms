@@ -271,7 +271,7 @@ class Building extends Resource
                             // get the data label and data value to display	
                             // convert the data value to local string so it uses a comma seperated number	
                             var dataLabel = data.labels[tooltipItem.index];	
-                            var value = ': Ltr.' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();	
+                            var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString() + ' ltr';	
                             	
                             if (Chart.helpers.isArray(dataLabel)) {	
                                 // show value on first line of multiline label	
@@ -292,7 +292,13 @@ class Building extends Resource
             ->onlyOnDetail();
     }
 
-
+    /**
+     * Chart Listrik
+     * 
+     * @param Request
+     * @return LineChart
+     * @author hanan
+     */
     protected function monthlyElectricityChart(Request $request)
     {
         // Collect the last 12 months.
