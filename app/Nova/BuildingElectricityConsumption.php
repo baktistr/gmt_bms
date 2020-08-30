@@ -2,7 +2,7 @@
 
 namespace App\Nova;
 
-use App\ElectricityConsumption as AppElectricity;
+use App\BuildingElectricityConsumption as AppElectricity;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
@@ -16,14 +16,14 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Rimu\FormattedNumber\FormattedNumber;
 
-class ElectricityConsumption extends Resource
+class BuildingElectricityConsumption extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\ElectricityConsumption::class;
+    public static $model = AppElectricity::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -132,7 +132,7 @@ class ElectricityConsumption extends Resource
                 return $this->total_cost;
             }),
 
-            HasMany::make('Meteran Gedung', 'dailyConsumptions', DailyElectricityConsumption::class),
+            HasMany::make('Meteran Gedung', 'dailyConsumptions', BuildingDailyElectricityConsumption::class),
         ];
     }
 

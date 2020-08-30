@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\ElectricityConsumption;
+use App\BuildingElectricityConsumption;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -24,11 +24,11 @@ class ElectricityConsumptionPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\ElectricityConsumption  $consumption
+     * @param  \App\User                           $user
+     * @param  \App\BuildingElectricityConsumption $consumption
      * @return mixed
      */
-    public function view(User $user, ElectricityConsumption $consumption)
+    public function view(User $user, BuildingElectricityConsumption $consumption)
     {
         return $user->hasPermissionTo('View Building')
             && ($user->id == $consumption->building->manager_id || $user->building_id == $consumption->building_id);
@@ -48,11 +48,11 @@ class ElectricityConsumptionPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\ElectricityConsumption  $consumption
+     * @param  \App\User                           $user
+     * @param  \App\BuildingElectricityConsumption $consumption
      * @return mixed
      */
-    public function update(User $user, ElectricityConsumption $consumption)
+    public function update(User $user, BuildingElectricityConsumption $consumption)
     {
         return $user->hasPermissionTo('View Building')
             && $user->hasRole('Building Manager')
@@ -62,11 +62,11 @@ class ElectricityConsumptionPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\ElectricityConsumption  $consumption
+     * @param  \App\User                           $user
+     * @param  \App\BuildingElectricityConsumption $consumption
      * @return mixed
      */
-    public function delete(User $user, ElectricityConsumption $consumption)
+    public function delete(User $user, BuildingElectricityConsumption $consumption)
     {
         return $user->hasPermissionTo('View Building')
             && $user->hasRole('Building Manager')
@@ -76,11 +76,11 @@ class ElectricityConsumptionPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\ElectricityConsumption  $consumption
+     * @param  \App\User                           $user
+     * @param  \App\BuildingElectricityConsumption $consumption
      * @return mixed
      */
-    public function restore(User $user, ElectricityConsumption $consumption)
+    public function restore(User $user, BuildingElectricityConsumption $consumption)
     {
         return $user->hasPermissionTo('View Building')
             && $user->hasRole('Building Manager')
@@ -90,11 +90,11 @@ class ElectricityConsumptionPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\ElectricityConsumption  $consumption
+     * @param  \App\User                           $user
+     * @param  \App\BuildingElectricityConsumption $consumption
      * @return mixed
      */
-    public function forceDelete(User $user, ElectricityConsumption $consumption)
+    public function forceDelete(User $user, BuildingElectricityConsumption $consumption)
     {
         return $user->hasPermissionTo('View Building')
             && $user->hasRole('Building Manager')

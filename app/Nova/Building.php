@@ -169,9 +169,9 @@ class Building extends Resource
 //
 //            HasMany::make('Employees', 'employees', Employee::class),
 //
-//            HasMany::make('Meteran Gedung', 'buildingElectricityMeters', BuildingElectricityMeter::class),
-//
-//            HasMany::make('Pemakaian Listrik Harian', 'electricityConsumptions', ElectricityConsumption::class),
+            HasMany::make('Meteran Gedung', 'buildingElectricityMeters', BuildingElectricityMeter::class),
+
+            HasMany::make('Pemakaian Listrik Harian', 'electricityConsumptions', BuildingElectricityConsumption::class),
 //
 //            HasMany::make('Water Consumptions', 'waterConsumptions', WaterConsumption::class),
 //
@@ -202,12 +202,11 @@ class Building extends Resource
                 return $request->user()->hasRole('Super Admin');
             }),
 
-            $this->monthlyElectricityChart($request) ?? [],
+            $this->monthlyElectricityChart($request),
 
-            $this->monthlyChart($request) ?? [],
+//            $this->monthlyDieselFuelChart($request),
 
-            $this->monthlyWaterConsumptions($request) ?? [],
-
+//            $this->monthlyWaterConsumptions($request),
         ];
     }
 
@@ -246,11 +245,11 @@ class Building extends Resource
 
     /**
      * Add Monthly Chart
-     * 
-     * @author hanan
+     *
+     * @param \Illuminate\Http\Request $request
      * @return LineChart
      */
-    protected function monthlyChart(Request $request)
+    protected function monthlyDieselFuelChart(Request $request)
     {
         // Collect the last 12 months.
         $months = collect([]);
@@ -333,10 +332,9 @@ class Building extends Resource
 
     /**
      * Chart Listrik
-     * 
-     * @param Request
+     *
+     * @param \Illuminate\Http\Request $request
      * @return LineChart
-     * @author hanan
      */
     protected function monthlyElectricityChart(Request $request)
     {
@@ -346,11 +344,13 @@ class Building extends Resource
         $seriesData = collect([]);
         for ($month = 11; $month >= 0; $month--) {
             $months->push(now()->subMonths($month)->format('M Y'));
-            $listrik = \App\ElectricityConsumption::query()
+            $listrik = \App\BuildingElectricityConsumption::query()
                 ->where('building_id', $request->get('resourceId'))
                 ->whereMonth('date', now()->subMonths($month)->format('m'))
                 ->get();
-            $totalCost = $listrik->map(fn ($cost) => $cost->totalCost());
+            $totalCost = $listrik->map(function ($cost) {
+                return $cost->totalCost();
+            });
             $seriesData->push($totalCost);
         }
 
@@ -361,7 +361,7 @@ class Building extends Resource
         }
 
         return (new LineChart())
-            ->title('Rekap Penggunaan Listrik')
+            ->title('Penggunaan listrik 12 bulan terakhir')
             ->animations([
                 'enabled' => true,
                 'easing'  => 'easeinout',
@@ -409,7 +409,6 @@ class Building extends Resource
      * Water Consumption Chart
      * 
      * @param $request
-     * @author hanan
      * @return LineChart
      */
     protected function monthlyWaterConsumptions(Request $request)

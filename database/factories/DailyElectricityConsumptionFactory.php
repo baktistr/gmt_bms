@@ -3,15 +3,15 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\BuildingElectricityMeter;
-use App\DailyElectricityConsumption;
-use App\ElectricityConsumption;
+use App\BuildingDailyElectricityConsumption;
+use App\BuildingElectricityConsumption;
 use App\Testing\File;
 use Faker\Generator as Faker;
 
-$factory->define(DailyElectricityConsumption::class, function (Faker $faker) {
+$factory->define(BuildingDailyElectricityConsumption::class, function (Faker $faker) {
     return [
         'electricity_consumption_id' => function () {
-            return factory(ElectricityConsumption::class)->create()->id;
+            return factory(BuildingElectricityConsumption::class)->create()->id;
         },
         'electricity_meter_id'       => function () {
             return factory(BuildingElectricityMeter::class)->create()->id;
@@ -26,7 +26,7 @@ $factory->define(DailyElectricityConsumption::class, function (Faker $faker) {
     ];
 });
 
-$factory->afterCreating(DailyElectricityConsumption::class, function (DailyElectricityConsumption $consumption) {
+$factory->afterCreating(BuildingDailyElectricityConsumption::class, function (BuildingDailyElectricityConsumption $consumption) {
 //    $consumption->addMedia(File::image("daily-electricity-consumption-wbp-{$consumption->id}.png"))
 //        ->toMediaCollection('wbp');
 //

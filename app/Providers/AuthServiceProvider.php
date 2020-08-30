@@ -7,7 +7,7 @@ use App\Building;
 use App\BuildingEquipment;
 use App\BuildingEquipmentCategory;
 use App\District;
-use App\ElectricityConsumption;
+use App\BuildingElectricityConsumption;
 use App\Employee;
 use App\Policies\ActionEventPolicy;
 use App\Policies\AttendancePolicy;
@@ -37,18 +37,18 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        ActionEvent::class               => ActionEventPolicy::class,
-        User::class                      => UserPolicy::class,
-        Province::class                  => ProvincePolicy::class,
-        Regency::class                   => RegencyPolicy::class,
-        District::class                  => DistrictPolicy::class,
-        Building::class                  => BuildingPolicy::class,
-        ElectricityConsumption::class    => ElectricityConsumptionPolicy::class,
-        WaterConsumption::class          => WaterConsumptionPolicy::class,
-        BuildingEquipmentCategory::class => BuildingEquipmentCategoryPolicy::class,
-        BuildingEquipment::class         => BuildingEquipmentPolicy::class,
-        Employee::class                  => EmployeePolicy::class,
-        Attendance::class                => AttendancePolicy::class,
+        ActionEvent::class                    => ActionEventPolicy::class,
+        User::class                           => UserPolicy::class,
+        Province::class                       => ProvincePolicy::class,
+        Regency::class                        => RegencyPolicy::class,
+        District::class                       => DistrictPolicy::class,
+        Building::class                       => BuildingPolicy::class,
+        BuildingElectricityConsumption::class => ElectricityConsumptionPolicy::class,
+        WaterConsumption::class               => WaterConsumptionPolicy::class,
+        BuildingEquipmentCategory::class      => BuildingEquipmentCategoryPolicy::class,
+        BuildingEquipment::class              => BuildingEquipmentPolicy::class,
+        Employee::class                       => EmployeePolicy::class,
+        Attendance::class                     => AttendancePolicy::class,
     ];
 
     /**

@@ -1,9 +1,9 @@
 <?php
 
 use App\BuildingEquipmentHistory;
-use App\DailyElectricityConsumption;
+use App\BuildingDailyElectricityConsumption;
 use App\DieselFuelConsumption;
-use App\ElectricityConsumption;
+use App\BuildingElectricityConsumption;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;

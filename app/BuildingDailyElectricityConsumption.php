@@ -8,7 +8,7 @@ use Laravel\Nova\Actions\Actionable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class DailyElectricityConsumption extends Model implements HasMedia
+class BuildingDailyElectricityConsumption extends Model implements HasMedia
 {
     use InteractsWithMedia, Actionable;
 
@@ -139,7 +139,7 @@ class DailyElectricityConsumption extends Model implements HasMedia
      */
     public function electricityConsumption(): BelongsTo
     {
-        return $this->belongsTo(ElectricityConsumption::class, 'electricity_consumption_id');
+        return $this->belongsTo(BuildingElectricityConsumption::class, 'building_electricity_consumption_id');
     }
 
     /**
@@ -149,7 +149,7 @@ class DailyElectricityConsumption extends Model implements HasMedia
      */
     public function buildingMeter(): BelongsTo
     {
-        return $this->belongsTo(BuildingElectricityMeter::class, 'electricity_meter_id');
+        return $this->belongsTo(BuildingElectricityMeter::class, 'building_electricity_meter_id');
     }
 
     /**

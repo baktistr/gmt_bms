@@ -3,10 +3,10 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Building;
-use App\ElectricityConsumption;
+use App\BuildingElectricityConsumption;
 use Faker\Generator as Faker;
 
-$factory->define(ElectricityConsumption::class, function (Faker $faker) {
+$factory->define(BuildingElectricityConsumption::class, function (Faker $faker) {
     return [
         'building_id' => function () {
             return factory(Building::class)->create()->id;

@@ -2,7 +2,7 @@
 
 namespace App\Nova\Metrics;
 
-use App\ElectricityConsumption;
+use App\BuildingElectricityConsumption;
 use App\WaterConsumption;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
