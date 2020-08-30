@@ -13,6 +13,19 @@ class HelpDeskCategorySeeder extends Seeder
      */
     public function run()
     {
-        factory(HelpDeskCategory::class, 2)->create();
+
+        $categories = collect([
+            ['name' => 'Mechanical'],
+            ['name' => 'Electrical '],
+            ['name' => 'Furniture'],
+            ['name' => 'Civil'],
+            ['name' => 'Other'],
+        ]);
+
+        $categories->each(function ($category) {
+            factory(HelpDeskCategory::class)->create([
+                'name' => $category['name'],
+            ]);
+        });
     }
 }

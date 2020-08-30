@@ -9,9 +9,6 @@ use Faker\Generator as Faker;
 
 $factory->define(BuildingEquipment::class, function (Faker $faker) {
     return [
-        'building_id'                    => function () {
-            return factory(Building::class)->create()->id;
-        },
         'building_equipment_category_id' => function () {
             return factory(BuildingEquipmentCategory::class)->create()->id;
         },

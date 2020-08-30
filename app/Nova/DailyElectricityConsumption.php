@@ -112,7 +112,7 @@ class DailyElectricityConsumption extends Resource
                 ->onlyOnForms(),
 
             FormattedNumber::make('KVAr', 'kvar')
-                ->rules(['required', 'numeric'])
+                ->rules(['nullable', 'numeric'])
                 ->onlyOnForms(),
 
             Text::make('Electric Meter', function () {

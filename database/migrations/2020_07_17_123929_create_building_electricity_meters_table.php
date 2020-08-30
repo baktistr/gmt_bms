@@ -16,6 +16,7 @@ class CreateBuildingElectricityMetersTable extends Migration
         Schema::create('building_electricity_meters', function (Blueprint $table) {
             $table->id();
             $table->foreignId('building_id');
+            $table->string('id_meter')->unique()->index();
             $table->string('name');
             $table->text('desc')->nullable();
             $table->timestamps();

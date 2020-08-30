@@ -79,7 +79,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             })->width('1/4'),
             (new TotalViewers)->canSee(function () {
                 return Auth::user()->hasRole('Super Admin');
-            })->width('1/4'),
+            })->width('1/4'),               
 
             (new TotalEmployees)->canSee(function () {
                 return Auth::user()->hasRole('Building Manager');

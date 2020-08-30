@@ -25,6 +25,7 @@
         "php": "^7.2.5",
         "cendekia/nova-setting-tool": "^0.0.3",
         "cloudcake/nova-fixed-bars": "^1.1",
+        "coroowicaksono/chart-js-integration": "^0.3.0",
         "ebess/advanced-nova-media-library": "^3.1",
         "epartment/nova-dependency-container": "^1.2",
         "fideloper/proxy": "^4.2",

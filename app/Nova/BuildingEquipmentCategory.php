@@ -53,13 +53,13 @@ class BuildingEquipmentCategory extends Resource
     {
         $user = $request->user();
 
-        if ($user->hasRole('Building Manager')) {
-            return $query->where('building_id', $user->building->id);
-        }
+        // if ($user->hasRole('Building Manager')) {
+        //     return $query->where('building_id', $user->building->id);
+        // }
 
-        if (($user->hasRole('Help Desk') || $user->hasRole('Viewer')) && $user->building_id) {
-            return $query->where('building_id', $user->building_id);
-        }
+        // if (($user->hasRole('Help Desk') || $user->hasRole('Viewer')) && $user->building_id) {
+        //     return $query->where('building_id', $user->building_id);
+        // }
 
         return $query;
     }
@@ -77,11 +77,6 @@ class BuildingEquipmentCategory extends Resource
 
             Text::make('Name')
                 ->rules('required', 'string'),
-
-            BelongsTo::make('Building', 'building', Building::class)
-                ->rules('required'),
-
-            HasMany::make('Equipments', 'equipments', BuildingEquipment::class),
         ];
     }
 

@@ -15,7 +15,6 @@ class CreateBuildingEquipmentCategoriesTable extends Migration
     {
         Schema::create('building_equipment_categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('building_id');
             $table->string('name');
             $table->timestamps();
         });
