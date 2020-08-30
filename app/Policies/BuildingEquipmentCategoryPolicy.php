@@ -18,7 +18,7 @@ class BuildingEquipmentCategoryPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('View All Buildings');
+        return $user->hasRole(['Building Manager', 'Help Desk', 'Viewer']);
     }
 
     /**
@@ -30,7 +30,7 @@ class BuildingEquipmentCategoryPolicy
      */
     public function view(User $user, BuildingEquipmentCategory $category)
     {
-        return $user->hasPermissionTo('View Building')
+        return $user->hasRole('Building Manager')
             && ($user->id == $category->building->manager_id || $user->building_id == $category->building->id);
     }
 

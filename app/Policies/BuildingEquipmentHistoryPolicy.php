@@ -18,7 +18,7 @@ class BuildingEquipmentHistoryPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('View All Buildings');
+        return $user->hasRole(['Building Manager', 'Help Desk', 'Viewer']);
     }
 
     /**
@@ -30,7 +30,7 @@ class BuildingEquipmentHistoryPolicy
      */
     public function view(User $user, BuildingEquipmentHistory $history)
     {
-        return $user->hasPermissionTo('View Building');
+        return $user->hasRole(['Building Manager', 'Help Desk', 'Viewer']);
     }
 
     /**
@@ -53,8 +53,8 @@ class BuildingEquipmentHistoryPolicy
      */
     public function update(User $user, BuildingEquipmentHistory $history)
     {
-        return $user->hasPermissionTo('Update Building');
-    }
+        return $user->hasRole('Building Manager')
+            && ($user->id == $history->equipment->building->manager_id || $user->building_id == $history->equipment->building->id);    }
 
     /**
      * Determine whether the user can delete the model.
