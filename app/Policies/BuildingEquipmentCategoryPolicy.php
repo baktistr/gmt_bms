@@ -30,8 +30,7 @@ class BuildingEquipmentCategoryPolicy
      */
     public function view(User $user, BuildingEquipmentCategory $category)
     {
-        return $user->hasRole('Building Manager')
-            && ($user->id == $category->building->manager_id || $user->building_id == $category->building->id);
+        return $user->hasRole(['Building Manager', 'Help Desk', 'Viewer']);
     }
 
     /**
@@ -42,7 +41,7 @@ class BuildingEquipmentCategoryPolicy
      */
     public function create(User $user)
     {
-        // return $user->hasRole('Building Manager');
+         return false;
     }
 
     /**
@@ -54,7 +53,7 @@ class BuildingEquipmentCategoryPolicy
      */
     public function update(User $user, BuildingEquipmentCategory $category)
     {
-        // return $user->hasRole('Building Manager');
+         return false;
     }
 
     /**
@@ -66,7 +65,7 @@ class BuildingEquipmentCategoryPolicy
      */
     public function delete(User $user, BuildingEquipmentCategory $category)
     {
-        // return $user->hasRole('Building Manager');
+         return false;
     }
 
     /**
@@ -78,7 +77,7 @@ class BuildingEquipmentCategoryPolicy
      */
     public function restore(User $user, BuildingEquipmentCategory $category)
     {
-        return $user->hasRole('Building Manager');
+        return false;
     }
 
     /**
@@ -90,6 +89,6 @@ class BuildingEquipmentCategoryPolicy
      */
     public function forceDelete(User $user, BuildingEquipmentCategory $category)
     {
-        return $user->hasRole('Building Manager');
+        return false;
     }
 }
