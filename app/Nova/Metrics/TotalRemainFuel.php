@@ -2,7 +2,7 @@
 
 namespace App\Nova\Metrics;
 
-use App\DieselFuelConsumption;
+use App\BuildingDieselFuelConsumption;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 
@@ -17,7 +17,7 @@ class TotalRemainFuel extends Value
     public function calculate(NovaRequest $request)
     {
         return $this->result(
-            DieselFuelConsumption::query()
+            BuildingDieselFuelConsumption::query()
                 ->where('building_id', $request->user()->building->id)
                 ->latest('date')
                 ->first()

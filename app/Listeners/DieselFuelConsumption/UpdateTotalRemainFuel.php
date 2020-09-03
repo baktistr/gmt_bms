@@ -2,7 +2,7 @@
 
 namespace App\Listeners\DieselFuelConsumption;
 
-use App\DieselFuelConsumption;
+use App\BuildingDieselFuelConsumption;
 use App\Events\DieselFuelConsumptionCreated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -19,7 +19,7 @@ class UpdateTotalRemainFuel
     public function handle(DieselFuelConsumptionCreated $event)
     {
         // Ambil data konsumsi solar terakhir dari gedung.
-        $latestFuelConsumption = DieselFuelConsumption::query()
+        $latestFuelConsumption = BuildingDieselFuelConsumption::query()
             ->where('building_id', $event->dieselFuelConsumption->building_id)
             ->where('id', '<', $event->dieselFuelConsumption->id)
             ->orderBy('id', 'desc')

@@ -174,8 +174,8 @@ class Building extends Resource
             HasMany::make('Pemakaian Listrik Harian', 'electricityConsumptions', BuildingElectricityConsumption::class),
 
             HasMany::make('Pemakaian Air', 'waterConsumptions', BuildingWaterConsumption::class),
-//
-//            HasMany::make('Diesel Fuel Consumptions', 'dieselFuelConsumptions', DieselFuelConsumption::class),
+
+            HasMany::make('Diesel Fuel Consumptions', 'dieselFuelConsumptions', BuildingDieselFuelConsumption::class),
 //
 //            HasMany::make('Equipments', 'equipments', BuildingEquipment::class),
 //
@@ -204,7 +204,7 @@ class Building extends Resource
 
             $this->monthlyElectricityChart($request),
 
-//            $this->monthlyDieselFuelChart($request),
+            $this->monthlyDieselFuelChart($request),
 
             $this->monthlyWaterConsumptions($request),
         ];
@@ -260,14 +260,14 @@ class Building extends Resource
 
         for ($month = 11; $month >= 0; $month--) {
             $months->push(now()->subMonths($month)->format('M Y'));
-            $income = \App\DieselFuelConsumption::query()
+            $income = \App\BuildingDieselFuelConsumption::query()
                 ->where('building_id', $request->get('resourceId'))
                 ->where('type', 'incoming')
                 ->whereYear('date', now()->subMonths($month)->format('Y'))
                 ->whereMonth('date', now()->subMonths($month)->format('m'))
                 ->sum('amount');
 
-            $remain = \App\DieselFuelConsumption::query()
+            $remain = \App\BuildingDieselFuelConsumption::query()
                 ->where('type', 'remain')
                 ->where('building_id', $request->get('resourceId'))
                 ->whereYear('date', now()->subMonths($month)->format('Y'))

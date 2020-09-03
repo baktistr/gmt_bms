@@ -2,28 +2,25 @@
 
 namespace App\Nova;
 
-use Coroowicaksono\ChartJsIntegration\LineChart;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Epartment\NovaDependencyContainer\NovaDependencyContainer;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
 
-class DieselFuelConsumption extends Resource
+class BuildingDieselFuelConsumption extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\DieselFuelConsumption::class;
+    public static $model = \App\BuildingDieselFuelConsumption::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -104,13 +101,13 @@ class DieselFuelConsumption extends Resource
                 ->withoutTrashed(),
 
             Select::make('Type')
-                ->options(\App\DieselFuelConsumption::$type)
-                ->rules(['required', Rule::in(array_keys(\App\DieselFuelConsumption::$type))])
+                ->options(\App\BuildingDieselFuelConsumption::$type)
+                ->rules(['required', Rule::in(array_keys(\App\BuildingDieselFuelConsumption::$type))])
                 ->displayUsingLabels()
                 ->onlyOnForms(),
 
             Select::make('Type')
-                ->options(\App\DieselFuelConsumption::$type)
+                ->options(\App\BuildingDieselFuelConsumption::$type)
                 ->exceptOnForms(),
 
             Text::make('Incoming', function () {
@@ -200,6 +197,6 @@ class DieselFuelConsumption extends Resource
      */
     public static function label()
     {
-        return 'Fuel Consumption';
+        return 'Fuel Consumptions';
     }
 }

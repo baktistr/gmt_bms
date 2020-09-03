@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\DieselFuelConsumption;
+use App\BuildingDieselFuelConsumption;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -24,11 +24,11 @@ class DieselFuelConsumptionPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param \App\User                  $user
-     * @param \App\DieselFuelConsumption $consumption
+     * @param \App\User                          $user
+     * @param \App\BuildingDieselFuelConsumption $consumption
      * @return mixed
      */
-    public function view(User $user, DieselFuelConsumption $consumption)
+    public function view(User $user, BuildingDieselFuelConsumption $consumption)
     {
         return $user->hasPermissionTo('View Building')
             && ($user->id == $consumption->building->manager_id || $user->building_id == $consumption->building_id);    }
@@ -47,11 +47,11 @@ class DieselFuelConsumptionPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param \App\User                  $user
-     * @param \App\DieselFuelConsumption $consumption
+     * @param \App\User                          $user
+     * @param \App\BuildingDieselFuelConsumption $consumption
      * @return mixed
      */
-    public function update(User $user, DieselFuelConsumption $consumption)
+    public function update(User $user, BuildingDieselFuelConsumption $consumption)
     {
         return $user->hasPermissionTo('View Building')
             && $user->hasRole('Building Manager')
@@ -61,11 +61,11 @@ class DieselFuelConsumptionPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param \App\User                  $user
-     * @param \App\DieselFuelConsumption $consumption
+     * @param \App\User                          $user
+     * @param \App\BuildingDieselFuelConsumption $consumption
      * @return mixed
      */
-    public function delete(User $user, DieselFuelConsumption $consumption)
+    public function delete(User $user, BuildingDieselFuelConsumption $consumption)
     {
         return $user->hasPermissionTo('View Building')
             && $user->hasRole('Building Manager')
@@ -75,11 +75,11 @@ class DieselFuelConsumptionPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param \App\User                  $user
-     * @param \App\DieselFuelConsumption $consumption
+     * @param \App\User                          $user
+     * @param \App\BuildingDieselFuelConsumption $consumption
      * @return mixed
      */
-    public function restore(User $user, DieselFuelConsumption $consumption)
+    public function restore(User $user, BuildingDieselFuelConsumption $consumption)
     {
         return $user->hasPermissionTo('View Building')
             && $user->hasRole('Building Manager')
@@ -89,11 +89,11 @@ class DieselFuelConsumptionPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param \App\User                  $user
-     * @param \App\DieselFuelConsumption $consumption
+     * @param \App\User                          $user
+     * @param \App\BuildingDieselFuelConsumption $consumption
      * @return mixed
      */
-    public function forceDelete(User $user, DieselFuelConsumption $consumption)
+    public function forceDelete(User $user, BuildingDieselFuelConsumption $consumption)
     {
         return $user->hasPermissionTo('View Building')
             && $user->hasRole('Building Manager')

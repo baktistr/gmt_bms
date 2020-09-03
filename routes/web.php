@@ -2,7 +2,7 @@
 
 use App\BuildingEquipmentHistory;
 use App\BuildingDailyElectricityConsumption;
-use App\DieselFuelConsumption;
+use App\BuildingDieselFuelConsumption;
 use App\BuildingElectricityConsumption;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;

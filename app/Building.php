@@ -72,7 +72,7 @@ class Building extends Model implements HasMedia
      */
     public function dieselFuelConsumptions(): HasMany
     {
-        return $this->hasMany(DieselFuelConsumption::class, 'building_id');
+        return $this->hasMany(BuildingDieselFuelConsumption::class, 'building_id');
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
 
 use App\Building;
-use App\DieselFuelConsumption;
+use App\BuildingDieselFuelConsumption;
 use Illuminate\Database\Seeder;
 
 class DieselFuelConsumptionSeeder extends Seeder
@@ -16,28 +16,28 @@ class DieselFuelConsumptionSeeder extends Seeder
         // Get the generated buildings from other seeder and seed the electricity consumptions.
         Building::get()
             ->each(function ($building) {
-                factory(DieselFuelConsumption::class)->create([
+                factory(BuildingDieselFuelConsumption::class)->create([
                     'building_id' => $building->id,
                     'type'        => 'incoming',
                     'date'        => now()->addDays(1),
                     'amount'      => 300,
                 ]);
 
-                factory(DieselFuelConsumption::class)->create([
+                factory(BuildingDieselFuelConsumption::class)->create([
                     'building_id' => $building->id,
                     'type'        => 'remain',
                     'date'        => now()->addDays(2),
                     'amount'      => 50,
                 ]);
 
-                factory(DieselFuelConsumption::class)->create([
+                factory(BuildingDieselFuelConsumption::class)->create([
                     'building_id' => $building->id,
                     'type'        => 'remain',
                     'date'        => now()->addDays(3),
                     'amount'      => 120,
                 ]);
 
-                factory(DieselFuelConsumption::class)->create([
+                factory(BuildingDieselFuelConsumption::class)->create([
                     'building_id' => $building->id,
                     'type'        => 'incoming',
                     'date'        => now()->addDays(4),

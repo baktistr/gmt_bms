@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
 //        $this->call(RegencySeeder::class);
 //        $this->call(DistrictSeeder::class);
 //        $this->call(BuildingSeeder::class);
-        $this->call(BuildingElectricityMeterSeeder::class);
-        $this->call(WaterConsumptionSeeder::class);
-        $this->call(DieselFuelConsumptionSeeder::class);
+//        $this->call(BuildingElectricityMeterSeeder::class);
+//        $this->call(WaterConsumptionSeeder::class);
+//        $this->call(DieselFuelConsumptionSeeder::class);
         $this->call(BuildingEquipmentCategorySeeder::class);
         $this->call(BuildingEquipmentSeeder::class);
         $this->call(BuildingEquipmentHistorySeeder::class);
