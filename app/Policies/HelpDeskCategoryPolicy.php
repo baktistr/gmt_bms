@@ -18,7 +18,7 @@ class HelpDeskCategoryPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('View All Buildings');
+        return $user->hasRole(['Building Manager', 'Help Desk', 'Viewer']);
     }
 
     /**
@@ -30,7 +30,7 @@ class HelpDeskCategoryPolicy
      */
     public function view(User $user, HelpDeskCategory $helpDeskCategory)
     {
-        //
+        return $user->hasRole(['Building Manager', 'Help Desk', 'Viewer']);
     }
 
     /**
@@ -41,7 +41,7 @@ class HelpDeskCategoryPolicy
      */
     public function create(User $user)
     {
-        //
+        return false;
     }
 
     /**
@@ -53,7 +53,7 @@ class HelpDeskCategoryPolicy
      */
     public function update(User $user, HelpDeskCategory $helpDeskCategory)
     {
-        //
+        return false;
     }
 
     /**
@@ -65,7 +65,7 @@ class HelpDeskCategoryPolicy
      */
     public function delete(User $user, HelpDeskCategory $helpDeskCategory)
     {
-        //
+        return false;
     }
 
     /**
@@ -77,7 +77,7 @@ class HelpDeskCategoryPolicy
      */
     public function restore(User $user, HelpDeskCategory $helpDeskCategory)
     {
-        //
+        return false;
     }
 
     /**
@@ -89,6 +89,6 @@ class HelpDeskCategoryPolicy
      */
     public function forceDelete(User $user, HelpDeskCategory $helpDeskCategory)
     {
-        //
+        return false;
     }
 }

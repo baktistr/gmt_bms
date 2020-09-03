@@ -2,30 +2,31 @@
 
 namespace App\Nova;
 
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Attendance extends Resource
+class BuildingEmployee extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Attendance::class;
+    public static $model = \App\BuildingEmployee::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -34,6 +35,7 @@ class Attendance extends Resource
      */
     public static $search = [
         'id',
+        'name'
     ];
 
     /**
@@ -62,7 +64,9 @@ class Attendance extends Resource
         $user = $request->user();
 
         if ($user->hasRole('Building Manager')) {
-            return $query->where('building_id', $user->building->id);
+            return $query->whereHas('building', function ($query) use ($user) {
+                $query->where('manager_id', $user->id);
+            });
         }
 
         return $query;
@@ -77,31 +81,39 @@ class Attendance extends Resource
     public function fields(Request $request)
     {
         return [
-            Date::make('Date')
-                ->withMeta([
-                    'value' => $this->date ?? now()->format('Y-m-d')
-                ])
+            ID::make()->sortable(),
+
+            Images::make('Photo')
+                ->conversionOnIndexView('small')
+                ->conversionOnDetailView('large'),
+
+            BelongsTo::make('Building', 'building', Building::class),
+
+            Text::make('Name', 'name')
+                ->rules('required', 'string'),
+
+            Textarea::make('Address', 'address')
+                ->rules('required', 'string')
+                ->alwaysShow(),
+
+            Text::make('Position', 'position')
+                ->rules('required', 'string')
+                ->hideFromIndex(),
+
+            Text::make('Birth Place')
+                ->rules('required', 'string')
+                ->hideFromIndex(),
+
+            Date::make('Birth Date')
                 ->rules(['required', 'date_format:Y-m-d'])
                 ->format('DD MMMM YYYY')
-                ->sortable(),
+                ->hideFromIndex(),
 
-            BelongsTo::make('Employee', 'employee', Employee::class)
-                ->rules('required')
-                ->sortable(),
+            Text::make('Attendance Today', function () {
+                return $this->attendance_today;
+            }),
 
-            BelongsTo::make('Building', 'building', Building::class)
-                ->rules('required')
-                ->sortable(),
-
-            Select::make('Status')
-                ->options(\App\Attendance::$statuses)
-                ->displayUsingLabels()
-                ->rules('required')
-                ->sortable(),
-
-            Textarea::make('Description', 'desc')
-                ->nullable()
-                ->alwaysShow(),
+            HasMany::make('Attendances', 'attendances', BuildingEmployeeAttendance::class),
         ];
     }
 
@@ -147,8 +159,7 @@ class Attendance extends Resource
     public function actions(Request $request)
     {
         return [
-            (new Actions\UpdateAttendanceStatus)
-                ->showOnTableRow()
+            new Actions\AddDailyAttendances,
         ];
     }
 }

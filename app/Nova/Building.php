@@ -165,10 +165,10 @@ class Building extends Resource
                     ->exceptOnForms(),
             ]),
 
-//            HasMany::make('Attendances', 'attendances', Attendance::class),
-//
-//            HasMany::make('Employees', 'employees', Employee::class),
-//
+            HasMany::make('Attendances', 'attendances', BuildingEmployeeAttendance::class),
+
+            HasMany::make('Employees', 'employees', BuildingEmployee::class),
+
             HasMany::make('Meteran Gedung', 'buildingElectricityMeters', BuildingElectricityMeter::class),
 
             HasMany::make('Pemakaian Listrik Harian', 'electricityConsumptions', BuildingElectricityConsumption::class),
@@ -176,13 +176,11 @@ class Building extends Resource
             HasMany::make('Pemakaian Air', 'waterConsumptions', BuildingWaterConsumption::class),
 
             HasMany::make('Diesel Fuel Consumptions', 'dieselFuelConsumptions', BuildingDieselFuelConsumption::class),
-//
-//            HasMany::make('Equipments', 'equipments', BuildingEquipment::class),
-//
+
+            HasMany::make('Equipments', 'equipments', BuildingEquipment::class),
+
 //            HasMany::make('Complaints', 'complaints', HelpDesk::class),
-//
-//            HasMany::make('Employees', 'employees', Employee::class),
-//
+
             HasMany::make('Help Desks', 'helpDesks', User::class),
 
             HasMany::make('Viewers', 'viewers', User::class),

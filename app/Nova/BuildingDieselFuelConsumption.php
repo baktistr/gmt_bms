@@ -98,7 +98,10 @@ class BuildingDieselFuelConsumption extends Resource
 
             BelongsTo::make('Building', 'building', Building::class)
                 ->rules(['required', 'exists:buildings,id'])
-                ->withoutTrashed(),
+                ->withoutTrashed()
+                ->canSee(function () use ($request) {
+                    return $request->user()->hasRole('Super Admin');
+                }),
 
             Select::make('Type')
                 ->options(\App\BuildingDieselFuelConsumption::$type)

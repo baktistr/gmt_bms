@@ -2,7 +2,7 @@
 
 namespace App\Nova\Actions;
 
-use App\Attendance;
+use App\BuildingEmployeeAttendance;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
@@ -40,7 +40,7 @@ class UpdateAttendanceStatus extends Action
     {
         return [
             Select::make('Status')
-                ->options(Attendance::$statuses)
+                ->options(BuildingEmployeeAttendance::$statuses)
                 ->displayUsingLabels()
                 ->rules('required'),
         ];

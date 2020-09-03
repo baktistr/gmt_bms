@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Employee;
+use App\BuildingEmployee;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class EmployeePolicy
+class BuildingEmployeePolicy
 {
     use HandlesAuthorization;
 
@@ -24,11 +24,11 @@ class EmployeePolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Employee  $employee
+     * @param  \App\User             $user
+     * @param  \App\BuildingEmployee $employee
      * @return mixed
      */
-    public function view(User $user, Employee $employee)
+    public function view(User $user, BuildingEmployee $employee)
     {
         return $user->hasRole('Building Manager') && $employee->building->manager_id === $user->id;
     }
@@ -47,11 +47,11 @@ class EmployeePolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Employee  $employee
+     * @param  \App\User             $user
+     * @param  \App\BuildingEmployee $employee
      * @return mixed
      */
-    public function update(User $user, Employee $employee)
+    public function update(User $user, BuildingEmployee $employee)
     {
         return $user->hasRole('Building Manager') && $employee->building->manager_id === $user->id;
     }
@@ -59,11 +59,11 @@ class EmployeePolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Employee  $employee
+     * @param  \App\User             $user
+     * @param  \App\BuildingEmployee $employee
      * @return mixed
      */
-    public function delete(User $user, Employee $employee)
+    public function delete(User $user, BuildingEmployee $employee)
     {
         return $user->hasRole('Building Manager') && $employee->building->manager_id === $user->id;
     }
@@ -71,11 +71,11 @@ class EmployeePolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Employee  $employee
+     * @param  \App\User             $user
+     * @param  \App\BuildingEmployee $employee
      * @return mixed
      */
-    public function restore(User $user, Employee $employee)
+    public function restore(User $user, BuildingEmployee $employee)
     {
         return $user->hasRole('Building Manager') && $employee->building->manager_id === $user->id;
     }
@@ -83,11 +83,11 @@ class EmployeePolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Employee  $employee
+     * @param  \App\User             $user
+     * @param  \App\BuildingEmployee $employee
      * @return mixed
      */
-    public function forceDelete(User $user, Employee $employee)
+    public function forceDelete(User $user, BuildingEmployee $employee)
     {
         return $user->hasRole('Building Manager') && $employee->building->manager_id === $user->id;
     }

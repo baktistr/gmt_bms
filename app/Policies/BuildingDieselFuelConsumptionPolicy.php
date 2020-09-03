@@ -6,7 +6,7 @@ use App\BuildingDieselFuelConsumption;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class DieselFuelConsumptionPolicy
+class BuildingDieselFuelConsumptionPolicy
 {
     use HandlesAuthorization;
 
@@ -18,7 +18,7 @@ class DieselFuelConsumptionPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('View All Buildings');
+        return $user->hasRole(['Building Manager', 'Help Desk', 'Viewer']);
     }
 
     /**
@@ -30,7 +30,7 @@ class DieselFuelConsumptionPolicy
      */
     public function view(User $user, BuildingDieselFuelConsumption $consumption)
     {
-        return $user->hasPermissionTo('View Building')
+        return $user->hasRole(['Building Manager', 'Help Desk', 'Viewer'])
             && ($user->id == $consumption->building->manager_id || $user->building_id == $consumption->building_id);    }
 
     /**
@@ -41,7 +41,7 @@ class DieselFuelConsumptionPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('Create Building') || $user->hasRole('Building Manager');
+        return $user->hasRole('Building Manager');
     }
 
     /**
@@ -53,8 +53,7 @@ class DieselFuelConsumptionPolicy
      */
     public function update(User $user, BuildingDieselFuelConsumption $consumption)
     {
-        return $user->hasPermissionTo('View Building')
-            && $user->hasRole('Building Manager')
+        return $user->hasRole('Building Manager')
             && $user->id == $consumption->building->manager_id;
     }
 
@@ -67,8 +66,7 @@ class DieselFuelConsumptionPolicy
      */
     public function delete(User $user, BuildingDieselFuelConsumption $consumption)
     {
-        return $user->hasPermissionTo('View Building')
-            && $user->hasRole('Building Manager')
+        return $user->hasRole('Building Manager')
             && $user->id == $consumption->building->manager_id;
     }
 
@@ -81,8 +79,7 @@ class DieselFuelConsumptionPolicy
      */
     public function restore(User $user, BuildingDieselFuelConsumption $consumption)
     {
-        return $user->hasPermissionTo('View Building')
-            && $user->hasRole('Building Manager')
+        return $user->hasRole('Building Manager')
             && $user->id == $consumption->building->manager_id;
     }
 
@@ -95,8 +92,7 @@ class DieselFuelConsumptionPolicy
      */
     public function forceDelete(User $user, BuildingDieselFuelConsumption $consumption)
     {
-        return $user->hasPermissionTo('View Building')
-            && $user->hasRole('Building Manager')
+        return $user->hasRole('Building Manager')
             && $user->id == $consumption->building->manager_id;
     }
 }

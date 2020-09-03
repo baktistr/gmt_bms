@@ -2,7 +2,7 @@
 
 namespace App\Nova\Metrics;
 
-use App\Employee;
+use App\BuildingEmployee;
 use Illuminate\Support\Facades\Log;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
@@ -17,7 +17,7 @@ class TotalEmployees extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->result(Employee::where('building_id', $request->user()->building->id)->count())->allowZeroResult();
+        return $this->result(BuildingEmployee::where('building_id', $request->user()->building->id)->count())->allowZeroResult();
     }
 
     /**

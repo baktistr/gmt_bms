@@ -101,7 +101,7 @@ class Building extends Model implements HasMedia
      */
     public function employees(): HasMany
     {
-        return $this->hasMany(Employee::class, 'building_id');
+        return $this->hasMany(BuildingEmployee::class, 'building_id');
     }
 
     /**
@@ -157,7 +157,7 @@ class Building extends Model implements HasMedia
      */
     public function attendances(): HasMany
     {
-        return $this->hasMany(Attendance::class, 'building_id');
+        return $this->hasMany(BuildingEmployeeAttendance::class, 'building_id');
     }
 
     /**

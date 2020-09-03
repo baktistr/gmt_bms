@@ -6,7 +6,7 @@ use App\BuildingWaterConsumption;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class WaterConsumptionPolicy
+class BuildingWaterConsumptionPolicy
 {
     use HandlesAuthorization;
 
@@ -18,7 +18,7 @@ class WaterConsumptionPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('View All Buildings');
+        return $user->hasRole(['Building Manager', 'Help Desk', 'Viewer']);
     }
 
     /**
@@ -30,7 +30,7 @@ class WaterConsumptionPolicy
      */
     public function view(User $user, BuildingWaterConsumption $consumption)
     {
-        return $user->hasPermissionTo('View Building')
+        return $user->hasRole(['Building Manager', 'Help Desk', 'Viewer'])
             && ($user->id == $consumption->building->manager_id || $user->building_id == $consumption->building_id);
     }
 
@@ -42,7 +42,7 @@ class WaterConsumptionPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('Create Building') || $user->hasRole('Building Manager');
+        return $user->hasRole('Building Manager');
     }
 
     /**
@@ -54,8 +54,7 @@ class WaterConsumptionPolicy
      */
     public function update(User $user, BuildingWaterConsumption $consumption)
     {
-        return $user->hasPermissionTo('View Building')
-            && $user->hasRole('Building Manager')
+        return $user->hasRole('Building Manager')
             && $user->id == $consumption->building->manager_id;
     }
 
@@ -68,8 +67,7 @@ class WaterConsumptionPolicy
      */
     public function delete(User $user, BuildingWaterConsumption $consumption)
     {
-        return $user->hasPermissionTo('View Building')
-            && $user->hasRole('Building Manager')
+        return $user->hasRole('Building Manager')
             && $user->id == $consumption->building->manager_id;
     }
 
@@ -82,8 +80,7 @@ class WaterConsumptionPolicy
      */
     public function restore(User $user, BuildingWaterConsumption $consumption)
     {
-        return $user->hasPermissionTo('View Building')
-            && $user->hasRole('Building Manager')
+        return $user->hasRole('Building Manager')
             && $user->id == $consumption->building->manager_id;
     }
 
@@ -96,8 +93,7 @@ class WaterConsumptionPolicy
      */
     public function forceDelete(User $user, BuildingWaterConsumption $consumption)
     {
-        return $user->hasPermissionTo('View Building')
-            && $user->hasRole('Building Manager')
+        return $user->hasRole('Building Manager')
             && $user->id == $consumption->building->manager_id;
     }
 }

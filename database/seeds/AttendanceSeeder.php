@@ -1,6 +1,6 @@
 <?php
 
-use App\Attendance;
+use App\BuildingEmployeeAttendance;
 use App\Building;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
@@ -19,11 +19,11 @@ class AttendanceSeeder extends Seeder
             ->each(function ($building) {
                 for ($day = 1; $day <= 20; $day++) {
                     $building->employees->each(function ($employee) use ($building, $day) {
-                        factory(Attendance::class)->create([
+                        factory(BuildingEmployeeAttendance::class)->create([
                             'building_id' => $building->id,
                             'employee_id' => $employee->id,
                             'date'        => now()->subDays($day),
-                            'status'      => Arr::random(array_keys(Attendance::$statuses)),
+                            'status'      => Arr::random(array_keys(BuildingEmployeeAttendance::$statuses)),
                         ]);
                     });
                 }

@@ -111,7 +111,10 @@ class BuildingWaterConsumption extends Resource
             BelongsTo::make('Building', 'building', Building::class)
                 ->rules(['required', 'exists:buildings,id'])
                 ->withoutTrashed()
-                ->sortable(),
+                ->sortable()
+                ->canSee(function () use ($request) {
+                    return $request->user()->hasRole('Super Admin');
+                }),
 
             FormattedNumber::make('Usage (m3)', 'usage')
                 ->rules(['required', 'numeric'])

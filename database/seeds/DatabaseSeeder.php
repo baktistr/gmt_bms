@@ -1,6 +1,6 @@
 <?php
 
-use App\Attendance;
+use App\BuildingEmployeeAttendance;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
