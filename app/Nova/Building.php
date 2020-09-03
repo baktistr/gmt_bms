@@ -309,7 +309,7 @@ class Building extends Resource
                             // get the data label and data value to display	
                             // convert the data value to local string so it uses a comma seperated number	
                             var dataLabel = data.labels[tooltipItem.index];	
-                            var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString() + ' ltr';	
+                            var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString() + ' liter';	
                             	
                             if (Chart.helpers.isArray(dataLabel)) {	
                                 // show value on first line of multiline label	
