@@ -280,7 +280,7 @@ class Building extends Resource
         }
 
         return (new LineChart())
-            ->title('Rekap Pengunaan Solar')
+            ->title('Pengunaan solar 12 bulan terakhir')
             ->animations([
                 'enabled' => true,
                 'easing'  => 'easeinout',
