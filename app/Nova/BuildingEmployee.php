@@ -2,37 +2,31 @@
 
 namespace App\Nova;
 
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Markdown;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class HelpDesk extends Resource
+class BuildingEmployee extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $group = 'Help Desk';
-
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\HelpDesk::class;
+    public static $model = \App\BuildingEmployee::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'title';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -41,10 +35,22 @@ class HelpDesk extends Resource
      */
     public static $search = [
         'id',
-        'title',
-        'status',
-        'message',
+        'name'
     ];
+
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $group = 'Admin';
+
+    /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = false;
 
     /**
      * Build an "index" query for the given resource.
@@ -57,8 +63,10 @@ class HelpDesk extends Resource
     {
         $user = $request->user();
 
-        if ($user->hasRole('Help Desk')) {
-            $query->where('help_desk_id', $user->id);
+        if ($user->hasRole('Building Manager')) {
+            return $query->whereHas('building', function ($query) use ($user) {
+                $query->where('manager_id', $user->id);
+            });
         }
 
         return $query;
@@ -73,36 +81,39 @@ class HelpDesk extends Resource
     public function fields(Request $request)
     {
         return [
-            Text::make('Priority' , 'priority')
-                ->exceptOnForms(),
-          
-            Select::make('Priority')
-                ->options(\App\HelpDesk::$priority)
-                ->rules('required')
-                ->sortable()
-                ->displayUsingLabels(),
+            ID::make()->sortable(),
 
-            BelongsTo::make('Category', 'category', HelpDeskCategory::class)
-                ->rules('required')
-                ->withoutTrashed(),
+            Images::make('Photo')
+                ->conversionOnIndexView('small')
+                ->conversionOnDetailView('large'),
 
-            BelongsTo::make('Building', 'building', Building::class)
-                ->rules('required')
-                ->withoutTrashed(),
+            BelongsTo::make('Building', 'building', Building::class),
 
-            BelongsTo::make('Help Desk', 'helpDesk', User::class)
-                ->withoutTrashed(),
-
-            Text::make('Title', 'title')
+            Text::make('Name', 'name')
                 ->rules('required', 'string'),
 
-            Markdown::make('Message', 'message')
+            Textarea::make('Address', 'address')
                 ->rules('required', 'string')
-                ->onlyOnForms()->showOnDetail(),
+                ->alwaysShow(),
 
-            Select::make('Status')
-                ->options(\App\HelpDesk::$statuses)
-                ->displayUsingLabels(),
+            Text::make('Position', 'position')
+                ->rules('required', 'string')
+                ->hideFromIndex(),
+
+            Text::make('Birth Place')
+                ->rules('required', 'string')
+                ->hideFromIndex(),
+
+            Date::make('Birth Date')
+                ->rules(['required', 'date_format:Y-m-d'])
+                ->format('DD MMMM YYYY')
+                ->hideFromIndex(),
+
+            Text::make('Attendance Today', function () {
+                return $this->attendance_today;
+            }),
+
+            HasMany::make('Attendances', 'attendances', BuildingEmployeeAttendance::class),
         ];
     }
 
@@ -147,16 +158,8 @@ class HelpDesk extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
-    }
-
-    /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
-    {
-        return 'Scope Detail';
+        return [
+            new Actions\AddDailyAttendances,
+        ];
     }
 }

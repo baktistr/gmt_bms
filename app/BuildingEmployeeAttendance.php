@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Nova\Actions\Actionable;
 
-class Attendance extends Model
+class BuildingEmployeeAttendance extends Model
 {
     use SoftDeletes, Actionable;
 
@@ -70,6 +70,6 @@ class Attendance extends Model
      */
     public function employee(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'employee_id');
+        return $this->belongsTo(BuildingEmployee::class, 'employee_id');
     }
 }

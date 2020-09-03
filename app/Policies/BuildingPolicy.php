@@ -18,7 +18,7 @@ class BuildingPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('View All Buildings');
+        return $user->hasRole(['Building Manager', 'Help Desk', 'Viewer']);
     }
 
     /**
@@ -30,7 +30,7 @@ class BuildingPolicy
      */
     public function view(User $user, Building $building)
     {
-        return $user->hasPermissionTo('View Building')
+        return $user->hasRole(['Building Manager', 'Help Desk', 'Viewer'])
             && ($user->id == $building->manager_id || $user->building_id == $building->id);
     }
 
@@ -42,7 +42,7 @@ class BuildingPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('Create Building');
+        return false;
     }
 
     /**
@@ -54,7 +54,7 @@ class BuildingPolicy
      */
     public function update(User $user, Building $building)
     {
-        return $user->hasPermissionTo('Update Building') && $user->id == $building->manager_id;
+        return false;
     }
 
     /**
@@ -66,7 +66,7 @@ class BuildingPolicy
      */
     public function delete(User $user, Building $building)
     {
-        return $user->hasPermissionTo('Delete Building');
+        return false;
     }
 
     /**
@@ -78,7 +78,7 @@ class BuildingPolicy
      */
     public function restore(User $user, Building $building)
     {
-        return $user->hasPermissionTo('Restore Building');
+        return $user->hasRole('Super Admin');
     }
 
     /**
@@ -90,6 +90,6 @@ class BuildingPolicy
      */
     public function forceDelete(User $user, Building $building)
     {
-        return $user->hasPermissionTo('Force Delete Building');
+        return $user->hasRole('Super Admin');
     }
 }

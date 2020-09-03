@@ -1,7 +1,7 @@
 <?php
 
-use App\HelpDesk;
-use App\HelpDeskCategory;
+use App\BuildingHelpDesk;
+use App\BuildingHelpDeskCategory;
 use Illuminate\Database\Seeder;
 
 class HelpDeskCategorySeeder extends Seeder
@@ -23,7 +23,7 @@ class HelpDeskCategorySeeder extends Seeder
         ]);
 
         $categories->each(function ($category) {
-            factory(HelpDeskCategory::class)->create([
+            factory(BuildingHelpDeskCategory::class)->create([
                 'name' => $category['name'],
             ]);
         });

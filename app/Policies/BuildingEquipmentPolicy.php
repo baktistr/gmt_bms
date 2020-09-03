@@ -18,7 +18,7 @@ class BuildingEquipmentPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('View All Buildings');
+        return $user->hasRole(['Building Manager', 'Help Desk', 'Viewer']);
     }
 
     /**
@@ -30,7 +30,7 @@ class BuildingEquipmentPolicy
      */
     public function view(User $user, BuildingEquipment $equipment)
     {
-        return $user->hasPermissionTo('View Building')
+        return $user->hasRole('Building Manager')
             && ($user->id == $equipment->building->manager_id || $user->building_id == $equipment->building->id);
     }
 
@@ -54,7 +54,7 @@ class BuildingEquipmentPolicy
      */
     public function update(User $user, BuildingEquipment $equipment)
     {
-        return $user->hasPermissionTo('Update Building') && $user->id == $equipment->building->manager_id;
+        return $user->hasRole('Building Manager') && $user->id == $equipment->building->manager_id;
     }
 
     /**

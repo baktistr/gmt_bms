@@ -3,6 +3,8 @@
 namespace App\Nova;
 
 use App\Nova\Metrics\TotalBuildings;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
+use GeneaLabs\NovaMapMarkerField\MapMarker;
 use Coroowicaksono\ChartJsIntegration\LineChart;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
@@ -10,8 +12,9 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Orlyapps\NovaBelongsToDepend\NovaBelongsToDepend;
+use Laravel\Nova\Panel;
 use Outhebox\NovaHiddenField\HiddenField;
+use Rimu\FormattedNumber\FormattedNumber;
 
 class Building extends Resource
 {
@@ -45,6 +48,9 @@ class Building extends Resource
     public static $search = [
         'id',
         'name',
+        'building_code',
+        'allotment',
+        'phone_number',
     ];
 
     /**
@@ -76,6 +82,7 @@ class Building extends Resource
      */
     public static $with = [
         'manager',
+        'area',
     ];
 
     /**
@@ -95,56 +102,84 @@ class Building extends Resource
                 ->nullable()
                 ->withoutTrashed(),
 
-            NovaBelongsToDepend::make('Province')
-                ->options(\App\Province::all())
+            Text::make('Kode Gedung', function () {
+                return "{$this->area->code}-{$this->building_code}";
+            }),
+
+            Textarea::make('Deskripsi', 'description')
+                ->rules('required')
+                ->alwaysShow(),
+
+            Textarea::make('Peruntukan', 'allotment')
+                ->rules('required')
+                ->alwaysShow(),
+
+            Text::make('Telepon', 'phone_number')
                 ->hideFromIndex(),
 
-            NovaBelongsToDepend::make('Regency')
-                ->optionsResolve(function ($province) {
-                    return $province->regencies()->get(['id', 'name']);
-                })
-                ->dependsOn('Province')
+            Images::make('Gambar', 'image')
+                ->rules(['required'])
                 ->hideFromIndex(),
 
-            NovaBelongsToDepend::make('District')
-                ->optionsResolve(function ($regency) {
-                    return $regency->districts()->get(['id', 'name']);
-                })
-                ->dependsOn('Regency')
-                ->hideFromIndex(),
+            new Panel('Detail Lokasi', [
+                Text::make('TREG', function () {
+                    return $this->area->regional->name;
+                }),
 
-            Text::make('Name', 'name')
-                ->rules('required')
-                ->sortable(),
+                Text::make('Witel', function () {
+                    return $this->area->witel->name;
+                }),
 
-            Text::make('Phone Number', 'phone_number')
-                ->rules('required')
-                ->sortable(),
+                Text::make('Provinsi', function () {
+                    return $this->area->provinsi->name ?? '—';
+                }),
 
-            Textarea::make('Address Detail')
-                ->rules('required')
-                ->onlyOnForms(),
+                Text::make('Kabupaten/Kota', function () {
+                    return $this->area->kabupaten->name ?? '—';
+                }),
 
-            Text::make('Address Detail')
-                ->exceptOnForms(),
+                Text::make('Kecamatan', function () {
+                    return $this->area->kecamatan->name ?? '—';
+                }),
 
-            HasMany::make('Attendances', 'attendances', Attendance::class),
+                Text::make('Alamat', function () {
+                    return $this->area->address_detail ?? '—';
+                }),
 
-            HasMany::make('Employees', 'employees', Employee::class),
+                Text::make('Kode Pos', function () {
+                    return $this->area->postal_code ?? '-';
+                }),
+
+                FormattedNumber::make('Luas Tanah Total', 'surface_area')
+                    ->help('satuan dalam m<sup>2</sup>')
+                    ->onlyOnForms(),
+
+                Text::make('Luas Tanah Total', function () {
+                    return number_format($this->surface_area) . ' m<sup>2</sup>';
+                })->asHtml(),
+
+                MapMarker::make('Lokasi')
+                    ->latitude('area.latitude')
+                    ->longitude('area.longitude')
+                    ->hideFromIndex()
+                    ->exceptOnForms(),
+            ]),
+
+            HasMany::make('Attendances', 'attendances', BuildingEmployeeAttendance::class),
+
+            HasMany::make('Employees', 'employees', BuildingEmployee::class),
 
             HasMany::make('Meteran Gedung', 'buildingElectricityMeters', BuildingElectricityMeter::class),
 
-            HasMany::make('Pemakaian Listrik Harian', 'electricityConsumptions', ElectricityConsumption::class),
+            HasMany::make('Pemakaian Listrik Harian', 'electricityConsumptions', BuildingElectricityConsumption::class),
 
-            HasMany::make('Water Consumptions', 'waterConsumptions', WaterConsumption::class),
+            HasMany::make('Pemakaian Air', 'waterConsumptions', BuildingWaterConsumption::class),
 
-            HasMany::make('Diesel Fuel Consumptions', 'dieselFuelConsumptions', DieselFuelConsumption::class),
+            HasMany::make('Diesel Fuel Consumptions', 'dieselFuelConsumptions', BuildingDieselFuelConsumption::class),
 
             HasMany::make('Equipments', 'equipments', BuildingEquipment::class),
 
-            HasMany::make('Complaints', 'complaints', HelpDesk::class),
-
-            HasMany::make('Employees', 'employees', Employee::class),
+//            HasMany::make('Complaints', 'complaints', HelpDesk::class),
 
             HasMany::make('Help Desks', 'helpDesks', User::class),
 
@@ -165,12 +200,11 @@ class Building extends Resource
                 return $request->user()->hasRole('Super Admin');
             }),
 
-            $this->monthlyElectricityChart($request) ?? [],
+            $this->monthlyElectricityChart($request),
 
-            $this->monthlyChart($request) ?? [],
+            $this->monthlyDieselFuelChart($request),
 
-            $this->monthlyWaterConsumptions($request) ?? [],
-
+            $this->monthlyWaterConsumptions($request),
         ];
     }
 
@@ -209,11 +243,11 @@ class Building extends Resource
 
     /**
      * Add Monthly Chart
-     * 
-     * @author hanan
+     *
+     * @param \Illuminate\Http\Request $request
      * @return LineChart
      */
-    protected function monthlyChart(Request $request)
+    protected function monthlyDieselFuelChart(Request $request)
     {
         // Collect the last 12 months.
         $months = collect([]);
@@ -224,14 +258,14 @@ class Building extends Resource
 
         for ($month = 11; $month >= 0; $month--) {
             $months->push(now()->subMonths($month)->format('M Y'));
-            $income = \App\DieselFuelConsumption::query()
+            $income = \App\BuildingDieselFuelConsumption::query()
                 ->where('building_id', $request->get('resourceId'))
                 ->where('type', 'incoming')
                 ->whereYear('date', now()->subMonths($month)->format('Y'))
                 ->whereMonth('date', now()->subMonths($month)->format('m'))
                 ->sum('amount');
 
-            $remain = \App\DieselFuelConsumption::query()
+            $remain = \App\BuildingDieselFuelConsumption::query()
                 ->where('type', 'remain')
                 ->where('building_id', $request->get('resourceId'))
                 ->whereYear('date', now()->subMonths($month)->format('Y'))
@@ -244,7 +278,7 @@ class Building extends Resource
         }
 
         return (new LineChart())
-            ->title('Rekap Pengunaan Solar')
+            ->title('Pengunaan solar 12 bulan terakhir')
             ->animations([
                 'enabled' => true,
                 'easing'  => 'easeinout',
@@ -273,7 +307,7 @@ class Building extends Resource
                             // get the data label and data value to display	
                             // convert the data value to local string so it uses a comma seperated number	
                             var dataLabel = data.labels[tooltipItem.index];	
-                            var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString() + ' ltr';	
+                            var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString() + ' liter';	
                             	
                             if (Chart.helpers.isArray(dataLabel)) {	
                                 // show value on first line of multiline label	
@@ -296,10 +330,9 @@ class Building extends Resource
 
     /**
      * Chart Listrik
-     * 
-     * @param Request
+     *
+     * @param \Illuminate\Http\Request $request
      * @return LineChart
-     * @author hanan
      */
     protected function monthlyElectricityChart(Request $request)
     {
@@ -309,11 +342,13 @@ class Building extends Resource
         $seriesData = collect([]);
         for ($month = 11; $month >= 0; $month--) {
             $months->push(now()->subMonths($month)->format('M Y'));
-            $listrik = \App\ElectricityConsumption::query()
+            $listrik = \App\BuildingElectricityConsumption::query()
                 ->where('building_id', $request->get('resourceId'))
                 ->whereMonth('date', now()->subMonths($month)->format('m'))
                 ->get();
-            $totalCost = $listrik->map(fn ($cost) => $cost->totalCost());
+            $totalCost = $listrik->map(function ($cost) {
+                return $cost->totalCost();
+            });
             $seriesData->push($totalCost);
         }
 
@@ -324,7 +359,7 @@ class Building extends Resource
         }
 
         return (new LineChart())
-            ->title('Rekap Penggunaan Listrik')
+            ->title('Penggunaan listrik 12 bulan terakhir')
             ->animations([
                 'enabled' => true,
                 'easing'  => 'easeinout',
@@ -372,7 +407,6 @@ class Building extends Resource
      * Water Consumption Chart
      * 
      * @param $request
-     * @author hanan
      * @return LineChart
      */
     protected function monthlyWaterConsumptions(Request $request)
@@ -383,7 +417,7 @@ class Building extends Resource
         for ($month = 11; $month >= 0; $month--) {
             $months->add(now()->subMonths($month)->format('M Y'));
 
-            $waterConsumption = \App\WaterConsumption::query()
+            $waterConsumption = \App\BuildingWaterConsumption::query()
                 ->where('building_id', $request->get('resourceId'))
                 ->whereMonth('date', now()->subMonths($month)->format('m'))
                 ->get();
@@ -392,7 +426,7 @@ class Building extends Resource
         }
 
         return (new LineChart())
-            ->title('Rekap Pemakaian Air')
+            ->title('Penggunaan air 12 bulan terakhir')
             ->animations([
                 'enabled' => true,
                 'easing'  => 'easeinout',

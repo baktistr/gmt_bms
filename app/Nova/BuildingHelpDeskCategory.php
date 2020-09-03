@@ -8,7 +8,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class HelpDeskCategory extends Resource
+class BuildingHelpDeskCategory extends Resource
 {
     /**
      * The model the resource corresponds to.
@@ -22,7 +22,7 @@ class HelpDeskCategory extends Resource
      *
      * @var string
      */
-    public static $model = \App\HelpDeskCategory::class;
+    public static $model = \App\BuildingHelpDeskCategory::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -55,7 +55,7 @@ class HelpDeskCategory extends Resource
             Text::make('Name', 'name')
                 ->rules('required', 'string'),
                 
-            HasMany::make('Helpdesk', 'helpdesks', HelpDesk::class)
+            HasMany::make('Helpdesk', 'helpdesks', BuildingHelpDesk::class)
         ];
     }
 
@@ -101,5 +101,15 @@ class HelpDeskCategory extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Categories';
     }
 }

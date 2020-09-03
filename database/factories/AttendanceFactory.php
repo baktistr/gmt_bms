@@ -2,21 +2,21 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Attendance;
+use App\BuildingEmployeeAttendance;
 use App\Building;
-use App\Employee;
+use App\BuildingEmployee;
 use Faker\Generator as Faker;
 
-$factory->define(Attendance::class, function (Faker $faker) {
+$factory->define(BuildingEmployeeAttendance::class, function (Faker $faker) {
     return [
         'building_id' => function () {
             return factory(Building::class)->create()->id;
         },
         'employee_id' => function () {
-            return factory(Employee::class)->create()->id;
+            return factory(BuildingEmployee::class)->create()->id;
         },
         'date'        => now()->subDays(rand(1, 30)),
-        'status'      => $faker->randomElement(array_keys(Attendance::$statuses)),
+        'status'      => $faker->randomElement(array_keys(BuildingEmployeeAttendance::$statuses)),
         'desc'        => $faker->optional(0.2)->sentence,
     ];
 });

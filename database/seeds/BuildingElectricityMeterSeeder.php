@@ -2,8 +2,8 @@
 
 use App\Building;
 use App\BuildingElectricityMeter;
-use App\DailyElectricityConsumption;
-use App\ElectricityConsumption;
+use App\BuildingDailyElectricityConsumption;
+use App\BuildingElectricityConsumption;
 use Illuminate\Database\Seeder;
 
 class BuildingElectricityMeterSeeder extends Seeder
@@ -24,13 +24,13 @@ class BuildingElectricityMeterSeeder extends Seeder
             $electricMeter = 100;
 
             for ($i = 40; $i >= 1; $i--) {
-                $electricityConsumption = factory(ElectricityConsumption::class)->create([
+                $electricityConsumption = factory(BuildingElectricityConsumption::class)->create([
                     'building_id' => $building->id,
                     'date'        => now()->subDays($i),
                 ]);
 
                 $buildingMeters->each(function ($buildingMeter) use ($electricityConsumption, $electricMeter) {
-                    factory(DailyElectricityConsumption::class)->create([
+                    factory(BuildingDailyElectricityConsumption::class)->create([
                         'electricity_consumption_id' => $electricityConsumption->id,
                         'electricity_meter_id'       => $buildingMeter->id,
                         'electric_meter'             => $electricMeter += $usage = rand(100, 500),

@@ -2,7 +2,7 @@
 
 namespace App\Nova\Metrics;
 
-use App\ElectricityConsumption;
+use App\BuildingElectricityConsumption;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 
@@ -18,7 +18,7 @@ class TotalElectricityConsumption extends Value
     {
         $totalConsumption = collect([]);
 
-        ElectricityConsumption::query()
+        BuildingElectricityConsumption::query()
             ->where('building_id', $request->user()->building->id)
             ->get()
             ->each(function ($consumption) use ($totalConsumption) {

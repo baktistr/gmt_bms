@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Nova\Actions\Actionable;
 
-class HelpDesk extends Model
+class BuildingHelpDesk extends Model
 {
     use Actionable, SoftDeletes;
 
@@ -53,7 +53,7 @@ class HelpDesk extends Model
      */
     public function category(): BelongsTo
     {
-        return $this->belongsTo(HelpDeskCategory::class, 'help_desk_category_id');
+        return $this->belongsTo(BuildingHelpDeskCategory::class, 'help_desk_category_id');
     }
 
     /**

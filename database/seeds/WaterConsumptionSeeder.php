@@ -1,7 +1,7 @@
 <?php
 
 use App\Building;
-use App\WaterConsumption;
+use App\BuildingWaterConsumption;
 use Illuminate\Database\Seeder;
 
 class WaterConsumptionSeeder extends Seeder
@@ -19,7 +19,7 @@ class WaterConsumptionSeeder extends Seeder
                 $usage = 100;
 
                 for ($i = 1; $i <= rand(10, 30); $i++) {
-                    factory(WaterConsumption::class)->create([
+                    factory(BuildingWaterConsumption::class)->create([
                         'building_id' => $building->id,
                         'date'        => now()->addDays($i),
                         'usage'       => $usage += 100,

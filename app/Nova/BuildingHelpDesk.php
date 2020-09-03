@@ -2,31 +2,37 @@
 
 namespace App\Nova;
 
-use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Markdown;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Employee extends Resource
+class BuildingHelpDesk extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Employee::class;
+    public static $group = 'Help Desk';
+
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $model = \App\BuildingHelpDesk::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'title';
 
     /**
      * The columns that should be searched.
@@ -35,22 +41,10 @@ class Employee extends Resource
      */
     public static $search = [
         'id',
-        'name'
+        'title',
+        'status',
+        'message',
     ];
-
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $group = 'Admin';
-
-    /**
-     * Indicates if the resource should be displayed in the sidebar.
-     *
-     * @var bool
-     */
-    public static $displayInNavigation = false;
 
     /**
      * Build an "index" query for the given resource.
@@ -63,10 +57,8 @@ class Employee extends Resource
     {
         $user = $request->user();
 
-        if ($user->hasRole('Building Manager')) {
-            return $query->whereHas('building', function ($query) use ($user) {
-                $query->where('manager_id', $user->id);
-            });
+        if ($user->hasRole('Help Desk')) {
+            $query->where('help_desk_id', $user->id);
         }
 
         return $query;
@@ -81,40 +73,36 @@ class Employee extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
+            Text::make('Priority' , 'priority')
+                ->exceptOnForms(),
+          
+            Select::make('Priority')
+                ->options(\App\BuildingHelpDesk::$priority)
+                ->rules('required')
+                ->sortable()
+                ->displayUsingLabels(),
 
-            Images::make('Avatar')
-                ->conversionOnIndexView('small')
-                ->conversionOnDetailView('large')
-                ->rules('required'),
+            BelongsTo::make('Category', 'category', BuildingHelpDeskCategory::class)
+                ->rules('required')
+                ->withoutTrashed(),
 
-            BelongsTo::make('Building', 'building', Building::class),
+            BelongsTo::make('Building', 'building', Building::class)
+                ->rules('required')
+                ->withoutTrashed(),
 
-            Text::make('Name', 'name')
+            BelongsTo::make('Help Desk', 'helpDesk', User::class)
+                ->withoutTrashed(),
+
+            Text::make('Title', 'title')
                 ->rules('required', 'string'),
 
-            Textarea::make('Address', 'address')
+            Markdown::make('Message', 'message')
                 ->rules('required', 'string')
-                ->alwaysShow(),
+                ->onlyOnForms()->showOnDetail(),
 
-            Text::make('Position', 'position')
-                ->rules('required', 'string')
-                ->hideFromIndex(),
-
-            Text::make('Birth Place')
-                ->rules('required', 'string')
-                ->hideFromIndex(),
-
-            Date::make('Birth Date')
-                ->rules(['required', 'date_format:Y-m-d'])
-                ->format('DD MMMM YYYY')
-                ->hideFromIndex(),
-
-            Text::make('Attendance Today', function () {
-                return $this->attendance_today;
-            }),
-
-            HasMany::make('Attendances', 'attendances', Attendance::class),
+            Select::make('Status')
+                ->options(\App\BuildingHelpDesk::$statuses)
+                ->displayUsingLabels(),
         ];
     }
 
@@ -159,8 +147,16 @@ class Employee extends Resource
      */
     public function actions(Request $request)
     {
-        return [
-            new Actions\AddDailyAttendances,
-        ];
+        return [];
+    }
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Scope Detail';
     }
 }

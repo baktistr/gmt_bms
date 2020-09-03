@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Nova\Actions\Actionable;
 
-class ElectricityConsumption extends Model
+class BuildingElectricityConsumption extends Model
 {
     use Actionable, SoftDeletes;
 
@@ -154,6 +154,6 @@ class ElectricityConsumption extends Model
      */
     public function dailyConsumptions(): HasMany
     {
-        return $this->hasMany(DailyElectricityConsumption::class, 'electricity_consumption_id');
+        return $this->hasMany(BuildingDailyElectricityConsumption::class, 'building_electricity_consumption_id');
     }
 }

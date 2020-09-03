@@ -12,14 +12,14 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Panel;
 use Rimu\FormattedNumber\FormattedNumber;
 
-class DailyElectricityConsumption extends Resource
+class BuildingDailyElectricityConsumption extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\DailyElectricityConsumption::class;
+    public static $model = \App\BuildingDailyElectricityConsumption::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -60,7 +60,7 @@ class DailyElectricityConsumption extends Resource
     public function fields(Request $request)
     {
         if ($request->has('viaResourceId')) {
-            $electricityConsumption = \App\ElectricityConsumption::find($request->get('viaResourceId'));
+            $electricityConsumption = \App\BuildingElectricityConsumption::find($request->get('viaResourceId'));
 
             if ($electricityConsumption) {
                 $buildingMeter = \App\BuildingElectricityMeter::where('building_id', $electricityConsumption->building_id)
@@ -71,21 +71,21 @@ class DailyElectricityConsumption extends Resource
         }
 
         return [
-            BelongsTo::make('Pemakaian Harian Tanggal', 'electricityConsumption', ElectricityConsumption::class)
+            BelongsTo::make('Pemakaian Harian Tanggal', 'electricityConsumption', BuildingElectricityConsumption::class)
                 ->withoutTrashed(),
 
             BelongsTo::make('Meteran Gedung', 'buildingMeter', BuildingElectricityMeter::class)
                 ->withoutTrashed()
                 ->exceptOnForms(),
 
-            Select::make('Meteran Gedung', 'electricity_meter_id')
+            Select::make('Meteran Gedung', 'building_electricity_meter_id')
                 ->options($buildingMeter ?? [null => 'Belum input meteran gedung'])
                 ->displayUsingLabels()
                 ->rules([
                     'required',
-                    Rule::unique('daily_electricity_consumptions', 'electricity_meter_id')
+                    Rule::unique('building_daily_electricity_consumptions', 'building_electricity_meter_id')
                         ->where(function ($query) use ($electricityConsumption) {
-                            return $query->where('electricity_consumption_id', $electricityConsumption->id);
+                            return $query->where('building_electricity_consumption_id', $electricityConsumption->id);
                         })
                         ->ignore($this->model()->id)
                 ])

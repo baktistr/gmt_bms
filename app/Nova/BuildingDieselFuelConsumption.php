@@ -2,28 +2,25 @@
 
 namespace App\Nova;
 
-use App\WaterConsumption as AppWaterConsumption;
-use Carbon\Carbon;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
+use Epartment\NovaDependencyContainer\NovaDependencyContainer;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
-use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
-use Rimu\FormattedNumber\FormattedNumber;
 
-class WaterConsumption extends Resource
+class BuildingDieselFuelConsumption extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\WaterConsumption::class;
+    public static $model = \App\BuildingDieselFuelConsumption::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -39,15 +36,6 @@ class WaterConsumption extends Resource
      */
     public static $search = [
         'id',
-    ];
-
-    /**
-     * Searching With Relation
-     *
-     * @var array
-     */
-    public static $with = [
-        'building',
     ];
 
     /**
@@ -91,7 +79,7 @@ class WaterConsumption extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function fields(Request $request)
@@ -111,40 +99,60 @@ class WaterConsumption extends Resource
             BelongsTo::make('Building', 'building', Building::class)
                 ->rules(['required', 'exists:buildings,id'])
                 ->withoutTrashed()
-                ->sortable(),
+                ->canSee(function () use ($request) {
+                    return $request->user()->hasRole('Super Admin');
+                }),
 
-            FormattedNumber::make('Usage (m3)', 'usage')
-                ->rules(['required', 'numeric'])
+            Select::make('Type')
+                ->options(\App\BuildingDieselFuelConsumption::$type)
+                ->rules(['required', Rule::in(array_keys(\App\BuildingDieselFuelConsumption::$type))])
+                ->displayUsingLabels()
                 ->onlyOnForms(),
 
-            FormattedNumber::make('Rate (Rp)', 'rate')
-                ->rules(['required', 'numeric'])
-                ->onlyOnForms(),
+            Select::make('Type')
+                ->options(\App\BuildingDieselFuelConsumption::$type)
+                ->exceptOnForms(),
+
+            Text::make('Incoming', function () {
+                return $this->type == 'incoming' ? "{$this->amount} liters" : '-';
+            }),
 
             Text::make('Usage', function () {
-                return $this->formatted_usage;
-            })->exceptOnForms(),
+                return $this->type == 'remain' ? "{$this->amount} liters" : '-';
+            }),
 
-            Text::make('Rate', function () {
-                return $this->formatted_rate;
-            })->exceptOnForms(),
+            Text::make('Total Remain Fuel', function () {
+                return "$this->total_remain liters";
+            }),
 
-            Text::make('Total Usage', function () {
-                return $this->formatted_total_usage;
-            })->exceptOnForms(),
+            NovaDependencyContainer::make([
+                Text::make('Incoming Amount (liters)', 'amount')
+                    ->rules(['required', 'numeric', 'min:0']),
+            ])->dependsOn('type', 'incoming')
+                ->onlyOnForms(),
+
+            NovaDependencyContainer::make([
+                Text::make('Remain Amount (liters)', 'amount')
+                    ->rules(['required', 'numeric', 'min:0']),
+            ])->dependsOn('type', 'remain')
+                ->onlyOnForms(),
 
             Markdown::make('Description')
-                ->nullable(),
+                ->nullable()
+                ->alwaysShow(),
 
-            Images::make('Image', 'image')
-                ->hideFromIndex(),
+            Markdown::make('Note')
+                ->nullable()
+                ->alwaysShow(),
+
+            Images::make('Image'),
         ];
     }
 
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function cards(Request $request)
@@ -155,7 +163,7 @@ class WaterConsumption extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function filters(Request $request)
@@ -166,7 +174,7 @@ class WaterConsumption extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function lenses(Request $request)
@@ -177,11 +185,21 @@ class WaterConsumption extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function actions(Request $request)
     {
         return [];
+    }
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Fuel Consumptions';
     }
 }

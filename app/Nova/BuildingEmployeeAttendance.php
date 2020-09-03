@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
@@ -11,14 +12,14 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Attendance extends Resource
+class BuildingEmployeeAttendance extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Attendance::class;
+    public static $model = \App\BuildingEmployeeAttendance::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -85,7 +86,7 @@ class Attendance extends Resource
                 ->format('DD MMMM YYYY')
                 ->sortable(),
 
-            BelongsTo::make('Employee', 'employee', Employee::class)
+            BelongsTo::make('Employee', 'employee', BuildingEmployee::class)
                 ->rules('required')
                 ->sortable(),
 
@@ -94,7 +95,7 @@ class Attendance extends Resource
                 ->sortable(),
 
             Select::make('Status')
-                ->options(\App\Attendance::$statuses)
+                ->options(\App\BuildingEmployeeAttendance::$statuses)
                 ->displayUsingLabels()
                 ->rules('required')
                 ->sortable(),

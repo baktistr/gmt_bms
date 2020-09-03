@@ -12,7 +12,7 @@ use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Employee extends Model implements HasMedia
+class BuildingEmployee extends Model implements HasMedia
 {
     use SoftDeletes, InteractsWithMedia, Actionable;
 
@@ -40,7 +40,7 @@ class Employee extends Model implements HasMedia
      */
     public function attendances(): HasMany
     {
-        return $this->hasMany(Attendance::class, 'employee_id');
+        return $this->hasMany(BuildingEmployeeAttendance::class, 'employee_id');
     }
 
     /**
@@ -67,7 +67,7 @@ class Employee extends Model implements HasMedia
         if ($attendanceToday) {
             $desc = $attendanceToday->desc ? ' ('.Str::limit($attendanceToday->desc, 50).')' : null;
 
-            return Attendance::$statuses[$attendanceToday->status] . $desc;
+            return BuildingEmployeeAttendance::$statuses[$attendanceToday->status] . $desc;
         }
 
         return 'Not yet';
@@ -78,27 +78,27 @@ class Employee extends Model implements HasMedia
      */
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('avatar')
+        $this->addMediaCollection('photo')
             ->singleFile()
             ->registerMediaConversions(function () {
                 $this->addMediaConversion('tiny')
                     ->fit(Manipulations::FIT_CROP, 75, 75)
-                    ->performOnCollections('avatar')
+                    ->performOnCollections('photo')
                     ->nonQueued();
 
                 $this->addMediaConversion('small')
                     ->fit(Manipulations::FIT_CROP, 150, 150)
-                    ->performOnCollections('avatar')
+                    ->performOnCollections('photo')
                     ->nonQueued();
 
                 $this->addMediaConversion('medium')
                     ->fit(Manipulations::FIT_CROP, 300, 300)
-                    ->performOnCollections('avatar')
+                    ->performOnCollections('photo')
                     ->nonQueued();
 
                 $this->addMediaConversion('large')
                     ->fit(Manipulations::FIT_CROP, 600, 600)
-                    ->performOnCollections('avatar')
+                    ->performOnCollections('photo')
                     ->nonQueued();
             });
     }

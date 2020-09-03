@@ -29,6 +29,6 @@ class BuildingElectricityMeter extends Model
      */
     public function dailyConsumptions(): HasMany
     {
-        return $this->hasMany(DailyElectricityConsumption::class, 'electricity_meter_id');
+        return $this->hasMany(BuildingDailyElectricityConsumption::class, 'electricity_meter_id');
     }
 }

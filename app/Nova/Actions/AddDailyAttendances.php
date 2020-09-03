@@ -2,7 +2,7 @@
 
 namespace App\Nova\Actions;
 
-use App\Attendance;
+use App\BuildingEmployeeAttendance;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
@@ -62,7 +62,7 @@ class AddDailyAttendances extends Action
                 ->sortable(),
 
             Select::make('Attendance')
-                ->options(Attendance::$statuses)
+                ->options(BuildingEmployeeAttendance::$statuses)
                 ->displayUsingLabels()
                 ->rules('required')
                 ->sortable(),

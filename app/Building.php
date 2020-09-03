@@ -6,12 +6,24 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\DieselFuelConsumption;
 use Laravel\Nova\Actions\Actionable;
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Building extends Model
+class Building extends Model implements HasMedia
 {
-    use SoftDeletes, Actionable;
+    use SoftDeletes, Actionable, InteractsWithMedia;
+
+    /**
+     * An asset belongs to location code.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function area(): BelongsTo
+    {
+        return $this->belongsTo(Area::class, 'area_id');
+    }
 
     /**
      * A building belongs to manager.
@@ -60,7 +72,7 @@ class Building extends Model
      */
     public function dieselFuelConsumptions(): HasMany
     {
-        return $this->hasMany(DieselFuelConsumption::class, 'building_id');
+        return $this->hasMany(BuildingDieselFuelConsumption::class, 'building_id');
     }
 
     /**
@@ -70,7 +82,7 @@ class Building extends Model
      */
     public function electricityConsumptions(): HasMany
     {
-        return $this->hasMany(ElectricityConsumption::class, 'building_id');
+        return $this->hasMany(BuildingElectricityConsumption::class, 'building_id');
     }
 
     /**
@@ -80,7 +92,7 @@ class Building extends Model
      */
     public function waterConsumptions(): HasMany
     {
-        return $this->hasMany(WaterConsumption::class, 'building_id');
+        return $this->hasMany(BuildingWaterConsumption::class, 'building_id');
     }
 
     /**
@@ -89,7 +101,7 @@ class Building extends Model
      */
     public function employees(): HasMany
     {
-        return $this->hasMany(Employee::class, 'building_id');
+        return $this->hasMany(BuildingEmployee::class, 'building_id');
     }
 
     /**
@@ -135,7 +147,7 @@ class Building extends Model
      */
     public function complaints(): HasMany
     {
-        return $this->hasMany(HelpDesk::class, 'building_id');
+        return $this->hasMany(BuildingHelpDesk::class, 'building_id');
     }
 
     /**
@@ -145,7 +157,7 @@ class Building extends Model
      */
     public function attendances(): HasMany
     {
-        return $this->hasMany(Attendance::class, 'building_id');
+        return $this->hasMany(BuildingEmployeeAttendance::class, 'building_id');
     }
 
     /**
@@ -155,5 +167,19 @@ class Building extends Model
     public function buildingElectricityMeters(): HasMany
     {
         return $this->hasMany(BuildingElectricityMeter::class, 'building_id');
+    }
+
+    /**
+     * Register the media collections
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('image')
+            ->onlyKeepLatest(10)
+            ->registerMediaConversions(function () {
+                $this->addMediaConversion('thumbnail')
+                    ->fit(Manipulations::FIT_CROP, 160, 105)
+                    ->performOnCollections('image');
+            });
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 use App\Building;
-use App\Employee;
+use App\BuildingEmployee;
 use Illuminate\Database\Seeder;
 
 class EmployeeSeeder extends Seeder
@@ -15,7 +15,7 @@ class EmployeeSeeder extends Seeder
     {
         Building::get()
             ->each(function ($building) {
-                factory(Employee::class, rand(3, 5))->create([
+                factory(BuildingEmployee::class, rand(3, 5))->create([
                     'building_id' => $building->id,
                 ]);
             });

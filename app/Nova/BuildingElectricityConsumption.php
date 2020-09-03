@@ -2,7 +2,7 @@
 
 namespace App\Nova;
 
-use App\ElectricityConsumption as AppElectricity;
+use App\BuildingElectricityConsumption as AppElectricity;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
@@ -16,14 +16,14 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Rimu\FormattedNumber\FormattedNumber;
 
-class ElectricityConsumption extends Resource
+class BuildingElectricityConsumption extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\ElectricityConsumption::class;
+    public static $model = AppElectricity::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -110,7 +110,10 @@ class ElectricityConsumption extends Resource
 
             BelongsTo::make('Building', 'building', Building::class)
                 ->rules(['required', 'exists:buildings,id'])
-                ->withoutTrashed(),
+                ->withoutTrashed()
+                ->canSee(function () use ($request) {
+                    return $request->user()->hasRole('Super Admin');
+                }),
 
             Text::make('Total Meteran Listrik', function () {
                 return $this->total_electric_meter;
@@ -132,7 +135,7 @@ class ElectricityConsumption extends Resource
                 return $this->total_cost;
             }),
 
-            HasMany::make('Meteran Gedung', 'dailyConsumptions', DailyElectricityConsumption::class),
+            HasMany::make('Meteran Gedung', 'dailyConsumptions', BuildingDailyElectricityConsumption::class),
         ];
     }
 
@@ -178,5 +181,15 @@ class ElectricityConsumption extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Electricity Consumptions';
     }
 }

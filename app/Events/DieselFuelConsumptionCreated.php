@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\DieselFuelConsumption;
+use App\BuildingDieselFuelConsumption;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -16,16 +16,16 @@ class DieselFuelConsumptionCreated
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var \App\DieselFuelConsumption
+     * @var \App\BuildingDieselFuelConsumption
      */
     public $dieselFuelConsumption;
 
     /**
      * Create a new event instance.
      *
-     * @param \App\DieselFuelConsumption $dieselFuelConsumption
+     * @param \App\BuildingDieselFuelConsumption $dieselFuelConsumption
      */
-    public function __construct(DieselFuelConsumption $dieselFuelConsumption)
+    public function __construct(BuildingDieselFuelConsumption $dieselFuelConsumption)
     {
         $this->dieselFuelConsumption = $dieselFuelConsumption;
     }

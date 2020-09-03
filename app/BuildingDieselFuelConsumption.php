@@ -10,7 +10,7 @@ use Laravel\Nova\Actions\Actionable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class DieselFuelConsumption extends Model implements HasMedia
+class BuildingDieselFuelConsumption extends Model implements HasMedia
 {
     use InteractsWithMedia, Actionable, SoftDeletes;
 
