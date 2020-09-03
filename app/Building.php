@@ -92,7 +92,7 @@ class Building extends Model implements HasMedia
      */
     public function waterConsumptions(): HasMany
     {
-        return $this->hasMany(WaterConsumption::class, 'building_id');
+        return $this->hasMany(BuildingWaterConsumption::class, 'building_id');
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Nova;
 
-use App\WaterConsumption as AppWaterConsumption;
+use App\BuildingWaterConsumption as AppWaterConsumption;
 use Carbon\Carbon;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
@@ -16,14 +16,14 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Rimu\FormattedNumber\FormattedNumber;
 
-class WaterConsumption extends Resource
+class BuildingWaterConsumption extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\WaterConsumption::class;
+    public static $model = \App\BuildingWaterConsumption::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

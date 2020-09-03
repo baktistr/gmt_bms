@@ -24,7 +24,7 @@ use App\Policies\WaterConsumptionPolicy;
 use App\Province;
 use App\Regency;
 use App\User;
-use App\WaterConsumption;
+use App\BuildingWaterConsumption;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Actions\ActionEvent;
@@ -44,7 +44,7 @@ class AuthServiceProvider extends ServiceProvider
         District::class                       => DistrictPolicy::class,
         Building::class                       => BuildingPolicy::class,
         BuildingElectricityConsumption::class => ElectricityConsumptionPolicy::class,
-        WaterConsumption::class               => WaterConsumptionPolicy::class,
+        BuildingWaterConsumption::class       => WaterConsumptionPolicy::class,
         BuildingEquipmentCategory::class      => BuildingEquipmentCategoryPolicy::class,
         BuildingEquipment::class              => BuildingEquipmentPolicy::class,
         Employee::class                       => EmployeePolicy::class,

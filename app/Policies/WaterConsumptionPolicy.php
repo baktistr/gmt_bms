@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\WaterConsumption;
+use App\BuildingWaterConsumption;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -24,11 +24,11 @@ class WaterConsumptionPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\WaterConsumption  $consumption
+     * @param  \App\User                     $user
+     * @param  \App\BuildingWaterConsumption $consumption
      * @return mixed
      */
-    public function view(User $user, WaterConsumption $consumption)
+    public function view(User $user, BuildingWaterConsumption $consumption)
     {
         return $user->hasPermissionTo('View Building')
             && ($user->id == $consumption->building->manager_id || $user->building_id == $consumption->building_id);
@@ -48,11 +48,11 @@ class WaterConsumptionPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\WaterConsumption  $consumption
+     * @param  \App\User                     $user
+     * @param  \App\BuildingWaterConsumption $consumption
      * @return mixed
      */
-    public function update(User $user, WaterConsumption $consumption)
+    public function update(User $user, BuildingWaterConsumption $consumption)
     {
         return $user->hasPermissionTo('View Building')
             && $user->hasRole('Building Manager')
@@ -62,11 +62,11 @@ class WaterConsumptionPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\WaterConsumption  $consumption
+     * @param  \App\User                     $user
+     * @param  \App\BuildingWaterConsumption $consumption
      * @return mixed
      */
-    public function delete(User $user, WaterConsumption $consumption)
+    public function delete(User $user, BuildingWaterConsumption $consumption)
     {
         return $user->hasPermissionTo('View Building')
             && $user->hasRole('Building Manager')
@@ -76,11 +76,11 @@ class WaterConsumptionPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\WaterConsumption  $consumption
+     * @param  \App\User                     $user
+     * @param  \App\BuildingWaterConsumption $consumption
      * @return mixed
      */
-    public function restore(User $user, WaterConsumption $consumption)
+    public function restore(User $user, BuildingWaterConsumption $consumption)
     {
         return $user->hasPermissionTo('View Building')
             && $user->hasRole('Building Manager')
@@ -90,11 +90,11 @@ class WaterConsumptionPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\WaterConsumption  $consumption
+     * @param  \App\User                     $user
+     * @param  \App\BuildingWaterConsumption $consumption
      * @return mixed
      */
-    public function forceDelete(User $user, WaterConsumption $consumption)
+    public function forceDelete(User $user, BuildingWaterConsumption $consumption)
     {
         return $user->hasPermissionTo('View Building')
             && $user->hasRole('Building Manager')

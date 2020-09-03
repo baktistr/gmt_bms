@@ -172,8 +172,8 @@ class Building extends Resource
             HasMany::make('Meteran Gedung', 'buildingElectricityMeters', BuildingElectricityMeter::class),
 
             HasMany::make('Pemakaian Listrik Harian', 'electricityConsumptions', BuildingElectricityConsumption::class),
-//
-//            HasMany::make('Water Consumptions', 'waterConsumptions', WaterConsumption::class),
+
+            HasMany::make('Pemakaian Air', 'waterConsumptions', BuildingWaterConsumption::class),
 //
 //            HasMany::make('Diesel Fuel Consumptions', 'dieselFuelConsumptions', DieselFuelConsumption::class),
 //
@@ -206,7 +206,7 @@ class Building extends Resource
 
 //            $this->monthlyDieselFuelChart($request),
 
-//            $this->monthlyWaterConsumptions($request),
+            $this->monthlyWaterConsumptions($request),
         ];
     }
 
@@ -419,7 +419,7 @@ class Building extends Resource
         for ($month = 11; $month >= 0; $month--) {
             $months->add(now()->subMonths($month)->format('M Y'));
 
-            $waterConsumption = \App\WaterConsumption::query()
+            $waterConsumption = \App\BuildingWaterConsumption::query()
                 ->where('building_id', $request->get('resourceId'))
                 ->whereMonth('date', now()->subMonths($month)->format('m'))
                 ->get();
@@ -428,7 +428,7 @@ class Building extends Resource
         }
 
         return (new LineChart())
-            ->title('Rekap Pemakaian Air')
+            ->title('Penggunaan air 12 bulan terakhir')
             ->animations([
                 'enabled' => true,
                 'easing'  => 'easeinout',

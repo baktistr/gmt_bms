@@ -9,7 +9,7 @@ use Laravel\Nova\Actions\Actionable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class WaterConsumption extends Model implements HasMedia
+class BuildingWaterConsumption extends Model implements HasMedia
 {
     use InteractsWithMedia, Actionable, SoftDeletes;
 
