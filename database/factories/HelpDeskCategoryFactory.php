@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\HelpDeskCategory;
+use App\BuildingHelpDeskCategory;
 use Faker\Generator as Faker;
 
-$factory->define(HelpDeskCategory::class, function (Faker $faker) {
+$factory->define(BuildingHelpDeskCategory::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
     ];

@@ -3,15 +3,15 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Building;
-use App\HelpDesk;
-use App\HelpDeskCategory;
+use App\BuildingHelpDesk;
+use App\BuildingHelpDeskCategory;
 use App\User;
 use Faker\Generator as Faker;
 
-$factory->define(HelpDesk::class, function (Faker $faker) {
+$factory->define(BuildingHelpDesk::class, function (Faker $faker) {
     return [
         'help_desk_category_id' => function () {
-            return factory(HelpDeskCategory::class)->create()->id;
+            return factory(BuildingHelpDeskCategory::class)->create()->id;
         },
         'building_id'           => function () {
             return factory(Building::class)->create()->id;
@@ -21,7 +21,7 @@ $factory->define(HelpDesk::class, function (Faker $faker) {
         },
         'title'                 => $faker->sentence,
         'message'               => $faker->paragraph,
-        'status'                => $faker->randomElement(array_keys(HelpDesk::$statuses)),
-        'priority'              => $faker->randomElement(array_keys(HelpDesk::$priority)),
+        'status'                => $faker->randomElement(array_keys(BuildingHelpDesk::$statuses)),
+        'priority'              => $faker->randomElement(array_keys(BuildingHelpDesk::$priority)),
     ];
 });

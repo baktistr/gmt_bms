@@ -11,7 +11,7 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class HelpDesk extends Resource
+class BuildingHelpDesk extends Resource
 {
     /**
      * The model the resource corresponds to.
@@ -25,7 +25,7 @@ class HelpDesk extends Resource
      *
      * @var string
      */
-    public static $model = \App\HelpDesk::class;
+    public static $model = \App\BuildingHelpDesk::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -77,12 +77,12 @@ class HelpDesk extends Resource
                 ->exceptOnForms(),
           
             Select::make('Priority')
-                ->options(\App\HelpDesk::$priority)
+                ->options(\App\BuildingHelpDesk::$priority)
                 ->rules('required')
                 ->sortable()
                 ->displayUsingLabels(),
 
-            BelongsTo::make('Category', 'category', HelpDeskCategory::class)
+            BelongsTo::make('Category', 'category', BuildingHelpDeskCategory::class)
                 ->rules('required')
                 ->withoutTrashed(),
 
@@ -101,7 +101,7 @@ class HelpDesk extends Resource
                 ->onlyOnForms()->showOnDetail(),
 
             Select::make('Status')
-                ->options(\App\HelpDesk::$statuses)
+                ->options(\App\BuildingHelpDesk::$statuses)
                 ->displayUsingLabels(),
         ];
     }

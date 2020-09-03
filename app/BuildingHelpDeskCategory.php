@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Nova\Actions\Actionable;
 
-class HelpDeskCategory extends Model
+class BuildingHelpDeskCategory extends Model
 {
     use Actionable, SoftDeletes;
 
@@ -18,6 +18,6 @@ class HelpDeskCategory extends Model
      */
     public function helpdesks(): HasMany
     {
-        return $this->hasMany(HelpDesk::class, 'help_desk_category_id');
+        return $this->hasMany(BuildingHelpDesk::class, 'help_desk_category_id');
     }
 }

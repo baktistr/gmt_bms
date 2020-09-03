@@ -147,7 +147,7 @@ class Building extends Model implements HasMedia
      */
     public function complaints(): HasMany
     {
-        return $this->hasMany(HelpDesk::class, 'building_id');
+        return $this->hasMany(BuildingHelpDesk::class, 'building_id');
     }
 
     /**
