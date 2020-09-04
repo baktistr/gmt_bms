@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Statistik\Statistik;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Epartment\NovaDependencyContainer\NovaDependencyContainer;
 use Illuminate\Http\Request;
@@ -157,7 +158,25 @@ class BuildingDieselFuelConsumption extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        $user = $request->user();
+
+        if ($user->hasRole('Super Admin')) {
+            // Super Admin
+            $building = \App\BuildingDieselFuelConsumption::where('id' , $request->get('resourceId'))->first();
+            return [
+                (new Statistik($building->building_id ?? null))
+                    ->monthlyDieselFuelChart()
+                    ->onlyOnDetail(),
+            ];
+        }
+        if (($user->hasRole('Help Desk') || $user->hasRole('Viewer')) || $user->hasRole('Building Manager') && $user->building_id) {
+            return [
+                (new Statistik($user->building_id))
+                    ->monthlyDieselFuelChart(),
+            ];
+        } else {
+            return [];
+        }
     }
 
     /**
