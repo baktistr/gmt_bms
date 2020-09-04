@@ -17,7 +17,7 @@ class BuildingElectricityConsumption extends Resource
      *
      * @var string
      */
-    public static $model = AppElectricity::class;
+    public static $model = \App\BuildingElectricityConsumption::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
