@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
@@ -57,9 +58,9 @@ class BuildingHelpDesk extends Resource
     {
         $user = $request->user();
 
-         if ($user->hasRole('Building Manager')) {
-             return $query->where('building_id', $user->building->id);
-         }
+        if ($user->hasRole('Building Manager')) {
+            return $query->where('building_id', $user->building->id);
+        }
 
         if ($user->hasRole('Help Desk')) {
             $query->where('help_desk_id', $user->id);
@@ -71,20 +72,21 @@ class BuildingHelpDesk extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function fields(Request $request)
     {
         return [
-            Text::make('Priority' , 'priority')
+            Text::make('Priority', 'priority')
                 ->exceptOnForms(),
-          
+
             Select::make('Priority')
                 ->options(\App\BuildingHelpDesk::$priority)
                 ->rules('required')
                 ->sortable()
-                ->displayUsingLabels(),
+                ->displayUsingLabels()
+                ->onlyOnForms(),
 
             BelongsTo::make('Category', 'category', BuildingHelpDeskCategory::class)
                 ->rules('required')
@@ -92,7 +94,16 @@ class BuildingHelpDesk extends Resource
 
             BelongsTo::make('Building', 'building', Building::class)
                 ->rules('required')
-                ->withoutTrashed(),
+                ->withoutTrashed()
+                ->exceptOnForms()
+                ->canSee(function () use ($request) {
+                    return $request->user()->hasRole('Super Admin');
+                }),
+
+            BelongsTo::make('Building', 'building', Building::class)
+                ->rules('required')
+                ->withoutTrashed()
+                ->onlyOnForms(),
 
             BelongsTo::make('Help Desk', 'helpDesk', User::class)
                 ->withoutTrashed(),
@@ -102,18 +113,27 @@ class BuildingHelpDesk extends Resource
 
             Markdown::make('Message', 'message')
                 ->rules('required', 'string')
-                ->onlyOnForms()->showOnDetail(),
+                ->alwaysShow(),
+
+            Badge::make('Status')
+                ->map([
+                    'pending'     => 'warning',
+                    'in-progress' => 'info',
+                    'done'        => 'success',
+                ])
+                ->exceptOnForms(),
 
             Select::make('Status')
                 ->options(\App\BuildingHelpDesk::$statuses)
-                ->displayUsingLabels(),
+                ->displayUsingLabels()
+                ->onlyOnForms(),
         ];
     }
 
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function cards(Request $request)
@@ -124,7 +144,7 @@ class BuildingHelpDesk extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function filters(Request $request)
@@ -135,7 +155,7 @@ class BuildingHelpDesk extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function lenses(Request $request)
@@ -146,7 +166,7 @@ class BuildingHelpDesk extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function actions(Request $request)
