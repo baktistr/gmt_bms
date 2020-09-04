@@ -2,19 +2,13 @@
 
 namespace App\Nova;
 
-use App\BuildingElectricityConsumption as AppElectricity;
-use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
+use App\Statistik\Statistik;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Markdown;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
-use Rimu\FormattedNumber\FormattedNumber;
 
 class BuildingElectricityConsumption extends Resource
 {
@@ -147,7 +141,26 @@ class BuildingElectricityConsumption extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+
+        $user = $request->user();
+
+        if ($user->hasRole('Super Admin')) {
+            // Super Admin
+            $building = \App\BuildingElectricityConsumption::where('id' , $request->get('resourceId'))->first();
+            return [
+                (new Statistik($building->building_id ?? null))
+                    ->monthlyElectricityChart()
+                    ->onlyOnDetail(),
+            ];
+        }
+        if (($user->hasRole('Help Desk') || $user->hasRole('Viewer')) || $user->hasRole('Building Manager') && $user->building_id) {
+            return [
+                (new Statistik($user->building_id))
+                    ->monthlyElectricityChart(),
+            ];
+        } else {
+            return [];
+        }
     }
 
     /**
