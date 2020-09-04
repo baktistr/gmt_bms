@@ -57,6 +57,10 @@ class BuildingHelpDesk extends Resource
     {
         $user = $request->user();
 
+         if ($user->hasRole('Building Manager')) {
+             return $query->where('building_id', $user->building->id);
+         }
+
         if ($user->hasRole('Help Desk')) {
             $query->where('help_desk_id', $user->id);
         }
