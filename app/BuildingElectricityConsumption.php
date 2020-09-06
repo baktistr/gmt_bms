@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -88,7 +89,31 @@ class BuildingElectricityConsumption extends Model
      */
     public function totalElectricMeter()
     {
-        return (int)$this->dailyConsumptions()->sum('electric_meter');
+        $total = collect([]);
+
+        // Get daily consumption hari sebelumnya lalu.
+        $electrivityYerterday = self::query()
+            ->with('dailyConsumptions')
+            ->where('building_id', $this->building_id)
+            ->whereDate('date', Carbon::createFromDate($this->date->toDateTimeString())->subDay()->format('Y-m-d'))
+            ->first();
+
+        // Kurangi data sekarang dengan data sebelumnya.
+        $this->dailyConsumptions->each(function ($consumption) use ($total, $electrivityYerterday) {
+            $consumptionYesterDay = 0;
+
+            if ($electrivityYerterday) {
+                $consumptionYesterDay = $electrivityYerterday->dailyConsumptions()
+                    ->where('building_electricity_meter_id', $consumption->building_electricity_meter_id)
+                    ->first()
+                    ->electric_meter;
+            }
+
+            $total->add($consumption->electric_meter - $consumptionYesterDay);
+        });
+
+
+        return $total->sum();
     }
 
     /**
