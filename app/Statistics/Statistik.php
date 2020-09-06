@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Statistik;
+namespace App\Statistics;
 
 use Coroowicaksono\ChartJsIntegration\LineChart;
 use Illuminate\Http\Request;

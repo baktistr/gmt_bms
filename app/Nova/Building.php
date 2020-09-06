@@ -3,7 +3,7 @@
 namespace App\Nova;
 
 use App\Nova\Metrics\TotalBuildings;
-use App\Statistik\Statistik;
+use App\Statistics\Statistik;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use GeneaLabs\NovaMapMarkerField\MapMarker;
 use Coroowicaksono\ChartJsIntegration\LineChart;

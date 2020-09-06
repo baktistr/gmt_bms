@@ -2,7 +2,7 @@
 
 namespace App\Nova;
 
-use App\Statistik\Statistik;
+use App\Statistics\Statistik;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
