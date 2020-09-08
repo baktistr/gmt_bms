@@ -2,7 +2,7 @@
 
 namespace App\Nova;
 
-use App\Statistik\Statistik;
+use App\Statistics\Statistik;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Epartment\NovaDependencyContainer\NovaDependencyContainer;
 use Illuminate\Http\Request;
