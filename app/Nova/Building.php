@@ -95,6 +95,9 @@ class Building extends Resource
     public function fields(Request $request)
     {
         return [
+
+            Text::make('Nama Gedung', 'name'),
+
             HiddenField::make('Admin', 'manager_id')
                 ->defaultValue($request->user()->id)
                 ->onlyOnForms(),
