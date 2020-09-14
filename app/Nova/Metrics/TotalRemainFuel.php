@@ -16,13 +16,13 @@ class TotalRemainFuel extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->result(
-            BuildingDieselFuelConsumption::query()
-                ->where('building_id', $request->user()->building->id)
-                ->latest('date')
-                ->first()
-                ->total_remain
-        );
+        $remain =  BuildingDieselFuelConsumption::query()
+            ->where('building_id', $request->user()->building->id)
+            ->latest('date')
+            ->first()
+            ->total_remain ?? 0;
+            
+        return $this->result($remain);
     }
 
     /**
@@ -33,7 +33,7 @@ class TotalRemainFuel extends Value
     public function ranges()
     {
         return [
-           //
+            //
         ];
     }
 
@@ -44,7 +44,7 @@ class TotalRemainFuel extends Value
      */
     public function cacheFor()
     {
-//         return now()->addMinutes(5);
+        //         return now()->addMinutes(5);
     }
 
     /**
