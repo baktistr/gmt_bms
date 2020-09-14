@@ -10,6 +10,7 @@ use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Outhebox\NovaHiddenField\HiddenField;
 use Rimu\FormattedNumber\FormattedNumber;
 
 class BuildingWaterConsumption extends Resource
@@ -93,6 +94,13 @@ class BuildingWaterConsumption extends Resource
     public function fields(Request $request)
     {
         return [
+            HiddenField::make('Building ID', 'building_id')
+                ->defaultValue($request->user()->building->id)
+                ->onlyOnForms()
+                ->canSee(function () use ($request) {
+                    return !$request->user()->hasRole('Super Admin');
+                }),
+
             Date::make('Date')
                 ->rules(['required', 'date_format:Y-m-d'])
                 ->withMeta([
@@ -152,7 +160,7 @@ class BuildingWaterConsumption extends Resource
 
         if ($user->hasRole('Super Admin')) {
             // Super Admin
-            $building = \App\BuildingWaterConsumption::where('id' , $request->get('resourceId'))->first();
+            $building = \App\BuildingWaterConsumption::where('id', $request->get('resourceId'))->first();
             return [
                 (new Statistik($building->building_id ?? null))
                     ->monthlyWaterConsumptions()
