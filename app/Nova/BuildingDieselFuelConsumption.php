@@ -87,8 +87,9 @@ class BuildingDieselFuelConsumption extends Resource
     public function fields(Request $request)
     {
         return [
+
             HiddenField::make('Building ID', 'building_id')
-                ->defaultValue($request->user()->building->id)
+                ->defaultValue($request->user()->building->id ?? 0)
                 ->onlyOnForms()
                 ->canSee(function () use ($request) {
                     return !$request->user()->hasRole('Super Admin');
