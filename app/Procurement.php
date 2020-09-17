@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -82,8 +83,8 @@ class Procurement extends Model implements HasMedia
      */
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('avatar')
-            ->singleFile()
+        $this->addMediaCollection('procurement')
+            ->onlyKeepLatest(5)
             ->registerMediaConversions(function () {
                 $this->addMediaConversion('tiny')
                     ->fit(Manipulations::FIT_CROP, 75, 75)
