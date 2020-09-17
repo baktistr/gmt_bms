@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Epartment\NovaDependencyContainer\NovaDependencyContainer;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
@@ -10,6 +11,7 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Orlyapps\NovaBelongsToDepend\NovaBelongsToDepend;
 use Rimu\FormattedNumber\FormattedNumber;
 
 class Procurement extends Resource
@@ -49,8 +51,69 @@ class Procurement extends Resource
         return [
             ID::make()->sortable(),
 
-            BelongsTo::make('Category', 'category', BuildingEquipmentCategory::class),
+            BelongsTo::make('Equipment' , 'equipment' , BuildingEquipment::class)
+                ->onlyOnIndex(),
 
+            Select::make('Category' , 'help_desk_category_id')
+                ->options(\App\BuildingEquipmentCategory::all()->pluck('name' , 'id'))
+                ->displayUsingLabels()
+                ->onlyOnForms(),
+
+            // Mechanical 
+            NovaDependencyContainer::make([
+                Select::make('Equipment' , 'building_equipment_id')
+                    ->options(\App\BuildingEquipment::query()->where('building_equipment_category_id', '1')
+                    ->where('building_id' , $request->user()->building->id ?? 0)
+                    ->pluck('equipment_name', 'id'))
+                    ->displayUsingLabels()
+                    ->onlyOnForms(),
+            ])->dependsOn('help_desk_category_id', '1')
+                ->onlyOnForms(),
+
+            // Electrical
+            NovaDependencyContainer::make([
+                Select::make('Equipment' , 'building_equipment_id')
+                    ->options(\App\BuildingEquipment::query()->where('building_equipment_category_id', '2')
+                    ->where('building_id' , $request->user()->building->id ?? 0)
+                    ->pluck('equipment_name', 'id'))
+                    ->displayUsingLabels()
+                    ->onlyOnForms(),
+            ])->dependsOn('help_desk_category_id', '2')
+                ->onlyOnForms(),
+
+            // Furniture
+            NovaDependencyContainer::make([
+                Select::make('Equipment' , 'building_equipment_id')
+                    ->options(\App\BuildingEquipment::query()->where('building_equipment_category_id', '3')
+                    ->where('building_id' , $request->user()->building->id ?? 0)
+                    ->pluck('equipment_name', 'id'))
+                    ->displayUsingLabels()
+                    ->onlyOnForms(),
+            ])->dependsOn('help_desk_category_id', '3')
+                ->onlyOnForms(),
+
+            // Civil
+            NovaDependencyContainer::make([
+                Select::make('Equipment' , 'building_equipment_id')
+                    ->options(\App\BuildingEquipment::query()->where('building_equipment_category_id', '4')
+                    ->where('building_id' , $request->user()->building->id ?? 0)
+                    ->pluck('equipment_name', 'id'))
+                    ->displayUsingLabels()
+                    ->onlyOnForms(),
+            ])->dependsOn('help_desk_category_id', '4')
+                ->onlyOnForms(),
+
+            // other
+            NovaDependencyContainer::make([
+                Select::make('Equipment' , 'building_equipment_id')
+                    ->options(\App\BuildingEquipment::query()->where('building_equipment_category_id', '5')
+                    ->where('building_id' , $request->user()->building->id ?? 0)
+                    ->pluck('equipment_name', 'id'))
+                    ->displayUsingLabels()
+                    ->onlyOnForms(),
+            ])->dependsOn('help_desk_category_id', '5')
+                ->onlyOnForms(),
+           
             Text::make('Title', 'title')
                 ->rules('required', 'string'),
 
@@ -87,6 +150,9 @@ class Procurement extends Resource
             Text::make('Cost', function () {
                 return $this->formatted_cost;
             })->exceptOnForms(),
+
+            Textarea::make('Keterangan' , 'message')
+                ->alwaysShow(),
 
             Textarea::make('Additional Information')
                 ->alwaysShow(),
