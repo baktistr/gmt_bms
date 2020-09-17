@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Epartment\NovaDependencyContainer\NovaDependencyContainer;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
@@ -50,20 +51,20 @@ class Procurement extends Resource
         return [
             ID::make()->sortable(),
 
-            BelongsTo::make('Equipment' , 'equipment' , BuildingEquipment::class)
+            BelongsTo::make('Equipment', 'equipment', BuildingEquipment::class)
                 ->onlyOnIndex(),
 
-            Select::make('Category' , 'help_desk_category_id')
-                ->options(\App\BuildingEquipmentCategory::all()->pluck('name' , 'id'))
+            Select::make('Category', 'help_desk_category_id')
+                ->options(\App\BuildingEquipmentCategory::all()->pluck('name', 'id'))
                 ->displayUsingLabels()
                 ->onlyOnForms(),
 
             // Mechanical 
             NovaDependencyContainer::make([
-                Select::make('Equipment' , 'building_equipment_id')
+                Select::make('Equipment', 'building_equipment_id')
                     ->options(\App\BuildingEquipment::query()->where('building_equipment_category_id', '1')
-                    ->where('building_id' , $request->user()->building->id ?? 0)
-                    ->pluck('equipment_name', 'id'))
+                        ->where('building_id', $request->user()->building->id ?? 0)
+                        ->pluck('equipment_name', 'id'))
                     ->displayUsingLabels()
                     ->onlyOnForms(),
             ])->dependsOn('help_desk_category_id', '1')
@@ -71,10 +72,10 @@ class Procurement extends Resource
 
             // Electrical
             NovaDependencyContainer::make([
-                Select::make('Equipment' , 'building_equipment_id')
+                Select::make('Equipment', 'building_equipment_id')
                     ->options(\App\BuildingEquipment::query()->where('building_equipment_category_id', '2')
-                    ->where('building_id' , $request->user()->building->id ?? 0)
-                    ->pluck('equipment_name', 'id'))
+                        ->where('building_id', $request->user()->building->id ?? 0)
+                        ->pluck('equipment_name', 'id'))
                     ->displayUsingLabels()
                     ->onlyOnForms(),
             ])->dependsOn('help_desk_category_id', '2')
@@ -82,10 +83,10 @@ class Procurement extends Resource
 
             // Furniture
             NovaDependencyContainer::make([
-                Select::make('Equipment' , 'building_equipment_id')
+                Select::make('Equipment', 'building_equipment_id')
                     ->options(\App\BuildingEquipment::query()->where('building_equipment_category_id', '3')
-                    ->where('building_id' , $request->user()->building->id ?? 0)
-                    ->pluck('equipment_name', 'id'))
+                        ->where('building_id', $request->user()->building->id ?? 0)
+                        ->pluck('equipment_name', 'id'))
                     ->displayUsingLabels()
                     ->onlyOnForms(),
             ])->dependsOn('help_desk_category_id', '3')
@@ -93,10 +94,10 @@ class Procurement extends Resource
 
             // Civil
             NovaDependencyContainer::make([
-                Select::make('Equipment' , 'building_equipment_id')
+                Select::make('Equipment', 'building_equipment_id')
                     ->options(\App\BuildingEquipment::query()->where('building_equipment_category_id', '4')
-                    ->where('building_id' , $request->user()->building->id ?? 0)
-                    ->pluck('equipment_name', 'id'))
+                        ->where('building_id', $request->user()->building->id ?? 0)
+                        ->pluck('equipment_name', 'id'))
                     ->displayUsingLabels()
                     ->onlyOnForms(),
             ])->dependsOn('help_desk_category_id', '4')
@@ -104,15 +105,15 @@ class Procurement extends Resource
 
             // other
             NovaDependencyContainer::make([
-                Select::make('Equipment' , 'building_equipment_id')
+                Select::make('Equipment', 'building_equipment_id')
                     ->options(\App\BuildingEquipment::query()->where('building_equipment_category_id', '5')
-                    ->where('building_id' , $request->user()->building->id ?? 0)
-                    ->pluck('equipment_name', 'id'))
+                        ->where('building_id', $request->user()->building->id ?? 0)
+                        ->pluck('equipment_name', 'id'))
                     ->displayUsingLabels()
                     ->onlyOnForms(),
             ])->dependsOn('help_desk_category_id', '5')
                 ->onlyOnForms(),
-           
+
             Text::make('Title', 'title')
                 ->rules('required', 'string'),
 
@@ -150,11 +151,15 @@ class Procurement extends Resource
                 return $this->formatted_cost;
             })->exceptOnForms(),
 
-            Textarea::make('Keterangan' , 'message')
+            Textarea::make('Keterangan', 'message')
                 ->alwaysShow(),
 
             Textarea::make('Additional Information')
                 ->alwaysShow(),
+
+            Images::make('Procurement', 'procurement')
+                ->nullable()
+
         ];
     }
 
