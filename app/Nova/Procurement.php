@@ -21,6 +21,14 @@ class Procurement extends Resource
      *
      * @var string
      */
+    public static $group = 'Help Desk';
+
+
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
     public static $model = \App\Procurement::class;
 
     /**
