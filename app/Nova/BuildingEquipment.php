@@ -130,7 +130,7 @@ class BuildingEquipment extends Resource
                 ->onlyOnForms()
                 ->showOnDetail(),
 
-            HasMany::make('Histories', 'histories', BuildingEquipmentHistory::class)
+            HasMany::make('Procurements', 'procurements', BuildingProcurement::class)
                 ->onlyOnIndex()
                 ->onlyOnDetail(),
 
