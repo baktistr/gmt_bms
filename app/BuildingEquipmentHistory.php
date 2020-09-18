@@ -16,9 +16,9 @@ class BuildingEquipmentHistory extends Model
     ];
 
     /**
-     * @var string[] $type
+     * @var string[] $actions
      */
-    public static $type = [
+    public static $actions = [
         'corrective' => 'Corrective',
         'preventive' => 'Preventive',
     ];

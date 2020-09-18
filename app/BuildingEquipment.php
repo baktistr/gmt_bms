@@ -66,6 +66,6 @@ class BuildingEquipment extends Model
 
     public function procurements(): HasMany
     {
-        return $this->hasMany(Procurement::class , 'building_equipment_id');
+        return $this->hasMany(BuildingProcurement::class , 'building_equipment_id');
     }
 }

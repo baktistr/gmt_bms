@@ -8,7 +8,7 @@ use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Procurement extends Model implements HasMedia
+class BuildingProcurement extends Model implements HasMedia
 {
     use InteractsWithMedia;
 
@@ -23,20 +23,10 @@ class Procurement extends Model implements HasMedia
     /**
      * @var string[] $type
      */
-    public static $type = [
+    public static $actions = [
         'corrective' => 'Corrective',
         'preventive' => 'Preventive',
     ];
-
-    /**
-     * BelongsTo Equipments
-     * 
-     * @return BelongsTo
-     */
-    public function equipment(): BelongsTo
-    {
-        return $this->belongsTo(BuildingEquipment::class, 'building_equipment_id');
-    }
 
     /**
      * Get formatted date date_of_problem attribute.
@@ -65,17 +55,17 @@ class Procurement extends Model implements HasMedia
      */
     public function getFormattedCostAttribute()
     {
-        return 'Rp. ' . number_format($this->cost);
+        return 'Rp.' . number_format($this->cost);
     }
 
     /**
-     * An equipment belongs to one category.
+     * BelongsTo Equipments
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function category(): BelongsTo
+    public function equipment(): BelongsTo
     {
-        return $this->belongsTo(BuildingHelpDeskCategory::class, 'help_desk_category_id');
+        return $this->belongsTo(BuildingEquipment::class, 'building_equipment_id');
     }
 
     /**
@@ -83,7 +73,7 @@ class Procurement extends Model implements HasMedia
      */
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('procurement')
+        $this->addMediaCollection('photos')
             ->onlyKeepLatest(5)
             ->registerMediaConversions(function () {
                 $this->addMediaConversion('tiny')
