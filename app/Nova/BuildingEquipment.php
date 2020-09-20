@@ -205,7 +205,7 @@ class BuildingEquipment extends Resource
             $months->push(now()->subMonths($month)->format('M Y'));
 
             // Get the sum of every month, and push to the $seriesData collections
-            $cost = \App\BuildingEquipmentHistory::query()
+            $cost = \App\BuildingProcurement::query()
                 ->where('building_equipment_id', $request->get('resourceId'))
                 ->whereYear('date_of_problem_fixed', now()->subMonths($month)->format('Y'))
                 ->whereMonth('date_of_problem_fixed', now()->subMonths($month)->format('m'))
