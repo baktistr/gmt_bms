@@ -38,10 +38,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function routes()
     {
-        Nova::routes()
-            ->withAuthenticationRoutes()
-            ->withPasswordResetRoutes()
-            ->register();
+        Nova::routes()->withAuthenticationRoutes();
     }
 
     /**
@@ -54,7 +51,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function gate()
     {
         Gate::define('viewNova', function ($user) {
-            return $user->hasAnyRole(['Building Manger' , 'Viewer' , 'Help Desk']);
+            return $user->hasAnyRole(['Building Manager', 'Viewer', 'Help Desk']);
         });
     }
 
@@ -77,20 +74,19 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             })->width('1/4'),
             (new TotalViewers)->canSee(function () {
                 return Auth::user()->hasRole('Super Admin');
-            })->width('1/4'),               
-
-            (new TotalEmployees)->canSee(function () {
-                return Auth::user()->hasRole('Building Manager');
             })->width('1/4'),
             (new TotalElectricityConsumption)->canSee(function () {
                 return Auth::user()->hasRole('Building Manager');
-            })->width('1/4'),
+            })->width('1/3'),
             (new TotalWaterConsumption)->canSee(function () {
                 return Auth::user()->hasRole('Building Manager');
-            })->width('1/4'),
+            })->width('1/3'),
             (new TotalRemainFuel)->canSee(function () {
                 return Auth::user()->hasRole('Building Manager');
-            })->width('1/4'),
+            })->width('1/3'),
+            (new TotalEmployees)->canSee(function () {
+                return Auth::user()->hasRole('Building Manager');
+            })->width('1/3'),
         ];
     }
 
@@ -112,9 +108,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function tools()
     {
         return [
-            NovaPermissionTool::make()
-                ->rolePolicy(RolePolicy::class)
-                ->permissionPolicy(PermissionPolicy::class),
+            //
         ];
     }
 

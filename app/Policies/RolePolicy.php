@@ -13,7 +13,7 @@ class RolePolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\User  $user
+     * @param \App\User $user
      * @return mixed
      */
     public function viewAny(User $user)
@@ -36,7 +36,7 @@ class RolePolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\User  $user
+     * @param \App\User $user
      * @return mixed
      */
     public function create(User $user)
@@ -65,7 +65,7 @@ class RolePolicy
      */
     public function delete(User $user, Role $model)
     {
-        return  $user->isSuperAdmin();
+        return $user->isSuperAdmin();
     }
 
     /**

@@ -31,7 +31,8 @@ class BuildingDieselFuelConsumptionPolicy
     public function view(User $user, BuildingDieselFuelConsumption $consumption)
     {
         return $user->hasRole(['Building Manager', 'Help Desk', 'Viewer'])
-            && ($user->id == $consumption->building->manager_id || $user->building_id == $consumption->building_id);    }
+            && ($user->id == $consumption->building->manager_id || $user->building_id == $consumption->building_id);
+    }
 
     /**
      * Determine whether the user can create models.

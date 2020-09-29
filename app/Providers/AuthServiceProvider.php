@@ -6,6 +6,7 @@ use App\BuildingEmployeeAttendance;
 use App\Building;
 use App\BuildingEquipment;
 use App\BuildingEquipmentCategory;
+use App\BuildingHelpDeskCategory;
 use App\District;
 use App\BuildingElectricityConsumption;
 use App\BuildingEmployee;
@@ -13,6 +14,7 @@ use App\Policies\ActionEventPolicy;
 use App\Policies\AttendancePolicy;
 use App\Policies\BuildingEquipmentCategoryPolicy;
 use App\Policies\BuildingEquipmentPolicy;
+use App\Policies\BuildingHelpDeskCategoryPolicy;
 use App\Policies\BuildingPolicy;
 use App\Policies\DistrictPolicy;
 use App\Policies\BuildingElectricityConsumptionPolicy;
@@ -49,6 +51,7 @@ class AuthServiceProvider extends ServiceProvider
         BuildingEquipment::class              => BuildingEquipmentPolicy::class,
         BuildingEmployee::class               => BuildingEmployeePolicy::class,
         BuildingEmployeeAttendance::class     => AttendancePolicy::class,
+        BuildingHelpDeskCategory::class       => BuildingHelpDeskCategoryPolicy::class,
     ];
 
     /**

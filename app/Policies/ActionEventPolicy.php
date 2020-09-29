@@ -13,7 +13,7 @@ class ActionEventPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\User  $user
+     * @param \App\User $user
      * @return mixed
      */
     public function viewAny(User $user)

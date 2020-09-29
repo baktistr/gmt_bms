@@ -13,7 +13,7 @@ class PermissionPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\User  $user
+     * @param \App\User $user
      * @return mixed
      */
     public function viewAny(User $user)
@@ -24,7 +24,7 @@ class PermissionPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param \App\User                      $user
+     * @param \App\User                            $user
      * @param \Spatie\Permission\Models\Permission $model
      * @return mixed
      */
@@ -36,7 +36,7 @@ class PermissionPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\User  $user
+     * @param \App\User $user
      * @return mixed
      */
     public function create(User $user)
@@ -65,7 +65,7 @@ class PermissionPolicy
      */
     public function delete(User $user, Permission $model)
     {
-        return  $user->isSuperAdmin();
+        return $user->isSuperAdmin();
     }
 
     /**
